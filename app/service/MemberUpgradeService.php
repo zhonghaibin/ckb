@@ -24,6 +24,10 @@ class MemberUpgradeService
 
     public function updateLevel(): bool
     {
+        if($this->member->level==0){
+            return false;
+
+        }
 
         if (!$this->directRealChildIds) {
             $this->findRealDirectChildIds();
