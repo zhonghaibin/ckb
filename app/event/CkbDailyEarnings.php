@@ -2,7 +2,12 @@
 
 namespace app\event;
 
+use app\enums\AssetsLogTypes;
+use app\enums\MemberIsReal;
+use app\enums\TransactionStatus;
+use app\enums\TransactionTypes;
 use app\model\Assets;
+use app\model\AssetsLog;
 use app\model\Member;
 use app\model\Transaction;
 use app\model\TransactionLog;
@@ -19,16 +24,35 @@ class CkbDailyEarnings
         60 => 0.15,
     ];
 
+    protected float $share_rate = 0.2;
+
+    protected array $level_diff_rates = [
+        0 => 0,
+        1 => 0.02,
+        2 => 0.04,
+        3 => 0.06,
+        4 => 0.08,
+        5 => 0.1,
+        6 => 0.15,
+        7 => 0.2,
+        8 => 0.25,
+        9 => 0.3,
+    ];
+
+    protected float $same_level_rate = 0.05;
 
     //每日收益
     public function earnings(): bool
     {
         try {
             // 获取所有符合条件的交易记录
-            $transactions = Transaction::query()->whereColumn('run_day', '<', 'day')->get();
+            $transactions = Transaction::query()
+                ->where('transaction_type', TransactionTypes::CKB)
+                ->where('status', TransactionStatus::NORMAL)
+                ->whereColumn('run_day', '<', 'day')
+                ->get();
 
             foreach ($transactions as $transaction) {
-                // 开始一个事务，每个循环都是一个独立的事务
                 DB::beginTransaction();
 
                 try {
@@ -49,14 +73,51 @@ class CkbDailyEarnings
                     $transactionLog->identity = $transaction->identity;
                     $transactionLog->transaction_id = $transaction->id;
                     $transactionLog->coin = $transaction->coin;
-                    $transactionLog->bonus = $bonus;
                     $transactionLog->rate = $rate;
+                    $transactionLog->transaction_type = TransactionTypes::CKB;
                     $transactionLog->datetime = Carbon::now()->timestamp;
+                    $transactionLog->increment('bonus', $bonus);
                     $transactionLog->save();
 
-                    // 更新用户的资产
-                    $assets = Assets::query()->where('uid', $transaction->uid)->where('coin', $transaction->coin)->first();
-                    $assets->increment('money', $bonus);
+                    if ($transaction->run_day == $transaction->day) {
+                        $transaction->status = TransactionStatus::DONE;
+                        $transaction->save();
+                        // 更新用户的资产
+                        $assets = Assets::query()->where('uid', $transaction->uid)->where('coin', $transaction->coin)->first();
+                        $money = $transactionLog->bonus + $transaction->price;
+                        $assets->increment('money', $money);
+
+                        //资金日志
+                        $assets_log = new AssetsLog;
+                        $assets_log->uid = $transaction->uid;
+                        $assets_log->coin = $transaction->coin;
+                        $assets_log->identity = $transaction->identity;
+                        $assets_log->money = $money;
+                        $assets_log->rate = $rate;
+                        $assets_log->transaction_id = $transaction->id;
+                        $assets_log->transaction_log_id = $transactionLog->id;
+                        $assets_log->type = AssetsLogTypes::DAILYEARNINGS;
+                        $assets_log->remark = '每日收益';
+                        $assets_log->datetime = Carbon::now()->timestamp;
+                        $assets_log->save();
+
+                    }
+                    $member = Member::query()->find($transaction->id);
+
+                    if ($member->pid > 0) {
+                        $parent = Member::query()->find($member->pid);
+
+                        if ($parent) {
+                            //分享奖
+                            $this->shareBonus($parent, $bonus, $transaction,$transactionLog);
+                            //极差奖
+                            $this->levelDiffBonus($parent, $bonus, $transaction,$transactionLog, $member->level);
+                        }
+
+                        //平级奖
+                        $this->sameLevelBonus($member, $bonus, $transaction,$transactionLog);
+                    }
+
 
                     // 提交事务
                     DB::commit();
@@ -85,5 +146,119 @@ class CkbDailyEarnings
         }
     }
 
+    //分享奖
+    private function shareBonus($parent, $bonus,$transaction,$transactionLog)
+    {
+        if ($parent->is_real == MemberIsReal::NORMAL) {
+            $parent_bonus = $this->share_rate * $bonus;
+            $parent_assets = Assets::query()->where('uid', $parent->id)->where('coin', $transaction->coin)->first();
+            $parent_assets->increment('money', $parent_bonus);
+
+            //资金日志
+            $assets_log = new AssetsLog;
+            $assets_log->uid = $parent->uid;
+            $assets_log->coin = $transaction->coin;
+            $assets_log->identity = $parent->identity;
+            $assets_log->money = $parent_bonus;
+            $assets_log->rate = $this->share_rate ;
+            $assets_log->transaction_id = $transaction->id;
+            $assets_log->transaction_log_id = $transactionLog->id;
+            $assets_log->type = AssetsLogTypes::SHAREBONUS;
+            $assets_log->remark = '分享收益';
+            $assets_log->datetime = Carbon::now()->timestamp;
+            $assets_log->save();
+        }
+
+
+    }
+
+    //极差奖
+    private function levelDiffBonus($parent, $bonus, $transaction,$transactionLog, $member_level): void
+    {
+
+        if ($parent->is_real == MemberIsReal::NORMAL) {
+            $member_level_diff_rate = $this->level_diff_rates[$member_level];
+            $parent_level_diff_rate = $this->level_diff_rates[$parent->level];
+            $level_diff_rate = $parent_level_diff_rate - $member_level_diff_rate;
+
+
+            $parent_bonus = $level_diff_rate * $bonus;
+            $parent_assets = Assets::query()->where('uid', $parent->id)->where('coin', $transaction->coin)->first();
+            $parent_assets->increment('money', $parent_bonus);
+
+            //资金日志
+            $assets_log = new AssetsLog;
+            $assets_log->uid = $parent->uid;
+            $assets_log->coin = $transaction->coin;
+            $assets_log->identity = $parent->identity;
+            $assets_log->money = $parent_bonus;
+            $assets_log->rate = $this->share_rate ;
+            $assets_log->transaction_id = $transaction->id;
+            $assets_log->transaction_log_id = $transactionLog->id;
+            $assets_log->type = AssetsLogTypes::LEVELDIFFBONUS;
+            $assets_log->remark = '极差收益';
+            $assets_log->datetime = Carbon::now()->timestamp;
+            $assets_log->save();
+
+
+        }
+        if ($parent->pid > 0) {
+            $member = Member::query()->find($parent->pid);
+            $this->levelDiffBonus($member, $bonus,  $transaction,$transactionLog, $member_level);
+        }
+    }
+
+    //平级奖
+
+    private function sameLevelBonus($member, $bonus, $transaction,$transactionLog,): void
+    {
+
+        $pid = $member->pid;
+        $memberIds = [];
+
+        while ($pid) {
+            $parent = Member::query()->find($pid);
+            if (!$parent) {
+                break;
+            }
+
+            // 如果上级是 9 级，则检查其是否有 9 级的下级
+            if ($parent->level == 9) {
+                $hasSameLevelSub = Member::query()->where('pid', $parent->id)->where('level', 9)->exists();
+                if ($hasSameLevelSub) {
+                    $memberIds[] = $parent->id; // 记录符合条件的用户
+                }
+            }
+
+            $pid = $parent->pid; // 继续向上查找
+        }
+
+        // 计算奖励
+        if (!empty($memberIds)) {
+            $rate = $bonus * $this->same_level_rate; // 平级奖励是订单金额的 5%
+            $parent_bonus = $bonus * $rate;
+            foreach ($memberIds as $memberId) {
+                $parent_assets = Assets::query()->where('uid', $memberId)->where('coin', $transaction->coin)->first();
+                $parent_assets->increment('money', $parent_bonus);
+
+                //资金日志
+                $assets_log = new AssetsLog;
+                $assets_log->uid = $parent->uid;
+                $assets_log->coin = $transaction->coin;
+                $assets_log->identity = $parent->identity;
+                $assets_log->money = $parent_bonus;
+                $assets_log->rate = $this->share_rate ;
+                $assets_log->transaction_id = $transaction->id;
+                $assets_log->transaction_log_id = $transactionLog->id;
+                $assets_log->type = AssetsLogTypes::SAMELEVELBONUS;
+                $assets_log->remark = '平级收益';
+                $assets_log->datetime = Carbon::now()->timestamp;
+                $assets_log->save();
+
+            }
+        }
+
+
+    }
 
 }

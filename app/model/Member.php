@@ -2,6 +2,7 @@
 
 namespace app\model;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use support\Model;
 
 class Member extends Model
@@ -28,4 +29,9 @@ class Member extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Assets::class,'uid','id');
+    }
 }

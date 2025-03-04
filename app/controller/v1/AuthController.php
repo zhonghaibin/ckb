@@ -56,9 +56,9 @@ class AuthController
                     $member->remark = '';
                     $member->save();
                     $member_id = $member->id;
-                    $member->relation = '-' . $member_id . '-';
                     $member->lang = LangTypes::ZH_CN;
                     $member->status = MemberStatus::NORMAL;
+                    $member->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
                     $member->save();
                     $assetsList = CoinTypes::list();
                     foreach ($assetsList as $value) {
@@ -122,16 +122,14 @@ class AuthController
             $member->identity = $identity;
             $member->reg_datetime = Carbon::now()->timestamp;
             $member->remark = '';
+            $member->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
             $member->save();
             $member_id = $member->id;
-            $member->relation = '-' . $member_id . '-';
             $member->lang = LangTypes::ZH_CN;
             if (!empty($code)) {
                 $pid = AesUtil::decrypt($code);
                 if (is_numeric($pid)) {
-                    $relation = '-' . $pid . '-' . $member_id . '-';
                     $member->pid = $pid;
-                    $member->relation = $relation;
                 }
 
             }

@@ -32,7 +32,8 @@ Route::group('/v1', function () {
 
     Route::get('/member/info', [app\controller\v1\MemberController::class, 'info']);
     Route::get('/member/shareLink', [app\controller\v1\MemberController::class, 'shareLink']);
-    Route::post('/transaction/create', [app\controller\v1\TransactionController::class, 'create']);
+    Route::post('/transaction/ckb', [app\controller\v1\TransactionController::class, 'ckb']);
+    Route::post('/transaction/sol', [app\controller\v1\TransactionController::class, 'sol']);
 
 })->middleware([
     app\middleware\JwtAuthMiddleware::class,
