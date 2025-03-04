@@ -2,22 +2,22 @@
 
 namespace app\controller\v1;
 
+use app\enums\CoinTypes;
 use app\model\Assets;
 use app\model\Member;
 use app\model\Transaction;
 use support\Request;
 use support\Db;
+use Carbon\Carbon;
 
 class TransactionController
 {
     public function create(Request $request)
     {
-
-        $coin = $request->post('coin', 'USDT');
-        $pay_coin = $request->post('pay_coin', 'ONE');
+        $coin = $request->post('coin', CoinTypes::ONE);
         $price = $request->post('price', 10);
-        $total_day = $request->post('total_day', 15);
-        $trade_sn = md5(uniqid() . mt_rand(100, 999));
+        $day = $request->post('day', 15);
+
 
         $user_id = 1;
         $member = Member::query()->where(['id' => $user_id])->firstOrFail();
@@ -25,7 +25,7 @@ class TransactionController
         Db::beginTransaction();
 
         try {
-            $assets = Assets::query()->where('uid', $member->id)->where('coin', 'USDT')->firstOrFail();
+            $assets = Assets::query()->where('uid', $member->id)->where('coin', CoinTypes::USDT)->firstOrFail();
             if ($assets->money < $price) {
                 throw new \Exception('金额不足');
             }
@@ -34,18 +34,16 @@ class TransactionController
             $transaction->uid = $member->id;
             $transaction->identity = $member->identity;
             $transaction->coin = $coin;
-            $transaction->pay_coin = $pay_coin;
             $transaction->price = $price;
-            $transaction->total_day = $total_day;
-            $transaction->trade_sn = $trade_sn;
-            $transaction->datetime = time();
+            $transaction->day = $day;
+            $transaction->datetime = Carbon::now()->timestamp;
             $transaction->save();
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
         }
-        return  json_success();
+        return json_success();
 
     }
 

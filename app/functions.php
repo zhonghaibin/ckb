@@ -40,3 +40,13 @@ if (!function_exists('json_fail')) {
         ]);
     }
 }
+
+if (!function_exists('get_time_in_month')) {
+    function get_time_in_month($timestamp)
+    {
+        $month = date('n', $timestamp); // 获取月份（1-12）
+        $year = date('Y', $timestamp);  // 获取年份
+        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        return $days_in_month;
+    }
+}

@@ -15,15 +15,24 @@
 use Webman\Route;
 
 Route::group('/v1', function () {
+    Route::get('/index/index', [app\controller\v1\IndexController::class, 'index']);
+
     Route::post('/auth/login', [app\controller\v1\AuthController::class, 'login']);
     Route::post('/auth/register', [app\controller\v1\AuthController::class, 'register']);
+    Route::get('/auth/openTokenPocketUrl', [app\controller\v1\AuthController::class, 'openTokenPocketUrl']);
+    Route::any('/auth/authorize', [app\controller\v1\AuthController::class, 'authorize']);
+
 })->middleware([
     \app\middleware\CorsMiddleware::class
 ]);
+
+
+
 Route::group('/v1', function () {
 
     Route::get('/member/info', [app\controller\v1\MemberController::class, 'info']);
     Route::get('/member/shareLink', [app\controller\v1\MemberController::class, 'shareLink']);
+    Route::post('/transaction/create', [app\controller\v1\TransactionController::class, 'create']);
 
 })->middleware([
     app\middleware\JwtAuthMiddleware::class,
