@@ -11,7 +11,7 @@ enum AssetsLogTypes: int
     case EXPENSE = 4;
     case INCOME = 5;
     case DAILYINCOME = 6;
-    case SHAREBONUS = 7;
+    case DIRECTBONUS = 7;
 
     case LEVELDIFFBONUS = 8;
 
@@ -28,7 +28,7 @@ enum AssetsLogTypes: int
             self::EXPENSE => '下单',
             self::INCOME => '结算',
             self::DAILYINCOME => '每日收益',
-            self::SHAREBONUS => '分享奖',
+            self::DIRECTBONUS => '直推收益',
             self::LEVELDIFFBONUS => '极差奖',
             self::SAMELEVELBONUS => '平级奖',
         };

@@ -19,7 +19,7 @@ class CkbBonusService
         60 => 0.15,
     ];
 
-    protected float $share_rate = 0.2;
+    protected float $direct_rate = 0.2;
 
     protected array $level_diff_rates = [
         0 => 0,
@@ -158,7 +158,7 @@ class CkbBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $parent_bonus = round($this->share_rate * $bonus, 2);
+            $parent_bonus = round($this->direct_rate * $bonus, 2);
             DB::table('assets')
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
@@ -173,11 +173,11 @@ class CkbBonusService
                 'coin' => $transaction->coin,
                 'identity' => $parent->identity,
                 'money' => $parent_bonus,
-                'rate' => $this->share_rate,
+                'rate' => $this->direct_rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
-                'type' => AssetsLogTypes::SHAREBONUS,
-                'remark' => AssetsLogTypes::SHAREBONUS->label(),
+                'type' => AssetsLogTypes::DIRECTBONUS,
+                'remark' => AssetsLogTypes::DIRECTBONUS->label(),
                 'datetime' => Carbon::now()->timestamp,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
