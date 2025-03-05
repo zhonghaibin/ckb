@@ -22,7 +22,7 @@ Route::group('/v1', function () {
     Route::post('/auth/login', [app\controller\v1\AuthController::class, 'login']);
     Route::post('/auth/register', [app\controller\v1\AuthController::class, 'register']);
     Route::get('/auth/openTokenPocketUrl', [app\controller\v1\AuthController::class, 'openTokenPocketUrl']);
-    Route::any('/auth/authorize', [app\controller\v1\AuthController::class, 'authorize']);
+    Route::any('/notify/receive', [app\controller\v1\NotifyController::class, 'receive']);
 
 })->middleware([
     \app\middleware\CorsMiddleware::class

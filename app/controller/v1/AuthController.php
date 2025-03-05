@@ -6,6 +6,7 @@ use app\enums\CoinTypes;
 use app\enums\LangTypes;
 use app\enums\UserStatus;
 use app\model\Assets;
+use app\model\LoginLog;
 use app\model\User;
 use Carbon\Carbon;
 use support\Request;
@@ -20,7 +21,7 @@ class AuthController
     public function openTokenPocketUrl()
     {
         $param = [
-            "callbackUrl" => "https://agent.xsztest.top/v1/auth/authorize",
+            "callbackUrl" => "https://agent.xsztest.top/v1/notify/receive",
             "action" => "login",
             "actionId" => "1648522106711",
             "blockchains" => [
@@ -41,46 +42,6 @@ class AuthController
     }
 
 
-    public function authorize(Request $request)
-    {
-        $rawData = $request->rawBody();
-        $data = json_decode($rawData, true);
-        if (isset($data['action']) && $data['action'] == 'login') {
-            $identity = $data['account'];
-            try {
-                $user = User::query()->where(['identity' => $identity])->first();
-                if (!$user) {
-                    $user = new User;
-                    $user->identity = $identity;
-                    $user->remark = '';
-                    $user->save();
-                    $user->lang = LangTypes::ZH_CN;
-                    $user->status = UserStatus::NORMAL;
-                    $user->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
-                    $user->save();
-                    $assetsList = CoinTypes::list();
-                    foreach ($assetsList as $value) {
-                        $assets = new Assets;
-                        $assets->user_id = $user->id;
-                        $assets->coin = $value;
-                        $assets->save();
-                    }
-                }
-                Db::commit();
-            } catch (\Throwable $e) {
-                DB::rollBack();
-                return json_fail($e->getMessage());
-            }
-            $token = JwtUtil::generateToken($user->id);
-
-            return json_success($token);
-        }
-
-        return json_fail('出错了');
-
-    }
-
-
     public function login(Request $request)
     {
         $identity = $request->post('identity', '');
@@ -88,10 +49,22 @@ class AuthController
             return json_fail('用户凭证不能为空');
         }
         $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
+
         if (empty($user)) {
             return json_fail('凭证错误,登录失败');
         }
         $token = JwtUtil::generateToken($user->id);
+
+        //登录日志
+        $login_logs = new LoginLog;
+        $login_logs->user_id = $user->id;
+        $login_logs->identity = $user->identity;
+        $login_logs->ip = $request->getRealIp();
+        $login_logs->user_agent = $request->header('User-Agent');
+        $login_logs->datetime = Carbon::now()->timestamp;
+        $login_logs->save();
+
+
         return json_success([
             'token' => $token,
         ], '登录成功');
@@ -119,7 +92,7 @@ class AuthController
             $user = new User;
             $user->identity = $identity;
             $user->remark = '';
-            $user->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
+            $user->avatar = '/images/avatars/avatar' . mt_rand(0, 5) . '.png';
             $user->save();
             $user->lang = LangTypes::ZH_CN;
             if (!empty($code)) {

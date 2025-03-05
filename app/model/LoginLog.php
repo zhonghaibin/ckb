@@ -4,14 +4,14 @@ namespace app\model;
 
 use \app\model\Base;
 
-class LoginedLog extends Base
+class LoginLog extends Base
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'logined_logs';
+    protected $table = 'login_logs';
 
     /**
      * The primary key associated with the table.

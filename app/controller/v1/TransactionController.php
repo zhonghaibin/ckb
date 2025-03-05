@@ -18,6 +18,7 @@ class TransactionController
 {
 
 
+    //CKB质押挖矿
     public function ckb(Request $request)
     {
         $coin = $request->post('coin', CoinTypes::ONE);
@@ -76,6 +77,7 @@ class TransactionController
 
     }
 
+    //SOL套利
     public function sol(Request $request)
     {
         $coin = CoinTypes::USDT;
@@ -109,6 +111,18 @@ class TransactionController
             $transaction->transaction_type = TransactionTypes::SOL;
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->save();
+
+            $assets_log = new AssetsLog;
+            $assets_log->user_id = $transaction->user_id;
+            $assets_log->coin = $transaction->coin;
+            $assets_log->identity = $transaction->identity;
+            $assets_log->money = -$price;
+            $assets_log->transaction_id = $transaction->id;
+            $assets_log->type = AssetsLogTypes::EXPENSE;
+            $assets_log->remark = AssetsLogTypes::EXPENSE->label();
+            $assets_log->datetime = Carbon::now()->timestamp;
+            $assets_log->save();
+
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
