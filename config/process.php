@@ -62,4 +62,9 @@ return [
     'task'  => [
         'handler'  => process\Task::class
     ],
+    'htx_websocket' => [
+        'handler'  => process\HtxWebSocket::class,
+        'restartable' => true, // 允许自动重启
+        'count'    => 1, // 只运行 1 个进程
+    ],
 ];
