@@ -2,9 +2,9 @@
 
 namespace app\model;
 
-use support\Model;
+use \app\model\Base;
 
-class Transaction extends Model
+class Transaction extends Base
 {
     /**
      * The table associated with the model.
@@ -25,5 +25,5 @@ class Transaction extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 }

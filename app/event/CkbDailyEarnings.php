@@ -3,12 +3,12 @@
 namespace app\event;
 
 use app\enums\AssetsLogTypes;
-use app\enums\MemberIsReal;
+use app\enums\UserIsReal;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
 use app\model\Assets;
 use app\model\AssetsLog;
-use app\model\Member;
+use app\model\User;
 use app\model\Transaction;
 use app\model\TransactionLog;
 use Carbon\Carbon;
@@ -69,7 +69,7 @@ class CkbDailyEarnings
 
                     // 创建 transaction log
                     $transactionLog = new TransactionLog;
-                    $transactionLog->uid = $transaction->uid;
+                    $transactionLog->user_id = $transaction->user_id;
                     $transactionLog->identity = $transaction->identity;
                     $transactionLog->transaction_id = $transaction->id;
                     $transactionLog->coin = $transaction->coin;
@@ -83,13 +83,13 @@ class CkbDailyEarnings
                         $transaction->status = TransactionStatus::DONE;
                         $transaction->save();
                         // 更新用户的资产
-                        $assets = Assets::query()->where('uid', $transaction->uid)->where('coin', $transaction->coin)->first();
+                        $assets = Assets::query()->where('user_id', $transaction->user_id)->where('coin', $transaction->coin)->first();
                         $money = $transactionLog->bonus + $transaction->price;
                         $assets->increment('money', $money);
 
                         //资金日志
                         $assets_log = new AssetsLog;
-                        $assets_log->uid = $transaction->uid;
+                        $assets_log->user_id = $transaction->user_id;
                         $assets_log->coin = $transaction->coin;
                         $assets_log->identity = $transaction->identity;
                         $assets_log->money = $money;
@@ -102,20 +102,20 @@ class CkbDailyEarnings
                         $assets_log->save();
 
                     }
-                    $member = Member::query()->find($transaction->id);
+                    $user = User::query()->find($transaction->id);
 
-                    if ($member->pid > 0) {
-                        $parent = Member::query()->find($member->pid);
+                    if ($user->pid > 0) {
+                        $parent = User::query()->find($user->pid);
 
                         if ($parent) {
                             //分享奖
                             $this->shareBonus($parent, $bonus, $transaction,$transactionLog);
                             //极差奖
-                            $this->levelDiffBonus($parent, $bonus, $transaction,$transactionLog, $member->level);
+                            $this->levelDiffBonus($parent, $bonus, $transaction,$transactionLog, $user->level);
                         }
 
                         //平级奖
-                        $this->sameLevelBonus($member, $bonus, $transaction,$transactionLog);
+                        $this->sameLevelBonus($user, $bonus, $transaction,$transactionLog);
                     }
 
 
@@ -149,14 +149,14 @@ class CkbDailyEarnings
     //分享奖
     private function shareBonus($parent, $bonus,$transaction,$transactionLog)
     {
-        if ($parent->is_real == MemberIsReal::NORMAL) {
+        if ($parent->is_real == UserIsReal::NORMAL) {
             $parent_bonus = $this->share_rate * $bonus;
-            $parent_assets = Assets::query()->where('uid', $parent->id)->where('coin', $transaction->coin)->first();
+            $parent_assets = Assets::query()->where('user_id', $parent->id)->where('coin', $transaction->coin)->first();
             $parent_assets->increment('money', $parent_bonus);
 
             //资金日志
             $assets_log = new AssetsLog;
-            $assets_log->uid = $parent->uid;
+            $assets_log->user_id = $parent->user_id;
             $assets_log->coin = $transaction->coin;
             $assets_log->identity = $parent->identity;
             $assets_log->money = $parent_bonus;
@@ -173,22 +173,22 @@ class CkbDailyEarnings
     }
 
     //极差奖
-    private function levelDiffBonus($parent, $bonus, $transaction,$transactionLog, $member_level): void
+    private function levelDiffBonus($parent, $bonus, $transaction,$transactionLog, $user_level): void
     {
 
-        if ($parent->is_real == MemberIsReal::NORMAL) {
-            $member_level_diff_rate = $this->level_diff_rates[$member_level];
+        if ($parent->is_real == UserIsReal::NORMAL) {
+            $user_level_diff_rate = $this->level_diff_rates[$user_level];
             $parent_level_diff_rate = $this->level_diff_rates[$parent->level];
-            $level_diff_rate = $parent_level_diff_rate - $member_level_diff_rate;
+            $level_diff_rate = $parent_level_diff_rate - $user_level_diff_rate;
 
 
             $parent_bonus = $level_diff_rate * $bonus;
-            $parent_assets = Assets::query()->where('uid', $parent->id)->where('coin', $transaction->coin)->first();
+            $parent_assets = Assets::query()->where('user_id', $parent->id)->where('coin', $transaction->coin)->first();
             $parent_assets->increment('money', $parent_bonus);
 
             //资金日志
             $assets_log = new AssetsLog;
-            $assets_log->uid = $parent->uid;
+            $assets_log->user_id = $parent->user_id;
             $assets_log->coin = $transaction->coin;
             $assets_log->identity = $parent->identity;
             $assets_log->money = $parent_bonus;
@@ -203,30 +203,30 @@ class CkbDailyEarnings
 
         }
         if ($parent->pid > 0) {
-            $member = Member::query()->find($parent->pid);
-            $this->levelDiffBonus($member, $bonus,  $transaction,$transactionLog, $member_level);
+            $user = User::query()->find($parent->pid);
+            $this->levelDiffBonus($user, $bonus,  $transaction,$transactionLog, $user_level);
         }
     }
 
     //平级奖
 
-    private function sameLevelBonus($member, $bonus, $transaction,$transactionLog,): void
+    private function sameLevelBonus($user, $bonus, $transaction,$transactionLog,): void
     {
 
-        $pid = $member->pid;
-        $memberIds = [];
+        $pid = $user->pid;
+        $userIds = [];
 
         while ($pid) {
-            $parent = Member::query()->find($pid);
+            $parent = User::query()->find($pid);
             if (!$parent) {
                 break;
             }
 
             // 如果上级是 9 级，则检查其是否有 9 级的下级
             if ($parent->level == 9) {
-                $hasSameLevelSub = Member::query()->where('pid', $parent->id)->where('level', 9)->exists();
+                $hasSameLevelSub = User::query()->where('pid', $parent->id)->where('level', 9)->exists();
                 if ($hasSameLevelSub) {
-                    $memberIds[] = $parent->id; // 记录符合条件的用户
+                    $userIds[] = $parent->id; // 记录符合条件的用户
                 }
             }
 
@@ -234,16 +234,16 @@ class CkbDailyEarnings
         }
 
         // 计算奖励
-        if (!empty($memberIds)) {
+        if (!empty($userIds)) {
             $rate = $bonus * $this->same_level_rate; // 平级奖励是订单金额的 5%
             $parent_bonus = $bonus * $rate;
-            foreach ($memberIds as $memberId) {
-                $parent_assets = Assets::query()->where('uid', $memberId)->where('coin', $transaction->coin)->first();
+            foreach ($userIds as $userId) {
+                $parent_assets = Assets::query()->where('user_id', $userId)->where('coin', $transaction->coin)->first();
                 $parent_assets->increment('money', $parent_bonus);
 
                 //资金日志
                 $assets_log = new AssetsLog;
-                $assets_log->uid = $parent->uid;
+                $assets_log->user_id = $parent->user_id;
                 $assets_log->coin = $transaction->coin;
                 $assets_log->identity = $parent->identity;
                 $assets_log->money = $parent_bonus;

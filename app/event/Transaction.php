@@ -5,13 +5,6 @@ class Transaction
 {
 
 
-    //会员升级
-    public function memberUpgrade()
-    {
-
-
-
-    }
 
 
 }

@@ -3,7 +3,7 @@
 namespace app\event;
 
 use app\model\Assets;
-use app\model\Member;
+use app\model\User;
 use app\model\Transaction;
 use app\model\TransactionLog;
 use Carbon\Carbon;

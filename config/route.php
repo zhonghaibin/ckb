@@ -14,6 +14,8 @@
 
 use Webman\Route;
 
+Route::get('/', [app\controller\IndexController::class, 'index']);
+
 Route::group('/v1', function () {
     Route::get('/index/index', [app\controller\v1\IndexController::class, 'index']);
 
@@ -30,8 +32,8 @@ Route::group('/v1', function () {
 
 Route::group('/v1', function () {
 
-    Route::get('/member/info', [app\controller\v1\MemberController::class, 'info']);
-    Route::get('/member/shareLink', [app\controller\v1\MemberController::class, 'shareLink']);
+    Route::get('/user/info', [app\controller\v1\UserController::class, 'info']);
+    Route::get('/user/shareLink', [app\controller\v1\UserController::class, 'shareLink']);
     Route::post('/transaction/ckb', [app\controller\v1\TransactionController::class, 'ckb']);
     Route::post('/transaction/sol', [app\controller\v1\TransactionController::class, 'sol']);
 

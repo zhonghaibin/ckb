@@ -4,9 +4,9 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
-use app\enums\MemberStatus;
+use app\enums\UserStatus;
 use app\model\Assets;
-use app\model\Member;
+use app\model\User;
 use Carbon\Carbon;
 use support\Request;
 use support\Db;
@@ -48,22 +48,20 @@ class AuthController
         if (isset($data['action']) && $data['action'] == 'login') {
             $identity = $data['account'];
             try {
-                $member = Member::query()->where(['identity' => $identity])->first();
-                if (!$member) {
-                    $member = new Member;
-                    $member->identity = $identity;
-                    $member->reg_datetime = Carbon::now()->timestamp;
-                    $member->remark = '';
-                    $member->save();
-                    $member_id = $member->id;
-                    $member->lang = LangTypes::ZH_CN;
-                    $member->status = MemberStatus::NORMAL;
-                    $member->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
-                    $member->save();
+                $user = User::query()->where(['identity' => $identity])->first();
+                if (!$user) {
+                    $user = new User;
+                    $user->identity = $identity;
+                    $user->remark = '';
+                    $user->save();
+                    $user->lang = LangTypes::ZH_CN;
+                    $user->status = UserStatus::NORMAL;
+                    $user->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
+                    $user->save();
                     $assetsList = CoinTypes::list();
                     foreach ($assetsList as $value) {
                         $assets = new Assets;
-                        $assets->uid = $member->id;
+                        $assets->user_id = $user->id;
                         $assets->coin = $value;
                         $assets->save();
                     }
@@ -73,7 +71,7 @@ class AuthController
                 DB::rollBack();
                 return json_fail($e->getMessage());
             }
-            $token = JwtUtil::generateToken($member->id);
+            $token = JwtUtil::generateToken($user->id);
 
             return json_success($token);
         }
@@ -89,11 +87,11 @@ class AuthController
         if (empty($identity)) {
             return json_fail('用户凭证不能为空');
         }
-        $member = Member::query()->where(['identity' => $identity, 'status' => MemberStatus::NORMAL])->first();
-        if (empty($member)) {
+        $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
+        if (empty($user)) {
             return json_fail('凭证错误,登录失败');
         }
-        $token = JwtUtil::generateToken($member->id);
+        $token = JwtUtil::generateToken($user->id);
         return json_success([
             'token' => $token,
         ], '登录成功');
@@ -112,32 +110,31 @@ class AuthController
             if (empty($identity)) {
                 return json_fail('用户Id不能为空');
             }
-            $member = Member::query()->where(['identity' => $identity])->first();
+            $user = User::query()->where(['identity' => $identity])->first();
 
-            if ($member) {
+            if ($user) {
                 return json_fail('用户已存在');
             }
 
-            $member = new Member;
-            $member->identity = $identity;
-            $member->reg_datetime = Carbon::now()->timestamp;
-            $member->remark = '';
-            $member->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
-            $member->save();
-            $member_id = $member->id;
-            $member->lang = LangTypes::ZH_CN;
+            $user = new User;
+            $user->identity = $identity;
+            $user->remark = '';
+            $user->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
+            $user->save();
+            $user_id = $user->id;
+            $user->lang = LangTypes::ZH_CN;
             if (!empty($code)) {
                 $pid = AesUtil::decrypt($code);
                 if (is_numeric($pid)) {
-                    $member->pid = $pid;
+                    $user->pid = $pid;
                 }
 
             }
-            $member->save();
+            $user->save();
             $assetsList = CoinTypes::list();
             foreach ($assetsList as $value) {
                 $assets = new Assets;
-                $assets->uid = $member->id;
+                $assets->user_id = $user->id;
                 $assets->coin = $value;
                 $assets->save();
             }

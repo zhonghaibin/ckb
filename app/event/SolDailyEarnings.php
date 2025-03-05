@@ -52,7 +52,7 @@ class SolDailyEarnings
 
                     // 创建 transaction log
                     $transactionLog = new TransactionLog;
-                    $transactionLog->uid = $transaction->uid;
+                    $transactionLog->user_id = $transaction->user_id;
                     $transactionLog->identity = $transaction->identity;
                     $transactionLog->transaction_id = $transaction->id;
                     $transactionLog->coin = $transaction->coin;
@@ -63,7 +63,7 @@ class SolDailyEarnings
                     $transactionLog->save();
 
                     // 更新用户的资产
-                    $assets = Assets::query()->where('uid', $transaction->uid)->where('coin', $transaction->coin)->first();
+                    $assets = Assets::query()->where('user_id', $transaction->user_id)->where('coin', $transaction->coin)->first();
                     $assets->increment('money', $bonus);
 
                     // 提交事务

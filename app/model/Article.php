@@ -2,9 +2,9 @@
 
 namespace app\model;
 
-use support\Model;
+use \app\model\Base;
 
-class Article extends Model
+class Article extends Base
 {
     /**
      * The table associated with the model.
@@ -25,5 +25,5 @@ class Article extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 }

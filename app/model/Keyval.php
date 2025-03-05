@@ -2,9 +2,9 @@
 
 namespace app\model;
 
-use support\Model;
+use \app\model\Base;
 
-class Keyval extends Model
+class Keyval extends Base
 {
     /**
      * The table associated with the model.

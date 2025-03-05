@@ -2,9 +2,9 @@
 
 namespace app\model;
 
-use support\Model;
+use \app\model\Base;
 
-class TransactionLog extends Model
+class TransactionLog extends Base
 {
     /**
      * The table associated with the model.
@@ -25,5 +25,5 @@ class TransactionLog extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 }

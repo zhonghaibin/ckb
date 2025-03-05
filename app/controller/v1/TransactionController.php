@@ -6,7 +6,7 @@ use app\enums\CoinTypes;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
 use app\model\Assets;
-use app\model\Member;
+use app\model\User;
 use app\model\Transaction;
 use support\Request;
 use support\Db;
@@ -33,19 +33,19 @@ class TransactionController
         if (!in_array($day, [15, 30, 60])) {
             return json_fail('时间错误');
         }
-        $member = Member::query()->where(['id' => $request->userId])->firstOrFail();
+        $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
         Db::beginTransaction();
 
         try {
-            $assets = Assets::query()->where('uid', $member->id)->where('coin', $coin)->firstOrFail();
+            $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
             if ($assets->money < $price) {
                 throw new \Exception('钱包金额不足');
             }
             $assets->decrement('money', $price);
             $transaction = new Transaction();
-            $transaction->uid = $member->id;
-            $transaction->identity = $member->identity;
+            $transaction->user_id = $user->id;
+            $transaction->identity = $user->identity;
             $transaction->coin = $coin;
             $transaction->price = $price;
             $transaction->day = $day;
@@ -75,19 +75,19 @@ class TransactionController
         if (!in_array($day, [1, 15, 30])) {
             return json_fail('时间错误');
         }
-        $member = Member::query()->where(['id' => $request->userId])->firstOrFail();
+        $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
         Db::beginTransaction();
 
         try {
-            $assets = Assets::query()->where('uid', $member->id)->where('coin', $coin)->firstOrFail();
+            $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
             if ($assets->money < $price) {
                 throw new \Exception('钱包金额不足');
             }
             $assets->decrement('money', $price);
             $transaction = new Transaction();
-            $transaction->uid = $member->id;
-            $transaction->identity = $member->identity;
+            $transaction->user_id = $user->id;
+            $transaction->identity = $user->identity;
             $transaction->coin = $coin;
             $transaction->price = $price;
             $transaction->day = $day;

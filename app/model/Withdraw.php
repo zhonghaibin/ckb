@@ -2,9 +2,9 @@
 
 namespace app\model;
 
-use support\Model;
+use \app\model\Base;
 
-class Withdraw extends Model
+class Withdraw extends Base
 {
     /**
      * The table associated with the model.
@@ -25,5 +25,5 @@ class Withdraw extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 }

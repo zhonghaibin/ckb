@@ -5,8 +5,8 @@ namespace app\controller\v1;
 use app\enums\CoinTypes;
 use app\event\CkbDailyEarnings;
 use app\event\SolDailyEarnings;
-use app\model\Member;
-use app\service\MemberUpgradeService;
+use app\model\User;
+use app\service\UserUpgradeService;
 use support\Request;
 use support\Db;
 
