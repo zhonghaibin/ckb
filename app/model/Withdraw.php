@@ -11,7 +11,7 @@ class Withdraw extends Base
      *
      * @var string
      */
-    protected $table = 'withdraw';
+    protected $table = 'withdraws';
 
     /**
      * The primary key associated with the table.

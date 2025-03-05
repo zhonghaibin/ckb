@@ -11,7 +11,7 @@ class TransactionLog extends Base
      *
      * @var string
      */
-    protected $table = 'transaction_log';
+    protected $table = 'transaction_logs';
 
     /**
      * The primary key associated with the table.

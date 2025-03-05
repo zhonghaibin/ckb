@@ -11,7 +11,7 @@ class Transaction extends Base
      *
      * @var string
      */
-    protected $table = 'transaction';
+    protected $table = 'transactions';
 
     /**
      * The primary key associated with the table.

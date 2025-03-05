@@ -11,7 +11,7 @@ class LoginedLog extends Base
      *
      * @var string
      */
-    protected $table = 'logined_log';
+    protected $table = 'logined_logs';
 
     /**
      * The primary key associated with the table.

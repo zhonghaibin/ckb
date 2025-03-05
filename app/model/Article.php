@@ -11,7 +11,7 @@ class Article extends Base
      *
      * @var string
      */
-    protected $table = 'article';
+    protected $table = 'articles';
 
     /**
      * The primary key associated with the table.

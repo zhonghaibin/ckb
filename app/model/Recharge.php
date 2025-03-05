@@ -11,7 +11,7 @@ class Recharge extends Base
      *
      * @var string
      */
-    protected $table = 'logined_log';
+    protected $table = 'recharges';
 
     /**
      * The primary key associated with the table.

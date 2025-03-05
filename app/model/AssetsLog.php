@@ -11,7 +11,7 @@ class AssetsLog extends Base
      *
      * @var string
      */
-    protected $table = 'assets_log';
+    protected $table = 'assets_logs';
 
     /**
      * The primary key associated with the table.

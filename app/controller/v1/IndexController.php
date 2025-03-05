@@ -4,7 +4,7 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
-use app\event\CkbDailyEarnings;
+use app\event\CkbBonus;
 use app\event\SolDailyEarnings;
 use app\model\Assets;
 use app\model\User;
@@ -22,8 +22,8 @@ class IndexController
 
 //        $this->createUser();
 
-        $ckb = new CkbDailyEarnings();
-        $dd= $ckb->earnings();
+        $ckb = new CkbBonus();
+        $dd= $ckb->run();
         return json($dd);
 //        return json(CoinTypes::list());
 
