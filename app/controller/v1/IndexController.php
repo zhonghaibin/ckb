@@ -32,6 +32,8 @@ class IndexController
         return response('ok');
     }
 
+
+
     public function createUser()
     {
 

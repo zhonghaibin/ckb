@@ -3,6 +3,8 @@
  * Here is your custom functions.
  */
 
+use support\Db;
+
 if (!function_exists('json_success')) {
     /**
      * 返回成功的 JSON 响应
@@ -50,3 +52,52 @@ if (!function_exists('get_time_in_month')) {
         return $days_in_month;
     }
 }
+
+if (!function_exists('get_team_count')) {
+    function get_team_count($userId, $isReal = false)
+    {
+        $ids = [$userId]; // 记录所有下级用户ID
+        $team_count = 0;
+
+        do {
+            // 查询当前层级的下级用户
+            $subUsers = Db::table('users')
+                ->whereIn('pid', $ids)
+                ->pluck('id')
+                ->toArray();
+            if ($isReal) {
+                $count = Db::table('users')
+                    ->whereIn('pid', $ids)
+                    ->where('is_real', 1)
+                    ->pluck('id')
+                    ->count();
+                $team_count += $count;
+            } else {
+                $team_count += count($subUsers);
+            }
+            $ids = $subUsers; // 继续查询下一层级
+        } while (!empty($ids));
+
+        return $team_count;
+    }
+}
+
+if (!function_exists('get_team_user_ids')) {
+    function get_team_user_ids($user_id)
+    {
+        $team_ids = [];
+
+        // 查询所有直接下级
+        $sub_users = Db::table('users')->where('pid', $user_id)->pluck('id')->toArray();
+
+        foreach ($sub_users as $sub_id) {
+            $team_ids[] = $sub_id;
+            // 递归查找下级的下级
+            $team_ids = array_merge($team_ids, get_team_user_ids($sub_id));
+        }
+
+        return $team_ids;
+    }
+}
+
+
