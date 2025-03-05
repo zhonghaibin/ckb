@@ -46,7 +46,7 @@ class CkbBonusService
                 ->where('transaction_type', TransactionTypes::CKB)
                 ->where('status', TransactionStatus::NORMAL)
                 ->whereRaw('run_day < day')
-                ->where('runtime', '<', $midnightTimestamp)
+//                ->where('runtime', '<', $midnightTimestamp)
                 ->get();
 
             foreach ($transactions as $transaction) {
@@ -56,6 +56,8 @@ class CkbBonusService
                     $month_day = get_time_in_month($transaction->datetime);
                     $rate = $this->rates[$transaction->day] ?? 0;
                     $bonus = round($transaction->price * $rate / $month_day, 2);
+
+
 
                     DB::table('transactions')->where('id', $transaction->id)->update([
                         'bonus' => DB::raw("bonus + $bonus"),
@@ -102,7 +104,8 @@ class CkbBonusService
                         'updated_at' => Carbon::now(),
                     ]);
 
-                    if ($transaction->run_day == $transaction->day) {
+
+                    if ($transaction->run_day + 1 == $transaction->day) {
                         //返还本金
                         DB::table('transactions')->where('id', $transaction->id)->update(['status' => TransactionStatus::DONE]);
                         DB::table('assets')
@@ -113,8 +116,8 @@ class CkbBonusService
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
                             'identity' => $transaction->identity,
-                            'money' => $bonus,
-                            'rate' => $rate,
+                            'money' => $transaction->price,
+                            'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,
                             'type' => AssetsLogTypes::INCOME,

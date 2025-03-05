@@ -18,9 +18,9 @@ class IndexController
 
 //        $this->createUser();
 
-//        $ckb = new CkbBonusService();
-//        $dd= $ckb->run();
-//        return json($dd);
+        $ckb = new CkbBonusService();
+        $dd= $ckb->run();
+        return json($dd);
 //        return json(CoinTypes::list());
 
 //        $sol= new SolDailyEarnings();

@@ -110,7 +110,7 @@ class SolBonusService
                         'updated_at' => Carbon::now(),
                     ]);
 
-                    if ($transaction->run_day == $transaction->day) {
+                    if ($transaction->run_day + 1 == $transaction->day) {
                         //返还本金
                         DB::table('transactions')->where('id', $transaction->id)->update(['status' => TransactionStatus::DONE]);
                         DB::table('assets')
@@ -121,8 +121,8 @@ class SolBonusService
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
                             'identity' => $transaction->identity,
-                            'money' => $bonus,
-                            'rate' => $rate,
+                            'money' => $transaction->price,
+                            'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,
                             'type' => AssetsLogTypes::INCOME,
