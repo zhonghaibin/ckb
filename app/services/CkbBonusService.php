@@ -46,7 +46,7 @@ class CkbBonusService
                 ->where('transaction_type', TransactionTypes::CKB)
                 ->where('status', TransactionStatus::NORMAL)
                 ->whereRaw('run_day < day')
-//                ->where('runtime', '<', $midnightTimestamp)
+                ->where('runtime', '<', $midnightTimestamp)
                 ->get();
 
             foreach ($transactions as $transaction) {
