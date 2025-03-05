@@ -121,7 +121,6 @@ class AuthController
             $user->remark = '';
             $user->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
             $user->save();
-            $user_id = $user->id;
             $user->lang = LangTypes::ZH_CN;
             if (!empty($code)) {
                 $pid = AesUtil::decrypt($code);

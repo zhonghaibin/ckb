@@ -2,10 +2,12 @@
 
 namespace app\controller\v1;
 
+use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
 use app\model\Assets;
+use app\model\AssetsLog;
 use app\model\User;
 use app\model\Transaction;
 use support\Request;
@@ -53,6 +55,18 @@ class TransactionController
             $transaction->transaction_type = TransactionTypes::CKB;
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->save();
+
+            $assets_log = new AssetsLog;
+            $assets_log->user_id = $transaction->user_id;
+            $assets_log->coin = $transaction->coin;
+            $assets_log->identity = $transaction->identity;
+            $assets_log->money = -$price;
+            $assets_log->transaction_id = $transaction->id;
+            $assets_log->type = AssetsLogTypes::EXPENSE;
+            $assets_log->remark = AssetsLogTypes::EXPENSE->label();
+            $assets_log->datetime = Carbon::now()->timestamp;
+            $assets_log->save();
+
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
