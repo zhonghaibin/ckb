@@ -1,37 +1,37 @@
 <?php
 
-namespace app\event;
+namespace app\services;
 
 use app\enums\AssetsLogTypes;
-use app\enums\UserIsReal;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
+use app\enums\UserIsReal;
 use Carbon\Carbon;
 use support\Db;
 use support\Log;
 
 
-class CkbBonus
+class SolBonusService
 {
     protected array $rates = [
-        15 => 0.08,
-        30 => 0.12,
-        60 => 0.15,
+        1 => [0.06, 0.08],
+        15 => [0.08, 0.1],
+        30 => [0.1, 0.13],
     ];
 
     protected float $share_rate = 0.2;
 
     protected array $level_diff_rates = [
         0 => 0,
-        1 => 0.02,
-        2 => 0.04,
-        3 => 0.06,
-        4 => 0.08,
-        5 => 0.1,
-        6 => 0.15,
-        7 => 0.2,
-        8 => 0.25,
-        9 => 0.3,
+        1 => 0.05,
+        2 => 0.1,
+        3 => 0.15,
+        4 => 0.20,
+        5 => 0.25,
+        6 => 0.30,
+        7 => 0.35,
+        8 => 0.40,
+        9 => 0.50,
     ];
 
     protected float $same_level_rate = 0.05;
@@ -43,7 +43,7 @@ class CkbBonus
 
             // 获取符合条件的交易记录
             $transactions = DB::table('transactions')
-                ->where('transaction_type', TransactionTypes::CKB)
+                ->where('transaction_type', TransactionTypes::SOL)
                 ->where('status', TransactionStatus::NORMAL)
                 ->whereRaw('run_day < day')
                 ->where('runtime', '<', $midnightTimestamp)
@@ -54,8 +54,16 @@ class CkbBonus
 
                 try {
                     $month_day = get_time_in_month($transaction->datetime);
-                    $rate = $this->rates[$transaction->day] ?? 0;
+
+                    $rateRange = $this->rates[$transaction->day] ?? [0, 0];
+                    $min = $rateRange[0];
+                    $max = $rateRange[1];
+                    $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
+                    $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
+                    $rate = round(($randomRate1 + $randomRate2) / 2, 2);
+                    // 计算 bonus
                     $bonus = round($transaction->price * $rate / $month_day, 2);
+
 
                     DB::table('transactions')->where('id', $transaction->id)->update([
                         'bonus' => DB::raw("bonus + $bonus"),
@@ -70,10 +78,21 @@ class CkbBonus
                         'transaction_id' => $transaction->id,
                         'coin' => $transaction->coin,
                         'rate' => $rate,
-                        'transaction_type' => TransactionTypes::CKB,
+                        'transaction_type' => TransactionTypes::SOL,
                         'datetime' => Carbon::now()->timestamp,
                         'bonus' => $bonus,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
                     ]);
+
+                    //更新每日收益
+                    DB::table('assets')
+                        ->where('user_id', $transaction->user_id)
+                        ->where('coin', $transaction->coin)
+                        ->update([
+                            'money' => DB::raw('money + ' . $bonus),
+                            'bonus' => DB::raw('bonus + ' . $bonus),
+                        ]);
 
                     // 资金日志
                     DB::table('assets_logs')->insert([
@@ -87,17 +106,33 @@ class CkbBonus
                         'type' => AssetsLogTypes::DAILYINCOME,
                         'remark' => AssetsLogTypes::DAILYINCOME->label(),
                         'datetime' => Carbon::now()->timestamp,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
                     ]);
 
                     if ($transaction->run_day == $transaction->day) {
+                        //返还本金
                         DB::table('transactions')->where('id', $transaction->id)->update(['status' => TransactionStatus::DONE]);
-
-                        $money = round($bonus + $transaction->price, 2);
                         DB::table('assets')
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
-                            ->increment('money', $money);
+                            ->increment('money', $transaction->price);
+                        DB::table('assets_logs')->insert([
+                            'user_id' => $transaction->user_id,
+                            'coin' => $transaction->coin,
+                            'identity' => $transaction->identity,
+                            'money' => $bonus,
+                            'rate' => $rate,
+                            'transaction_id' => $transaction->id,
+                            'transaction_log_id' => $transactionLogId,
+                            'type' => AssetsLogTypes::INCOME,
+                            'remark' => AssetsLogTypes::INCOME->label(),
+                            'datetime' => Carbon::now()->timestamp,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ]);
                     }
+
 
                     // 获取上级用户
                     $parent = DB::table('users')->where('id', $transaction->user_id)->value('pid');
@@ -130,7 +165,14 @@ class CkbBonus
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
             $parent_bonus = round($this->share_rate * $bonus, 2);
-            DB::table('assets')->where('user_id', $parent->id)->where('coin', $transaction->coin)->increment('money', $parent_bonus);
+            DB::table('assets')
+                ->where('user_id', $parent->id)
+                ->where('coin', $transaction->coin)
+                ->update([
+                    'money' => DB::raw('money + ' . $parent_bonus),
+                    'bonus' => DB::raw('bonus + ' . $parent_bonus),
+                ]);
+
 
             DB::table('assets_logs')->insert([
                 'user_id' => $parent->id,
@@ -143,6 +185,8 @@ class CkbBonus
                 'type' => AssetsLogTypes::SHAREBONUS,
                 'remark' => AssetsLogTypes::SHAREBONUS->label(),
                 'datetime' => Carbon::now()->timestamp,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
     }
@@ -155,7 +199,14 @@ class CkbBonus
             $level_diff_rate = $parent_level_diff_rate - $user_level_diff_rate;
             $parent_bonus = round($level_diff_rate * $bonus, 2);
 
-            DB::table('assets')->where('user_id', $parent->id)->where('coin', $transaction->coin)->increment('money', $parent_bonus);
+            DB::table('assets')
+                ->where('user_id', $parent->id)
+                ->where('coin', $transaction->coin)
+                ->update([
+                    'money' => DB::raw('money + ' . $parent_bonus),
+                    'bonus' => DB::raw('bonus + ' . $parent_bonus),
+                ]);
+
 
             DB::table('assets_logs')->insert([
                 'user_id' => $parent->id,
@@ -168,6 +219,8 @@ class CkbBonus
                 'type' => AssetsLogTypes::LEVELDIFFBONUS,
                 'remark' => AssetsLogTypes::LEVELDIFFBONUS->label(),
                 'datetime' => Carbon::now()->timestamp,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
 
@@ -194,7 +247,7 @@ class CkbBonus
             if ($parent->level == 9) {
                 $hasSameLevelSub = DB::table('users')->where('pid', $parent->id)->where('level', 9)->exists();
                 if ($hasSameLevelSub) {
-                    $userIds[] = $parent->id;
+                    $userIds[$parent->id] = $parent->identity;
                 }
             }
             $pid = $parent->pid;
@@ -203,17 +256,28 @@ class CkbBonus
         if (!empty($userIds)) {
             $rate = $this->same_level_rate;
             $parent_bonus = round($bonus * $rate, 2);
-            foreach ($userIds as $userId) {
-                DB::table('assets')->where('user_id', $userId)->where('coin', $transaction->coin)->increment('money', $parent_bonus);
+            foreach ($userIds as $user_id => $identity) {
+                DB::table('assets')
+                    ->where('user_id', $user_id)
+                    ->where('coin', $transaction->coin)
+                    ->update([
+                        'money' => DB::raw('money + ' . $parent_bonus),
+                        'bonus' => DB::raw('bonus + ' . $parent_bonus),
+                    ]);
+
                 DB::table('assets_logs')->insert([
-                    'user_id' => $userId,
+                    'user_id' => $user_id,
+                    'identity' => $identity,
                     'coin' => $transaction->coin,
                     'money' => $parent_bonus,
                     'rate' => $this->same_level_rate,
                     'transaction_id' => $transaction->id,
                     'transaction_log_id' => $transactionLogId,
                     'type' => AssetsLogTypes::SAMELEVELBONUS,
+                    'remark' => AssetsLogTypes::SAMELEVELBONUS->label(),
                     'datetime' => Carbon::now()->timestamp,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
                 ]);
             }
         }

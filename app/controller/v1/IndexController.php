@@ -4,14 +4,10 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
-use app\event\CkbBonus;
-use app\event\SolDailyEarnings;
 use app\model\Assets;
 use app\model\User;
-use app\service\UserUpgradeService;
-use app\utils\AesUtil;
+use app\services\CkbBonusService;
 use support\Request;
-use support\Db;
 
 
 class IndexController
@@ -22,9 +18,9 @@ class IndexController
 
 //        $this->createUser();
 
-        $ckb = new CkbBonus();
-        $dd= $ckb->run();
-        return json($dd);
+//        $ckb = new CkbBonusService();
+//        $dd= $ckb->run();
+//        return json($dd);
 //        return json(CoinTypes::list());
 
 //        $sol= new SolDailyEarnings();
