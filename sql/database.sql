@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 06/03/2025 17:16:33
+ Date: 06/03/2025 17:57:58
 */
 
 SET NAMES utf8mb4;
@@ -95,11 +95,11 @@ CREATE TABLE `assets_logs`  (
 DROP TABLE IF EXISTS `banners`;
 CREATE TABLE `banners`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `images` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for login_logs
@@ -116,7 +116,7 @@ CREATE TABLE `login_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`, `identity`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for notices
@@ -131,7 +131,7 @@ CREATE TABLE `notices`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for options
@@ -284,39 +284,6 @@ CREATE TABLE `users`  (
   UNIQUE INDEX `identity`(`identity`) USING BTREE,
   INDEX `inx_fields`(`id`, `pid`, `identity`, `status`, `level`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for users1
--- ----------------------------
-DROP TABLE IF EXISTS `users1`;
-CREATE TABLE `users1`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `username` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
-  `nickname` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '昵称',
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
-  `sex` enum('0','1') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '性别',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
-  `email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
-  `mobile` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '手机',
-  `level` tinyint(4) NOT NULL DEFAULT 0 COMMENT '等级',
-  `birthday` date NULL DEFAULT NULL COMMENT '生日',
-  `money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '余额(元)',
-  `score` int(11) NOT NULL DEFAULT 0 COMMENT '积分',
-  `last_time` datetime NULL DEFAULT NULL COMMENT '登录时间',
-  `last_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录ip',
-  `join_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
-  `join_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '注册ip',
-  `token` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'token',
-  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `role` int(11) NOT NULL DEFAULT 1 COMMENT '角色',
-  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '禁用',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE,
-  INDEX `join_time`(`join_time`) USING BTREE,
-  INDEX `mobile`(`mobile`) USING BTREE,
-  INDEX `email`(`email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for withdraws

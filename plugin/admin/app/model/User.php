@@ -34,7 +34,7 @@ class User extends Base
      *
      * @var string
      */
-    protected $table = 'users1';
+    protected $table = 'users';
 
     /**
      * The primary key associated with the table.

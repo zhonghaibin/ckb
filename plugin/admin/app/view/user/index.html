@@ -22,37 +22,9 @@
                     </div>
                     
                     <div class="layui-form-item">
-                        <label class="layui-form-label">用户名</label>
+                        <label class="layui-form-label">账户</label>
                         <div class="layui-input-block">
-                            <input type="text" name="username" value="" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">昵称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="nickname" value="" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">性别</label>
-                        <div class="layui-input-block">
-                            <div name="sex" id="sex" value="" ></div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">邮箱</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="email" value="" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">手机</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="mobile" value="" class="layui-input">
+                            <input type="text" name="identity" value="" class="layui-input">
                         </div>
                     </div>
 
@@ -62,68 +34,9 @@
                             <input type="number" name="level" value="" class="layui-input">
                         </div>
                     </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">生日</label>
-                        <div class="layui-input-block">
-                            <div class="layui-input-block" id="birthday">
-                                <input type="text" autocomplete="off" name="birthday[]" id="birthday-date-start" class="layui-input inline-block" placeholder="开始时间">
-                                -
-                                <input type="text" autocomplete="off" name="birthday[]" id="birthday-date-end" class="layui-input inline-block" placeholder="结束时间">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">余额(元)</label>
-                        <div class="layui-input-block">
-                            <input type="number" name="money" value="" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">积分</label>
-                        <div class="layui-input-block">
-                            <input type="number" name="score" value="" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">登录时间</label>
-                        <div class="layui-input-block">
-                            <div class="layui-input-block" id="last_time">
-                                <input type="text" autocomplete="off" name="last_time[]" id="last_time-date-start" class="layui-input inline-block" placeholder="开始时间">
-                                -
-                                <input type="text" autocomplete="off" name="last_time[]" id="last_time-date-end" class="layui-input inline-block" placeholder="结束时间">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">登录ip</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="last_ip" value="" class="layui-input">
-                        </div>
-                    </div>
                     
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">注册时间</label>
-                        <div class="layui-input-block">
-                            <div class="layui-input-block" id="join_time">
-                                <input type="text" autocomplete="off" name="join_time[]" id="join_time-date-start" class="layui-input inline-block" placeholder="开始时间">
-                                -
-                                <input type="text" autocomplete="off" name="join_time[]" id="join_time-date-end" class="layui-input inline-block" placeholder="结束时间">
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">注册ip</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="join_ip" value="" class="layui-input">
-                        </div>
-                    </div>
-                    
+
                     <div class="layui-form-item layui-inline">
                         <label class="layui-form-label"></label>
                         <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="table-query">
@@ -150,18 +63,18 @@
 
         <!-- 表格顶部工具栏 -->
         <script type="text/html" id="table-toolbar">
-            <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add" permission="app.admin.user.insert">
-                <i class="layui-icon layui-icon-add-1"></i>新增
-            </button>
-            <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove" permission="app.admin.user.delete">
-                <i class="layui-icon layui-icon-delete"></i>删除
-            </button>
+<!--            <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add" permission="app.admin.user.insert">-->
+<!--                <i class="layui-icon layui-icon-add-1"></i>新增-->
+<!--            </button>-->
+<!--            <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove" permission="app.admin.user.delete">-->
+<!--                <i class="layui-icon layui-icon-delete"></i>删除-->
+<!--            </button>-->
         </script>
 
         <!-- 表格行工具栏 -->
         <script type="text/html" id="table-bar">
             <button class="pear-btn pear-btn-xs tool-btn" lay-event="edit" permission="app.admin.user.update">编辑</button>
-            <button class="pear-btn pear-btn-xs tool-btn" lay-event="remove" permission="app.admin.user.delete">删除</button>
+<!--            <button class="pear-btn pear-btn-xs tool-btn" lay-event="remove" permission="app.admin.user.delete">删除</button>-->
         </script>
 
         <script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
@@ -219,11 +132,11 @@
                 });
             })
             
-            // 字段 注册时间 join_time
+            // 字段 注册时间 created_at
             layui.use(["laydate"], function() {
                 layui.laydate.render({
-                    elem: "#join_time",
-                    range: ["#join_time-date-start", "#join_time-date-end"],
+                    elem: "#created_at",
+                    range: ["#created_at-date-start", "#created_at-date-end"],
                     type: "datetime",
                 });
             })
@@ -245,27 +158,8 @@
 						field: "id",
 						sort: true,
 					},{
-						title: "用户名",
-						field: "username",
-					},{
-						title: "昵称",
-						field: "nickname",
-					},{
-						title: "密码",
-						field: "password",
-						hide: true,
-					},{
-						title: "性别",
-						field: "sex",
-						templet: function (d) {
-							let field = "sex";
-							if (typeof d[field] == "undefined") return "";
-							let items = [];
-							layui.each((d[field] + "").split(","), function (k , v) {
-								items.push(apiResults[field][v] || v);
-							});
-							return util.escape(items.join(","));
-						}
+						title: "账户",
+						field: "identity",
 					},{
 						title: "头像",
 						field: "avatar",
@@ -273,47 +167,8 @@
 							return '<img src="'+encodeURI(d['avatar'])+'" style="max-width:32px;max-height:32px;" alt="" />'
 						}
 					},{
-						title: "邮箱",
-						field: "email",
-					},{
-						title: "手机",
-						field: "mobile",
-					},{
 						title: "等级",
 						field: "level",
-						hide: true,
-					},{
-						title: "生日",
-						field: "birthday",
-						hide: true,
-					},{
-						title: "余额(元)",
-						field: "money",
-						hide: true,
-					},{
-						title: "积分",
-						field: "score",
-						hide: true,
-					},{
-						title: "登录时间",
-						field: "last_time",
-						hide: true,
-					},{
-						title: "登录ip",
-						field: "last_ip",
-						hide: true,
-					},{
-						title: "注册时间",
-						field: "join_time",
-						hide: true,
-					},{
-						title: "注册ip",
-						field: "join_ip",
-						hide: true,
-					},{
-						title: "token",
-						field: "token",
-						hide: true,
 					},{
 						title: "创建时间",
 						field: "created_at",
@@ -321,10 +176,6 @@
 					},{
 						title: "更新时间",
 						field: "updated_at",
-						hide: true,
-					},{
-						title: "角色",
-						field: "role",
 						hide: true,
 					},{
 						title: "禁用",
