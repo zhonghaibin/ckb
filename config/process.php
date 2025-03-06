@@ -60,7 +60,7 @@ return [
         ]
     ],
     'task'  => [
-        'handler'  => process\Task::class
+        'handler'  => process\TimersTask::class
     ],
     'htx_websocket' => [
         'handler'  => process\HtxWebSocket::class,

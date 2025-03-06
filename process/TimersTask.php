@@ -6,7 +6,7 @@ use app\services\CkbBonusService;
 use app\services\SolBonusService;
 use Workerman\Crontab\Crontab;
 
-class Task
+class TimersTask
 {
     public function onWorkerStart()
     {

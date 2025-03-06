@@ -2,61 +2,82 @@
 
 namespace process;
 
+use Ratchet\Client\WebSocket;
+use Ratchet\Client\Connector as WebSocketConnector;
+use React\EventLoop\Factory;
+use React\Socket\Connector as SocketConnector;
+use support\Log;
 use Workerman\Worker;
-use Workerman\Connection\AsyncTcpConnection;
-use support\Db; // 使用 Webman 的 DB 组件
-use Workerman\Timer;
-use Illuminate\Support\Facades\Log;
 
 class HtxWebSocket
 {
-    public function onWorkerStart()
+    protected $loop;
+    protected $connector;
+
+    public function __construct()
     {
-        $wsUrl = "wss://api.huobi.pro/ws"; // HTX WebSocket 地址
-        $ws = new AsyncTcpConnection($wsUrl);
+        // 创建事件循环
+        $this->loop = Factory::create();
 
-        // 连接成功时，订阅 BTC/USDT 行情
-        $ws->onConnect = function ($connection) {
-            echo "Connected to HTX WebSocket\n";
+        // 创建 WebSocket Connector
+        $socketConnector = new SocketConnector($this->loop, [
+            'tcp' => [
+                'timeout' => 60, // 增加超时时间
+            ],
+            'tls' => [
+                'verify_peer' => false, // 禁用 SSL 验证（仅用于测试）
+                'verify_peer_name' => false,
+            ],
+        ]);
 
-            $subscribe = [
-                "sub" => "market.btcusdt.ticker",
-                "id"  => "btcusdt_ticker"
-            ];
-            $connection->send(json_encode($subscribe));
-        };
+        $this->connector = new WebSocketConnector($this->loop, $socketConnector);
+    }
 
-        // 监听 WebSocket 消息
-        $ws->onMessage = function ($connection, $data) {
-            $decoded = json_decode(gzdecode($data), true);
+    public function onWorkerStart(Worker $worker)
+    {
+        $this->connect();
+    }
 
-            if (isset($decoded['ping'])) {
-                $connection->send(json_encode(['pong' => $decoded['ping']]));
-            }
+    public function connect()
+    {
+        $wsUrl = 'wss://api.huobi.pro/ws';
 
-            if (isset($decoded['tick'])) {
-                $price = $decoded['tick']['close'] ?? 0;
-                echo "BTC/USDT 最新价格: $price\n";
+        // 这里使用 call_user_func 方式调用 WebSocketConnector
+        call_user_func($this->connector, $wsUrl)
+            ->then(function (WebSocket $conn) {
+                Log::info("Connected to Huobi WebSocket API");
 
-                // 存入数据库
-                Db::table('market_prices')->insert([
-                    'symbol'    => 'BTC/USDT',
-                    'price'     => $price,
-                    'timestamp' => date('Y-m-d H:i:s'),
-                ]);
-            }
-        };
+                $subscribeMessage = [
+                    'sub' => 'market.btcusdt.ticker',
+                    'id'  => 'btcusdt_ticker_' . time(),
+                ];
+                $conn->send(json_encode($subscribeMessage));
 
-        // 监听连接关闭
-        $ws->onClose = function ($connection) {
-            echo "WebSocket connection closed\n";
-        };
+                $conn->on('message', function ($msg) use ($conn) {
+                    $decompressedMsg = gzdecode($msg);
+                    if ($decompressedMsg === false) {
+                        Log::error("Failed to decompress message");
+                        return;
+                    }
 
-        // 监听连接错误
-        $ws->onError = function ($connection, $errorCode, $errorMessage) {
-            echo "Error: $errorMessage\n";
-        };
+                    $data = json_decode($decompressedMsg, true);
+                    if (isset($data['ping'])) {
+                        $conn->send(json_encode(['pong' => $data['ping']]));
+                    } elseif (isset($data['ch'])) {
+                        Log::info("Received market data: " . json_encode($data));
+                    } else {
+                        Log::info("Received: " . json_encode($data));
+                    }
+                });
 
-        $ws->connect();
+                $conn->on('close', function ($code = null, $reason = null) {
+                    Log::info("Connection closed ({$code} - {$reason})");
+                });
+            }, function (\Exception $e) {
+                Log::error("Could not connect: {$e->getMessage()}");
+            });
+
+        // 启动事件循环
+        $this->loop->run();
     }
 }
