@@ -46,7 +46,7 @@ class UserController
     {
         $userId = $request->userId;
         $code = AesUtil::encrypt($userId);
-        return 'http://xxx.com?code=' . $code;
+        return  json_success(['code'=>$code]);
     }
 
 
@@ -56,6 +56,7 @@ class UserController
         $list = Db::table('users')
             ->select('identity', 'level', 'created_at')
             ->where('pid', $request->userId)
+            ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
 

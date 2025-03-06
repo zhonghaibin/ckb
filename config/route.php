@@ -18,6 +18,9 @@ Route::get('/', [app\controller\IndexController::class, 'index']);
 
 Route::group('/v1', function () {
     Route::get('/index/index', [app\controller\v1\IndexController::class, 'index']);
+    Route::get('/index/banner', [app\controller\v1\IndexController::class, 'banner']);
+    Route::get('/index/notice', [app\controller\v1\IndexController::class, 'notice']);
+    Route::get('/index/noticeList', [app\controller\v1\IndexController::class, 'noticeList']);
 
     Route::post('/auth/login', [app\controller\v1\AuthController::class, 'login']);
     Route::post('/auth/register', [app\controller\v1\AuthController::class, 'register']);

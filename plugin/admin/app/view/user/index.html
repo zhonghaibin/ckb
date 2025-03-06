@@ -27,42 +27,42 @@
                             <input type="text" name="username" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">昵称</label>
                         <div class="layui-input-block">
                             <input type="text" name="nickname" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">性别</label>
                         <div class="layui-input-block">
                             <div name="sex" id="sex" value="" ></div>
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">邮箱</label>
                         <div class="layui-input-block">
                             <input type="text" name="email" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">手机</label>
                         <div class="layui-input-block">
                             <input type="text" name="mobile" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">等级</label>
                         <div class="layui-input-block">
                             <input type="number" name="level" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">生日</label>
                         <div class="layui-input-block">
@@ -73,21 +73,21 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">余额(元)</label>
                         <div class="layui-input-block">
                             <input type="number" name="money" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">积分</label>
                         <div class="layui-input-block">
                             <input type="number" name="score" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">登录时间</label>
                         <div class="layui-input-block">
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">登录ip</label>
                         <div class="layui-input-block">
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">注册ip</label>
                         <div class="layui-input-block">
@@ -177,7 +177,7 @@
             const DELETE_API = "/app/admin/user/delete";
             const INSERT_URL = "/app/admin/user/insert";
             const UPDATE_URL = "/app/admin/user/update";
-            
+
             // 字段 性别 sex
             layui.use(["jquery", "xmSelect", "popup"], function() {
                 layui.$.ajax({
@@ -201,7 +201,7 @@
                     }
                 });
             });
-            
+
             // 字段 生日 birthday
             layui.use(["laydate"], function() {
                 layui.laydate.render({
@@ -209,7 +209,7 @@
                     range: ["#birthday-date-start", "#birthday-date-end"],
                 });
             })
-            
+
             // 字段 登录时间 last_time
             layui.use(["laydate"], function() {
                 layui.laydate.render({

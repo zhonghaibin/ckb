@@ -4,14 +4,14 @@ namespace app\model;
 
 use \app\model\Base;
 
-class Article extends Base
+class Banner extends Base
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'articles';
+    protected $table = 'banners';
 
     /**
      * The primary key associated with the table.

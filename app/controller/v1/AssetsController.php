@@ -22,6 +22,7 @@ class AssetsController
         $recharges = Recharge::query()->where('user_id', $request->userId)
             ->select(['identity','money','created_at'])
             ->where('status', 1)
+            ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
 
@@ -39,6 +40,7 @@ class AssetsController
         $recharges = Withdraw::query()->where('user_id', $request->userId)
             ->select(['identity','money','created_at'])
             ->where('status', 1)
+            ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
 

@@ -4,14 +4,14 @@ namespace app\model;
 
 use \app\model\Base;
 
-class Keyval extends Base
+class Notice extends Base
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'keyval';
+    protected $table = 'notices';
 
     /**
      * The primary key associated with the table.
@@ -25,5 +25,5 @@ class Keyval extends Base
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 }

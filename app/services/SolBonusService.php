@@ -62,7 +62,7 @@ class SolBonusService
                     $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
                     $rate = round(($randomRate1 + $randomRate2) / 2, 2);
                     // 计算 bonus
-                    $bonus = round($transaction->price * $rate / $month_day, 2);
+                    $bonus = round($transaction->money * $rate / $month_day, 2);
 
 
                     DB::table('transactions')->where('id', $transaction->id)->update([
@@ -116,12 +116,12 @@ class SolBonusService
                         DB::table('assets')
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
-                            ->increment('money', $transaction->price);
+                            ->increment('money', $transaction->money);
                         DB::table('assets_logs')->insert([
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
                             'identity' => $transaction->identity,
-                            'money' => $transaction->price,
+                            'money' => $transaction->money,
                             'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,

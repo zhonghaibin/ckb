@@ -55,7 +55,7 @@ class CkbBonusService
                 try {
                     $month_day = get_time_in_month($transaction->datetime);
                     $rate = $this->rates[$transaction->day] ?? 0;
-                    $bonus = round($transaction->price * $rate / $month_day, 2);
+                    $bonus = round($transaction->money * $rate / $month_day, 2);
 
 
 
@@ -111,12 +111,12 @@ class CkbBonusService
                         DB::table('assets')
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
-                            ->increment('money', $transaction->price);
+                            ->increment('money', $transaction->money);
                         DB::table('assets_logs')->insert([
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
                             'identity' => $transaction->identity,
-                            'money' => $transaction->price,
+                            'money' => $transaction->money,
                             'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,

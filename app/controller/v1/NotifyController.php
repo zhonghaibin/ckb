@@ -17,7 +17,6 @@ class NotifyController
 {
 
 
-
     public function receive(Request $request)
     {
         $rawData = $request->rawBody();
@@ -33,7 +32,7 @@ class NotifyController
                     $user->save();
                     $user->lang = LangTypes::ZH_CN;
                     $user->status = UserStatus::NORMAL;
-                    $user->avatar = '/images/avatars/avatar'. mt_rand(0, 5).'.png';
+                    $user->avatar = '/images/avatars/avatar' . mt_rand(0, 5) . '.png';
                     $user->save();
                     $assetsList = CoinTypes::list();
                     foreach ($assetsList as $value) {
@@ -56,8 +55,6 @@ class NotifyController
         return json_fail('出错了');
 
     }
-
-
 
 
 }
