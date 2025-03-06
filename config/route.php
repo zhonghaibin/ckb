@@ -17,7 +17,8 @@ use Webman\Route;
 Route::get('/', [app\controller\IndexController::class, 'index']);
 
 Route::group('/v1', function () {
-    Route::get('/index/index', [app\controller\v1\IndexController::class, 'index']);
+    Route::get('/test/index', [app\controller\v1\TestController::class, 'index']);
+
     Route::get('/index/banner', [app\controller\v1\IndexController::class, 'banner']);
     Route::get('/index/notice', [app\controller\v1\IndexController::class, 'notice']);
     Route::get('/index/noticeList', [app\controller\v1\IndexController::class, 'noticeList']);

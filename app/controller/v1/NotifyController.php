@@ -56,5 +56,14 @@ class NotifyController
 
     }
 
+    private function transfer(){
+
+        //给钱包加钱或者减钱
+
+
+
+
+    }
+
 
 }

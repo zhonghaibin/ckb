@@ -14,7 +14,7 @@ class AssetsController
     //充值
     public function recharge(Request $request)
     {
-
+            //充值的按钮
     }
 
     public function rechargeList(Request $request)
@@ -32,7 +32,7 @@ class AssetsController
     //提现
     public function withdraw(Request $request)
     {
-
+        //提现的按钮
     }
 
     public function withdrawList(Request $request)

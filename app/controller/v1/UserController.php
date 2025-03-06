@@ -15,30 +15,43 @@ class UserController
     public function info(Request $request)
     {
         $userId = $request->userId;
-        $user = User::query()->with(['assets' => function ($query) {
-            $query->select(
-                'user_id', 'coin', 'money', 'bonus'
-            );
-        }])->findOrFail($userId);
+
+
+        $user = Db::table('users')
+            ->where('id', $userId)
+            ->first();
+
+        if (!$user) {
+            return json_fail('用户不存在');
+        }
+
+
+        $assets = Db::table('assets')
+            ->where('user_id', $userId)
+            ->select('user_id', 'coin', 'money', 'bonus')
+            ->first();
+
 
         $direct_count = Db::table('users')
             ->where('pid', $user->id)
             ->count();
 
+
         $direct_bonus = Db::table('assets_logs')
             ->where('type', AssetsLogTypes::DIRECTBONUS)
-            ->where('user_id', $user->id)
+            ->where('user_id', $userId)
             ->sum('money');
+
+
         $data = [
             'avatar' => $user->avatar,
             'identity' => $user->identity,
             'level' => $user->level,
-            'direct_count' => $direct_count,//直推人数
-            'direct_bonus' => $direct_bonus,//直推收益
-            'assets' => $user->assets,
+            'direct_count' => $direct_count, // 直推人数
+            'direct_bonus' => $direct_bonus, // 直推收益
+            'assets' => $assets, // 用户资产
             'web_url' => 'http://xx.com',
         ];
-
         return json_success($data);
     }
 
@@ -46,7 +59,7 @@ class UserController
     {
         $userId = $request->userId;
         $code = AesUtil::encrypt($userId);
-        return  json_success(['code'=>$code]);
+        return json_success(['code' => $code]);
     }
 
 
