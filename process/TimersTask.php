@@ -4,6 +4,8 @@ namespace process;
 
 use app\services\CkbBonusService;
 use app\services\SolBonusService;
+use support\Log;
+use support\Redis;
 use Workerman\Crontab\Crontab;
 
 class TimersTask

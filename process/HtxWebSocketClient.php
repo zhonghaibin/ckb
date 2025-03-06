@@ -8,8 +8,9 @@ use React\EventLoop\Factory;
 use React\Socket\Connector as SocketConnector;
 use support\Log;
 use Workerman\Worker;
+use support\Redis;
 
-class HtxWebSocket
+class HtxWebSocketClient
 {
     protected $loop;
     protected $connector;
@@ -18,6 +19,7 @@ class HtxWebSocket
     {
         // 创建事件循环
         $this->loop = Factory::create();
+
 
         // 创建 WebSocket Connector
         $socketConnector = new SocketConnector($this->loop, [
@@ -47,12 +49,21 @@ class HtxWebSocket
             ->then(function (WebSocket $conn) {
                 Log::info("Connected to Huobi WebSocket API");
 
-                $subscribeMessage = [
+                // 订阅 BTC/USDT 的实时行情
+                $subscribeBtcMessage = [
                     'sub' => 'market.btcusdt.ticker',
-                    'id'  => 'btcusdt_ticker_' . time(),
+                    'id' => 'btcusdt_ticker_' . time(),
                 ];
-                $conn->send(json_encode($subscribeMessage));
+                $conn->send(json_encode($subscribeBtcMessage));
 
+                // 订阅 ONE/USDT 的实时行情
+                $subscribeOneMessage = [
+                    'sub' => 'market.oneusdt.ticker',
+                    'id' => 'oneusdt_ticker_' . time(),
+                ];
+                $conn->send(json_encode($subscribeOneMessage));
+
+                // 监听消息
                 $conn->on('message', function ($msg) use ($conn) {
                     $decompressedMsg = gzdecode($msg);
                     if ($decompressedMsg === false) {
@@ -60,16 +71,22 @@ class HtxWebSocket
                         return;
                     }
 
+                    // 解析 JSON 数据
                     $data = json_decode($decompressedMsg, true);
                     if (isset($data['ping'])) {
+                        // 响应心跳包
                         $conn->send(json_encode(['pong' => $data['ping']]));
                     } elseif (isset($data['ch'])) {
-                        Log::info("Received market data: " . json_encode($data));
+                        // 存入 Redis
+                        Redis::set($data['ch'], json_encode($data));
+                        Log::info("Saved data to Redis: " . json_encode($data));
                     } else {
+                        // 其他消息
                         Log::info("Received: " . json_encode($data));
                     }
                 });
 
+                // 关闭连接
                 $conn->on('close', function ($code = null, $reason = null) {
                     Log::info("Connection closed ({$code} - {$reason})");
                 });
