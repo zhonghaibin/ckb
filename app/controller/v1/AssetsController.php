@@ -44,7 +44,7 @@ class AssetsController
 
     public function rechargeList(Request $request)
     {
-        $recharges = Db::table('recharges')::query()->where('user_id', $request->userId)
+        $recharges = Db::table('recharges')->where('user_id', $request->userId)
             ->select(['identity', 'money', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
@@ -62,7 +62,7 @@ class AssetsController
 
     public function withdrawList(Request $request)
     {
-        $recharges = Db::table('withdraws')::query()->where('user_id', $request->userId)
+        $recharges = Db::table('withdraws')->where('user_id', $request->userId)
             ->select(['identity', 'money', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
@@ -82,7 +82,7 @@ class AssetsController
     //资金明细
     public function assetsList(Request $request)
     {
-        $assets_logs = Db::table('assets_logs')::query()->where('user_id', $request->userId)
+        $assets_logs = Db::table('assets_logs')->where('user_id', $request->userId)
             ->select("*")
             ->orderBy('id', 'desc')
             ->paginate(10)

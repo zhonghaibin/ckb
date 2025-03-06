@@ -49,7 +49,8 @@ Route::group('/v1', function () {
 
     Route::post('/transaction/ckb', [app\controller\v1\TransactionController::class, 'ckb']);
     Route::post('/transaction/sol', [app\controller\v1\TransactionController::class, 'sol']);
-
+    Route::get('/transaction/transactionList', [app\controller\v1\TransactionController::class, 'transactionList']);
+    Route::get('/transaction/transactionLogList', [app\controller\v1\TransactionController::class, 'transactionLogList']);
 
 })->middleware([
     app\middleware\JwtAuthMiddleware::class,

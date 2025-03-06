@@ -25,7 +25,7 @@ class TransactionController
         $money = $request->post('money', 500);
         $day = $request->post('day', 15);
 
-        if (in_array($coin, [CoinTypes::ONE, CoinTypes::CBK])) {
+        if (!in_array($coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
             return json_fail('币种错误');
         }
 
@@ -132,4 +132,39 @@ class TransactionController
 
     }
 
+    //下单列表
+    public function transactionList(Request $request)
+    {
+        $transactionType = $request->get('transactionType', TransactionTypes::SOL);
+
+        if (!in_array($transactionType, [TransactionTypes::SOL->value, TransactionTypes::CKB->value])) {
+            return json_fail('参数错误');
+        }
+        $transactions = Db::table('transactions')->where('user_id', $request->userId)
+            ->where('transaction_type', $transactionType)
+            ->select(['coin','money','bonus','day','status','datetime','created_at'])
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->appends(request()->get());
+
+        return json_success($transactions);
+    }
+
+    //收益列表
+    public function transactionLogList(Request $request)
+    {
+        $transactionType = $request->get('transactionType', TransactionTypes::SOL);
+
+        if (!in_array($transactionType, [TransactionTypes::SOL->value, TransactionTypes::CKB->value])) {
+            return json_fail('参数错误');
+        }
+        $transactionLogs = Db::table('transaction_logs')->where('user_id', $request->userId)
+            ->where('transaction_type', $transactionType)
+            ->select('coin','bonus','rate','datetime','created_at')
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->appends(request()->get());
+
+        return json_success($transactionLogs);
+    }
 }
