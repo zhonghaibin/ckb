@@ -2,6 +2,7 @@
 
 namespace plugin\admin\app\model;
 
+use app\model\Assets;
 use plugin\admin\app\model\Base;
 
 /**
@@ -43,7 +44,12 @@ class User extends Base
      */
     protected $primaryKey = 'id';
     
-    
+
+    public function assets(){
+
+        return $this->hasMany(Assets::class,'user_id','id' );
+
+    }
     
     
 }

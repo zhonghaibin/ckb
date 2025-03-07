@@ -91,47 +91,9 @@
             const INSERT_URL = "/app/admin/user/insert";
             const UPDATE_URL = "/app/admin/user/update";
 
-            // 字段 性别 sex
-            layui.use(["jquery", "xmSelect", "popup"], function() {
-                layui.$.ajax({
-                    url: "/app/admin/dict/get/sex",
-                    dataType: "json",
-                    success: function (res) {
-                        let value = layui.$("#sex").attr("value");
-                        let initValue = value ? value.split(",") : [];
-                        layui.xmSelect.render({
-                            el: "#sex",
-                            name: "sex",
-                            initValue: initValue,
-                            data: res.data,
-                            model: {"icon":"hidden","label":{"type":"text"}},
-                            clickClose: true,
-                            radio: true,
-                        });
-                        if (res.code) {
-                            layui.popup.failure(res.msg);
-                        }
-                    }
-                });
-            });
 
-            // 字段 生日 birthday
-            layui.use(["laydate"], function() {
-                layui.laydate.render({
-                    elem: "#birthday",
-                    range: ["#birthday-date-start", "#birthday-date-end"],
-                });
-            })
 
-            // 字段 登录时间 last_time
-            layui.use(["laydate"], function() {
-                layui.laydate.render({
-                    elem: "#last_time",
-                    range: ["#last_time-date-start", "#last_time-date-end"],
-                    type: "datetime",
-                });
-            })
-            
+
             // 字段 注册时间 created_at
             layui.use(["laydate"], function() {
                 layui.laydate.render({
@@ -166,10 +128,23 @@
 						templet: function (d) {
 							return '<img src="'+encodeURI(d['avatar'])+'" style="max-width:32px;max-height:32px;" alt="" />'
 						}
-					},{
+					},
+                    {
+                        title: '钱包余额',
+                        templet: function(d) {
+                            return d.assets.map(w => `${w.coin}: ${w.amount}`).join('<br>');
+                        }
+                    },
+                    {
 						title: "等级",
 						field: "level",
 					},{
+                        title: "登录IP",
+                        field: "last_login_ip",
+                    },{
+                        title: "登录时间",
+                        field: "last_login_at",
+                    },{
 						title: "创建时间",
 						field: "created_at",
 						hide: true,

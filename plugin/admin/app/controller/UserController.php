@@ -9,11 +9,11 @@ use support\Response;
 use Throwable;
 
 /**
- * 用户管理 
+ * 用户管理
  */
 class UserController extends Crud
 {
-    
+
     /**
      * @var User
      */
@@ -36,6 +36,14 @@ class UserController extends Crud
     public function index(): Response
     {
         return raw_view('user/index');
+    }
+
+    public function select(Request $request): Response
+    {
+        [$where, $format, $limit, $field, $order] = $this->selectInput($request);
+        $query = $this->doSelect($where, $field, $order);
+        $query = $query->with('assets');
+        return $this->doFormat($query, $format, $limit);
     }
 
     /**
