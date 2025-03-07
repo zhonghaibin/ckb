@@ -3,7 +3,6 @@
 namespace app\controller\v1;
 
 use app\enums\AssetsLogTypes;
-use app\model\User;
 use support\Request;
 use app\utils\AesUtil;
 use support\Db;

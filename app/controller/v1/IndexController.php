@@ -2,15 +2,7 @@
 
 namespace app\controller\v1;
 
-use app\enums\CoinTypes;
-use app\enums\LangTypes;
-use app\model\Assets;
-use app\model\User;
-use app\services\CkbBonusService;
 use support\Db;
-use support\Log;
-use support\Redis;
-use support\Request;
 
 
 class IndexController
@@ -19,7 +11,7 @@ class IndexController
 
     public function banner()
     {
-        $banners = Db::table('banners')->get();
+        $banners = Db::table('banners')->where('status', 1)->get();
         return json_success($banners);
     }
 
