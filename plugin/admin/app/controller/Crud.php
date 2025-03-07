@@ -181,7 +181,7 @@ class Crud extends Base
             'table_tree' => 'formatTableTree',
             'normal' => 'formatNormal',
         ];
-        $query->orderBy('id','desc');
+
         $paginator = $query->paginate($limit);
         $total = $paginator->total();
         $items = $paginator->items();
