@@ -26,8 +26,9 @@ Route::group('/v1', function () {
     Route::post('/auth/login', [app\controller\v1\AuthController::class, 'login']);
     Route::post('/auth/register', [app\controller\v1\AuthController::class, 'register']);
     Route::get('/auth/openTokenPocketUrl', [app\controller\v1\AuthController::class, 'openTokenPocketUrl']);
-    Route::any('/notify/receive', [app\controller\v1\NotifyController::class, 'receive']);
-
+    Route::any('/notify/register', [app\controller\v1\NotifyController::class, 'register']);
+    Route::any('/notify/recharge', [app\controller\v1\NotifyController::class, 'recharge']);
+    Route::any('/notify/withdraw', [app\controller\v1\NotifyController::class, 'withdraw']);
 })->middleware([
     \app\middleware\CorsMiddleware::class
 ]);

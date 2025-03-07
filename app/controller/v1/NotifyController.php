@@ -17,7 +17,7 @@ class NotifyController
 {
 
 
-    public function receive(Request $request)
+    public function register(Request $request)
     {
         $rawData = $request->rawBody();
         $data = json_decode($rawData, true);
@@ -56,14 +56,13 @@ class NotifyController
 
     }
 
-    private function transfer(){
 
-        //给钱包加钱或者减钱
-
-
-
+    public function recharge(){
 
     }
 
+    public function withdraw(){
+
+    }
 
 }
