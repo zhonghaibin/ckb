@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 07/03/2025 14:48:55
+ Date: 07/03/2025 18:36:30
 */
 
 SET NAMES utf8mb4;
@@ -58,8 +58,8 @@ CREATE TABLE `admins`  (
 -- ----------------------------
 -- Records of admins
 -- ----------------------------
-INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-06 16:26:02', '2025-03-06 16:26:02', NULL);
-INSERT INTO `admins` VALUES (2, 'admin', 'admin', '$2y$10$Ax5DCAi.mn0folyU9OXzGuymieZtzfKoErVZ4Z0hoWz.AJVjKlUQ6', '/app/admin/avatar.png', '', '', '2025-03-06 16:24:29', '2025-03-06 16:24:49', '2025-03-06 16:24:49', NULL);
+INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-07 15:09:06', '2025-03-07 15:09:06', NULL);
+INSERT INTO `admins` VALUES (2, 'admin', 'admin', '$2y$10$Ax5DCAi.mn0folyU9OXzGuymieZtzfKoErVZ4Z0hoWz.AJVjKlUQ6', '/app/admin/avatar.png', '', '', '2025-03-06 16:24:29', '2025-03-07 18:00:56', '2025-03-07 18:00:56', NULL);
 
 -- ----------------------------
 -- Table structure for assets
@@ -165,16 +165,19 @@ INSERT INTO `assets_logs` VALUES (18, 10, 'USDT', -1.000000, 0.000000, 0, 0, 0, 
 DROP TABLE IF EXISTS `banners`;
 CREATE TABLE `banners`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `status` tinyint(1) NULL DEFAULT 1,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of banners
 -- ----------------------------
-INSERT INTO `banners` VALUES (1, '/images/avatars/avatar1.png', '2025-03-06 17:20:48', '2025-03-06 17:20:50');
+INSERT INTO `banners` VALUES (1, '标题1', '/images/avatars/avatar1.png', 1, '2025-03-06 17:20:48', '2025-03-06 17:20:50');
+INSERT INTO `banners` VALUES (3, '75', '', 0, '2025-03-07 17:05:31', '2025-03-07 17:05:31');
 
 -- ----------------------------
 -- Table structure for exchanges
@@ -242,16 +245,24 @@ CREATE TABLE `notices`  (
   `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `datetime` int(11) NOT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notices
 -- ----------------------------
-INSERT INTO `notices` VALUES (1, '重要通知', '测试', 1, 1741155354, '2025-03-06 17:23:19', '2025-03-06 17:23:22');
+INSERT INTO `notices` VALUES (1, '重要通知', '<p>6664565464566</p>', 1, '2025-03-06 17:23:19', '2025-03-07 17:52:53');
+INSERT INTO `notices` VALUES (2, '65', '<p>555</p>', 0, '2025-03-07 16:56:24', '2025-03-07 17:59:29');
+INSERT INTO `notices` VALUES (3, '676767', '', 1, '2025-03-07 16:57:23', '2025-03-07 17:59:24');
+INSERT INTO `notices` VALUES (4, '4234', '', 0, '2025-03-07 16:58:42', '2025-03-07 16:58:42');
+INSERT INTO `notices` VALUES (5, '7567', NULL, 0, '2025-03-07 17:06:03', '2025-03-07 17:06:03');
+INSERT INTO `notices` VALUES (6, '66', NULL, 0, '2025-03-07 17:08:40', '2025-03-07 17:08:40');
+INSERT INTO `notices` VALUES (7, '76', NULL, 0, '2025-03-07 17:09:35', '2025-03-07 17:09:35');
+INSERT INTO `notices` VALUES (8, '657', NULL, 0, '2025-03-07 17:10:41', '2025-03-07 17:10:41');
+INSERT INTO `notices` VALUES (9, '645', '<p>45</p>', 0, '2025-03-07 17:34:21', '2025-03-07 17:34:21');
+INSERT INTO `notices` VALUES (10, '6546', '<p>654645645</p>', 0, '2025-03-07 17:51:16', '2025-03-07 17:51:16');
 
 -- ----------------------------
 -- Table structure for options
@@ -264,7 +275,7 @@ CREATE TABLE `options`  (
   `created_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of options
@@ -282,6 +293,7 @@ INSERT INTO `options` VALUES (10, 'dict_sex', '[{\"value\":\"0\",\"name\":\"女\
 INSERT INTO `options` VALUES (11, 'dict_status', '[{\"value\":\"0\",\"name\":\"正常\"},{\"value\":\"1\",\"name\":\"禁用\"}]', '2022-12-04 15:05:09', '2022-12-04 15:05:09');
 INSERT INTO `options` VALUES (17, 'table_form_schema_wa_admin_roles', '{\"id\":{\"field\":\"id\",\"_field_id\":\"0\",\"comment\":\"主键\",\"control\":\"inputNumber\",\"control_args\":\"\",\"list_show\":true,\"enable_sort\":true,\"searchable\":true,\"search_type\":\"normal\",\"form_show\":false},\"role_id\":{\"field\":\"role_id\",\"_field_id\":\"1\",\"comment\":\"角色id\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"admin_id\":{\"field\":\"admin_id\",\"_field_id\":\"2\",\"comment\":\"管理员id\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false}}', '2022-08-15 00:00:00', '2022-12-20 19:42:51');
 INSERT INTO `options` VALUES (18, 'dict_dict_name', '[{\"value\":\"dict_name\",\"name\":\"字典名称\"},{\"value\":\"status\",\"name\":\"启禁用状态\"},{\"value\":\"sex\",\"name\":\"性别\"},{\"value\":\"upload\",\"name\":\"附件分类\"}]', '2022-08-15 00:00:00', '2022-12-20 19:42:51');
+INSERT INTO `options` VALUES (19, 'config', '{\"base_info\":{\"web_url\":\"66\"}}', '2022-12-05 14:49:01', '2025-03-07 16:41:56');
 
 -- ----------------------------
 -- Table structure for recharges
@@ -325,7 +337,7 @@ CREATE TABLE `roles`  (
 -- Records of roles
 -- ----------------------------
 INSERT INTO `roles` VALUES (1, '超级管理员', '*', '2022-08-13 16:15:01', '2022-12-23 12:05:07', NULL);
-INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88', '2025-03-06 16:23:57', '2025-03-06 16:23:57', 1);
+INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88,116,117,118,119,122,123,124,125,126,121', '2025-03-06 16:23:57', '2025-03-07 18:00:25', 1);
 
 -- ----------------------------
 -- Table structure for rules
@@ -343,7 +355,7 @@ CREATE TABLE `rules`  (
   `type` int(11) NOT NULL DEFAULT 1 COMMENT '类型',
   `weight` int(11) NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 116 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限规则' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 127 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限规则' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of rules
@@ -461,8 +473,19 @@ INSERT INTO `rules` VALUES (110, '支付', NULL, 'plugin\\admin\\app\\controller
 INSERT INTO `rules` VALUES (111, '登录官网', NULL, 'plugin\\admin\\app\\controller\\PluginController@login', 15, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (112, '获取已安装的插件列表', NULL, 'plugin\\admin\\app\\controller\\PluginController@getInstalledPlugins', 15, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (113, '表单构建', NULL, 'plugin\\admin\\app\\controller\\DevController@formBuild', 17, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
-INSERT INTO `rules` VALUES (114, '系统管理', 'layui-icon-release', 'system', NULL, '2025-03-07 14:39:52', '2025-03-07 14:46:59', '', 0, 0);
-INSERT INTO `rules` VALUES (115, '轮播图', '', '11', 114, '2025-03-07 14:42:32', '2025-03-07 14:46:27', '', 1, 0);
+INSERT INTO `rules` VALUES (114, '系统管理', 'layui-icon-release', 'systems', 0, '2025-03-07 14:39:52', '2025-03-07 14:46:59', '', 0, 0);
+INSERT INTO `rules` VALUES (115, '轮播图', '', 'plugin\\admin\\app\\controller\\BannerController', 114, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/banner/index', 1, 0);
+INSERT INTO `rules` VALUES (116, '插入', NULL, 'plugin\\admin\\app\\controller\\BannerController@insert', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (117, '更新', NULL, 'plugin\\admin\\app\\controller\\BannerController@update', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (118, '查询', NULL, 'plugin\\admin\\app\\controller\\BannerController@select', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (119, '删除', NULL, 'plugin\\admin\\app\\controller\\BannerController@delete', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (120, '系统设置', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController', 114, '2025-03-05 09:49:00', '2025-03-05 09:49:00', '/app/admin/systemConfig/index', 1, 0);
+INSERT INTO `rules` VALUES (121, '公告', '', 'plugin\\admin\\app\\controller\\NoticeController', 114, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/notice/index', 1, 0);
+INSERT INTO `rules` VALUES (122, '插入', NULL, 'plugin\\admin\\app\\controller\\NoticeController@insert', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (123, '更新', NULL, 'plugin\\admin\\app\\controller\\NoticeController@update', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (124, '查询', NULL, 'plugin\\admin\\app\\controller\\NoticeController@select', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (125, '删除', NULL, 'plugin\\admin\\app\\controller\\NoticeController@delete', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (126, '更改', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController@update', 120, '2025-03-07 18:00:02', '2025-03-07 18:00:02', NULL, 2, 0);
 
 -- ----------------------------
 -- Table structure for transaction_logs
@@ -570,7 +593,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, '1', 0, 1, 0, 1, '/images/avatars/avatar1.png', '', 'zh_CN', NULL, NULL, '2025-03-05 14:10:30', '2025-03-07 10:41:06');
+INSERT INTO `users` VALUES (1, '1', 0, 1, 0, 1, '/app/admin/upload/avatar/202503/67ca972bafce.md.png', '', 'zh_CN', NULL, NULL, '2025-03-05 14:10:30', '2025-03-07 14:50:21');
 INSERT INTO `users` VALUES (2, '2', 1, 1, 0, 0, '/images/avatars/avatar5.png', '', 'zh_CN', NULL, NULL, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `users` VALUES (3, '3', 1, 1, 0, 0, '/images/avatars/avatar4.png', '', 'zh_CN', NULL, NULL, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `users` VALUES (4, '4', 1, 1, 0, 0, '/images/avatars/avatar2.png', '', 'zh_CN', NULL, NULL, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
