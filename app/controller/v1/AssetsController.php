@@ -6,10 +6,12 @@ namespace app\controller\v1;
 use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\ExchangeStatus;
+use app\enums\WithdrawStatus;
 use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\Exchange;
 use app\model\User;
+use app\model\Withdraw;
 use Carbon\Carbon;
 use support\Db;
 use support\Request;
@@ -53,7 +55,7 @@ class AssetsController
     public function rechargeList(Request $request)
     {
         $recharges = Db::table('recharges')->where('user_id', $request->userId)
-            ->select([ 'amount', 'created_at'])
+            ->select(['amount', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
             ->paginate(10)
@@ -65,13 +67,48 @@ class AssetsController
     //提现
     public function withdraw(Request $request)
     {
-        //提现的按钮
+        $amount = $request->post('amount');
+        $fee = $request->post('fee', 0);
+        if ($amount <= 0) {
+            return json_fail('请输入提现金额');
+        }
+        $coin = CoinTypes::USDT;
+        Db::beginTransaction();
+        try {
+            $user = User::query()->find($request->userId);
+            $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
+            $assets->decrement('amount', $amount);
+
+            $withdraw = new Withdraw();
+            $withdraw->user_id = $user->id;
+            $withdraw->coin = $coin;
+            $withdraw->amount = $amount;
+            $withdraw->status = WithdrawStatus::PENDING;
+            $withdraw->fee = $fee;
+            $withdraw->datetime = Carbon::now()->timestamp;
+            $withdraw->save();
+
+            $assets_log = new AssetsLog;
+            $assets_log->user_id = $user->id;
+            $assets_log->coin = $coin;
+            $assets_log->amount = -$amount;
+            $assets_log->type = AssetsLogTypes::WITHDRAW;
+            $assets_log->remark = AssetsLogTypes::WITHDRAW->label();
+            $assets_log->datetime = Carbon::now()->timestamp;
+            $assets_log->withdraw_id = $withdraw->id;
+            $assets_log->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return json_fail($e->getMessage());
+        }
+        return json_success();
     }
 
     public function withdrawList(Request $request)
     {
         $recharges = Db::table('withdraws')->where('user_id', $request->userId)
-            ->select([ 'amount', 'created_at'])
+            ->select(['amount', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
             ->paginate(10)

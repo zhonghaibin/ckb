@@ -43,7 +43,7 @@ Route::group('/v1', function () {
 
     Route::get('/assets/recharge', [app\controller\v1\AssetsController::class, 'recharge']);
     Route::get('/assets/rechargeList', [app\controller\v1\AssetsController::class, 'rechargeList']);
-    Route::get('/assets/withdraw', [app\controller\v1\AssetsController::class, 'withdraw']);
+    Route::post('/assets/withdraw', [app\controller\v1\AssetsController::class, 'withdraw']);
     Route::get('/assets/withdrawList', [app\controller\v1\AssetsController::class, 'withdrawList']);
     Route::any('/assets/exchange', [app\controller\v1\AssetsController::class, 'exchange']);
     Route::get('/assets/assetsList', [app\controller\v1\AssetsController::class, 'assetsList']);
