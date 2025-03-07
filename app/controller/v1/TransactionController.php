@@ -6,10 +6,12 @@ use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
+use app\enums\UserIsReal;
 use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\User;
 use app\model\Transaction;
+use Webman\RedisQueue\Redis;
 use support\Request;
 use support\Db;
 use Carbon\Carbon;
@@ -68,7 +70,12 @@ class TransactionController
             $assets_log->datetime = Carbon::now()->timestamp;
             $assets_log->save();
 
+            if (!$user->is_real==UserIsReal::DISABLE->value) {
+                $user->is_real = UserIsReal::NORMAL->value;
+                $user->save();
+            }
             DB::commit();
+            Redis::send('user-upgrade-job', ['user_id'=>$user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
@@ -123,7 +130,12 @@ class TransactionController
             $assets_log->datetime = Carbon::now()->timestamp;
             $assets_log->save();
 
+            if (!$user->is_real==UserIsReal::DISABLE->value) {
+                $user->is_real = UserIsReal::NORMAL->value;
+                $user->save();
+            }
             DB::commit();
+            Redis::send('user-upgrade-job', ['user_id'=>$user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
@@ -142,7 +154,7 @@ class TransactionController
         }
         $transactions = Db::table('transactions')->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)
-            ->select(['coin','money','bonus','day','status','datetime','created_at'])
+            ->select(['coin', 'money', 'bonus', 'day', 'status', 'datetime', 'created_at'])
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
@@ -160,7 +172,7 @@ class TransactionController
         }
         $transactionLogs = Db::table('transaction_logs')->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)
-            ->select('coin','bonus','rate','datetime','created_at')
+            ->select('coin', 'bonus', 'rate', 'datetime', 'created_at')
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());

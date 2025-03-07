@@ -2,6 +2,8 @@
 
 namespace app\services;
 
+use app\enums\UserIsReal;
+use app\enums\UserLevel;
 use app\model\User;
 
 class UserUpgradeService
@@ -22,12 +24,8 @@ class UserUpgradeService
         return $this;
     }
 
-    public function updateLevel(): bool
+    public function updateLevel()
     {
-        if($this->user->level==0){
-            return false;
-
-        }
 
         if (!$this->directRealChildIds) {
             $this->findRealDirectChildIds();
@@ -39,7 +37,8 @@ class UserUpgradeService
             ->where('level', '>=', $this->user->level)
             ->whereIn('id', $this->directRealChildIds)
             ->select(['id', 'is_real', 'level'])
-            ->get()->toArray();
+            ->get()
+            ->toArray();
         if (count($users) < UserUpgradeService::LEVEL) {
             return false;
         }
@@ -50,10 +49,11 @@ class UserUpgradeService
 
     }
 
-    private function findRealDirectChildIds(): void
+    private function findRealDirectChildIds()
     {
         if (!$this->directRealChildIds) {
-            $this->directRealChildIds = User::query()->where(['pid' => $this->user->id, 'is_real' => 1])->pluck('id')->toArray();
+
+            $this->directRealChildIds = User::query()->where(['pid' => $this->user->id, 'is_real' => UserIsReal::NORMAL->value])->pluck('id')->toArray();
         }
     }
 

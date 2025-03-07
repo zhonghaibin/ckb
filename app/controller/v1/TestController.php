@@ -7,16 +7,26 @@ use app\enums\LangTypes;
 use app\model\Assets;
 use app\model\User;
 use app\services\CkbBonusService;
+use app\services\UserUpgradeService;
 use support\Db;
 use support\Log;
-use support\Redis;
+use Webman\RedisQueue\Redis;
 use support\Request;
-
+use Webman\Event\Event;
+use Webman\RedisQueue\Client;
 
 class TestController
 {
     public function index(Request $request)
     {
+
+        Redis::send('user-upgrade-job', ['user_id'=>2]);
+
+//        $user = User::find(1);
+//        $dd = new UserUpgradeService();
+//
+//        $ddd = $dd->setUser($user)->updateLevel();
+//        return json_success($ddd);
 
 //        $this->setData();
 //        $this->createUser();
