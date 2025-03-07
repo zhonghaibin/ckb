@@ -3,6 +3,14 @@
 namespace app\controller\v1;
 
 
+use app\enums\AssetsLogTypes;
+use app\enums\CoinTypes;
+use app\enums\ExchangeStatus;
+use app\model\Assets;
+use app\model\AssetsLog;
+use app\model\Exchange;
+use app\model\User;
+use Carbon\Carbon;
 use support\Db;
 use support\Request;
 
@@ -75,7 +83,86 @@ class AssetsController
     //兑换
     public function exchange(Request $request)
     {
+        $from_coin = $request->post('from_coin');
+        $to_coin = $request->post('to_coin');
+        $money = $request->post('money');
+        $rate = $request->post('rate', 0);
+        $fee = $request->post('fee', 0);
 
+        if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
+            return json_fail('兑换币种错误');
+        }
+
+        if (!in_array($to_coin, [CoinTypes::USDT->value])) {
+            return json_fail('转换币种错误');
+        }
+
+        if ($money <= 0) {
+            return json_fail('请输入兑换数量');
+        }
+
+
+        Db::beginTransaction();
+        try {
+            $user = User::query()->where(['id' => $request->userId])->firstOrFail();
+            $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
+            if ($from_assets->money < $money) {
+                throw new \Exception('钱包金额不足');
+            }
+            $to_money = $money;
+            if ($rate != 0) {
+                $to_money = round($money * $rate, 6);
+            }
+
+            $exchange = new Exchange();
+            $exchange->user_id = $user->id;
+            $exchange->identity = $user->identity;
+            $exchange->from_coin = $from_coin;
+            $exchange->to_coin = $to_coin;
+            $exchange->rate = $rate;
+            $exchange->from_money = $money;
+            $exchange->to_money = $to_money;
+            $exchange->fee = $fee;
+            $exchange->status = ExchangeStatus::SUCCESS;
+            $exchange->datetime = Carbon::now()->timestamp;
+            $exchange->save();
+
+
+            $from_assets->decrement('money', $money);
+
+            $from_assets_log = new AssetsLog;
+            $from_assets_log->user_id = $user->id;
+            $from_assets_log->coin = $from_coin;
+            $from_assets_log->identity = $user->identity;
+            $from_assets_log->money = -$money;
+            $from_assets_log->rate = $rate;
+            $from_assets_log->type = AssetsLogTypes::EXCHANGE;
+            $from_assets_log->remark = AssetsLogTypes::EXCHANGE->label();
+            $from_assets_log->datetime = Carbon::now()->timestamp;
+            $from_assets_log->exchange_id = $exchange->id;
+            $from_assets_log->save();
+
+
+            $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->firstOrFail();
+            $to_assets->increment('money', $money);
+            $to_assets_log = new AssetsLog;
+            $to_assets_log->user_id = $user->id;
+            $to_assets_log->coin = $to_coin;
+            $to_assets_log->identity = $user->identity;
+            $to_assets_log->money = $to_money;
+            $to_assets_log->rate = $rate;
+            $to_assets_log->type = AssetsLogTypes::EXCHANGE;
+            $to_assets_log->remark = AssetsLogTypes::EXCHANGE->label();
+            $to_assets_log->datetime = Carbon::now()->timestamp;
+            $to_assets_log->exchange_id = $exchange->id;
+            $to_assets_log->save();
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return json_fail($e->getMessage());
+        }
+        return json_success();
 
     }
 

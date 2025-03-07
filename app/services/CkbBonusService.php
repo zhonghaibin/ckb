@@ -55,7 +55,7 @@ class CkbBonusService
                 try {
                     $month_day = get_time_in_month($transaction->datetime);
                     $rate = $this->rates[$transaction->day] ?? 0;
-                    $bonus = round($transaction->money * $rate / $month_day, 2);
+                    $bonus = round($transaction->money * $rate / $month_day, 6);
 
 
 
@@ -158,7 +158,7 @@ class CkbBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $parent_bonus = round($this->direct_rate * $bonus, 2);
+            $parent_bonus = round($this->direct_rate * $bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
@@ -191,7 +191,7 @@ class CkbBonusService
             $user_level_diff_rate = $this->level_diff_rates[$user_level] ?? 0;
             $parent_level_diff_rate = $this->level_diff_rates[$parent->level] ?? 0;
             $level_diff_rate = $parent_level_diff_rate - $user_level_diff_rate;
-            $parent_bonus = round($level_diff_rate * $bonus, 2);
+            $parent_bonus = round($level_diff_rate * $bonus, 6);
 
             DB::table('assets')
                 ->where('user_id', $parent->id)
@@ -248,7 +248,7 @@ class CkbBonusService
 
         if (!empty($userIds)) {
             $rate = $this->same_level_rate;
-            $parent_bonus = round($bonus * $rate, 2);
+            $parent_bonus = round($bonus * $rate, 6);
             foreach ($userIds as $user_id => $identity) {
                 DB::table('assets')
                     ->where('user_id', $user_id)
