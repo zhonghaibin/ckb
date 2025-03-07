@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 06/03/2025 17:57:58
+ Date: 07/03/2025 14:36:53
 */
 
 SET NAMES utf8mb4;
@@ -57,13 +57,13 @@ CREATE TABLE `assets`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `money` decimal(15, 6) UNSIGNED NULL DEFAULT 0.000000 COMMENT '余额',
+  `amount` decimal(15, 6) UNSIGNED NULL DEFAULT 0.000000 COMMENT '余额',
   `bonus` decimal(15, 6) UNSIGNED NULL DEFAULT 0.000000 COMMENT '收益金额',
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE,
-  INDEX `inx_Fields`(`id`, `user_id`, `coin`, `money`, `bonus`) USING BTREE,
+  INDEX `inx_Fields`(`id`, `user_id`, `coin`, `amount`, `bonus`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家钱包' ROW_FORMAT = DYNAMIC;
 
@@ -75,11 +75,13 @@ CREATE TABLE `assets_logs`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NULL DEFAULT NULL,
   `coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `money` decimal(10, 6) NULL DEFAULT 0.000000,
-  `rate` decimal(10, 2) NULL DEFAULT 0.00,
+  `amount` decimal(10, 6) NULL DEFAULT 0.000000,
+  `rate` decimal(10, 6) NULL DEFAULT 0.000000,
   `transaction_id` int(11) NULL DEFAULT 0,
   `transaction_log_id` int(11) NULL DEFAULT 0,
+  `exchange_id` int(11) NULL DEFAULT 0,
+  `recharge_id` int(11) NULL DEFAULT 0,
+  `withdraw_id` int(11) NULL DEFAULT 0,
   `type` tinyint(1) NULL DEFAULT 0,
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
@@ -87,7 +89,7 @@ CREATE TABLE `assets_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`id`, `user_id`, `coin`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for banners
@@ -102,21 +104,41 @@ CREATE TABLE `banners`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Table structure for exchanges
+-- ----------------------------
+DROP TABLE IF EXISTS `exchanges`;
+CREATE TABLE `exchanges`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) UNSIGNED NULL DEFAULT NULL,
+  `from_coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `to_coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `from_amount` decimal(10, 6) NULL DEFAULT 0.000000,
+  `to_amount` decimal(10, 6) NULL DEFAULT 0.000000 COMMENT '兑换后的金额',
+  `rate` decimal(10, 6) NULL DEFAULT 0.000000 COMMENT '兑换业务',
+  `fee` decimal(10, 6) NULL DEFAULT 0.000000 COMMENT '手续费',
+  `status` tinyint(1) NULL DEFAULT 0 COMMENT '1兑换成功',
+  `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
+  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `user_id`(`id`, `user_id`, `from_coin`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '兑换' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
 -- Table structure for login_logs
 -- ----------------------------
 DROP TABLE IF EXISTS `login_logs`;
 CREATE TABLE `login_logs`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NULL DEFAULT NULL,
-  `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `user_agent` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
   `ip` char(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`, `identity`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
+  INDEX `user_id`(`user_id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for notices
@@ -154,15 +176,15 @@ CREATE TABLE `recharges`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL,
   `coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `money` decimal(10, 2) NULL DEFAULT NULL,
+  `amount` decimal(10, 6) NULL DEFAULT NULL,
   `remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 0,
+  `fee` decimal(10, 6) NULL DEFAULT 0.000000 COMMENT '手续费',
   `datetime` int(11) NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家充值记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家充值记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for roles
@@ -203,17 +225,16 @@ DROP TABLE IF EXISTS `transaction_logs`;
 CREATE TABLE `transaction_logs`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL,
-  `identity` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `transaction_id` int(11) NULL DEFAULT NULL,
   `coin` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `bonus` decimal(10, 6) NULL DEFAULT 0.000000,
-  `rate` decimal(10, 2) NULL DEFAULT NULL,
+  `rate` decimal(10, 6) NULL DEFAULT NULL,
   `transaction_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`, `identity`) USING BTREE
+  INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -223,9 +244,8 @@ DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL,
-  `identity` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `coin` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `money` decimal(10, 6) NULL DEFAULT 0.000000,
+  `amount` decimal(10, 6) NULL DEFAULT 0.000000,
   `bonus` decimal(10, 6) NULL DEFAULT 0.000000,
   `day` int(11) NULL DEFAULT 0 COMMENT '总天数',
   `run_day` int(11) NULL DEFAULT 0 COMMENT '当前执行天数',
@@ -269,14 +289,16 @@ CREATE TABLE `uploads`  (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `pid` int(11) NOT NULL DEFAULT 0,
   `is_real` tinyint(1) NULL DEFAULT 0 COMMENT '1真实用户',
-  `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `status` tinyint(1) NULL DEFAULT 0 COMMENT '-1禁用,0正常,1异常',
   `level` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `lang` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '1',
+  `last_login_ip` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '最后登录IP',
+  `last_login_at` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
@@ -293,13 +315,13 @@ CREATE TABLE `withdraws`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NULL DEFAULT NULL,
   `coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `money` decimal(15, 6) UNSIGNED NULL DEFAULT NULL,
+  `amount` decimal(15, 6) UNSIGNED NULL DEFAULT NULL,
+  `fee` decimal(10, 6) NULL DEFAULT 0.000000 COMMENT '手续费',
   `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
   `status` tinyint(4) NULL DEFAULT 0,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家提现表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家提现表' ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
