@@ -62,7 +62,7 @@ class SolBonusService
                     $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
                     $rate = round(($randomRate1 + $randomRate2) / 2, 6);
                     // 计算 bonus
-                    $bonus = round($transaction->money * $rate / $month_day, 6);
+                    $bonus = round($transaction->amount * $rate / $month_day, 6);
 
 
                     DB::table('transactions')->where('id', $transaction->id)->update([
@@ -74,7 +74,6 @@ class SolBonusService
                     // 创建交易日志
                     $transactionLogId = DB::table('transaction_logs')->insertGetId([
                         'user_id' => $transaction->user_id,
-                        'identity' => $transaction->identity,
                         'transaction_id' => $transaction->id,
                         'coin' => $transaction->coin,
                         'rate' => $rate,
@@ -90,7 +89,7 @@ class SolBonusService
                         ->where('user_id', $transaction->user_id)
                         ->where('coin', $transaction->coin)
                         ->update([
-                            'money' => DB::raw('money + ' . $bonus),
+                            'amount' => DB::raw('amount + ' . $bonus),
                             'bonus' => DB::raw('bonus + ' . $bonus),
                         ]);
 
@@ -98,8 +97,7 @@ class SolBonusService
                     DB::table('assets_logs')->insert([
                         'user_id' => $transaction->user_id,
                         'coin' => $transaction->coin,
-                        'identity' => $transaction->identity,
-                        'money' => $bonus,
+                        'amount' => $bonus,
                         'rate' => $rate,
                         'transaction_id' => $transaction->id,
                         'transaction_log_id' => $transactionLogId,
@@ -116,12 +114,11 @@ class SolBonusService
                         DB::table('assets')
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
-                            ->increment('money', $transaction->money);
+                            ->increment('amount', $transaction->amount);
                         DB::table('assets_logs')->insert([
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
-                            'identity' => $transaction->identity,
-                            'money' => $transaction->money,
+                            'amount' => $transaction->amount,
                             'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,
@@ -169,7 +166,7 @@ class SolBonusService
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
                 ->update([
-                    'money' => DB::raw('money + ' . $parent_bonus),
+                    'amount' => DB::raw('amount + ' . $parent_bonus),
                     'bonus' => DB::raw('bonus + ' . $parent_bonus),
                 ]);
 
@@ -177,8 +174,7 @@ class SolBonusService
             DB::table('assets_logs')->insert([
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
-                'identity' => $parent->identity,
-                'money' => $parent_bonus,
+                'amount' => $parent_bonus,
                 'rate' => $this->direct_rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -203,7 +199,7 @@ class SolBonusService
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
                 ->update([
-                    'money' => DB::raw('money + ' . $parent_bonus),
+                    'amount' => DB::raw('amount + ' . $parent_bonus),
                     'bonus' => DB::raw('bonus + ' . $parent_bonus),
                 ]);
 
@@ -211,8 +207,7 @@ class SolBonusService
             DB::table('assets_logs')->insert([
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
-                'identity' => $parent->identity,
-                'money' => $parent_bonus,
+                'amount' => $parent_bonus,
                 'rate' => $level_diff_rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -247,7 +242,7 @@ class SolBonusService
             if ($parent->level == 9) {
                 $hasSameLevelSub = DB::table('users')->where('pid', $parent->id)->where('level', 9)->exists();
                 if ($hasSameLevelSub) {
-                    $userIds[$parent->id] = $parent->identity;
+                    $userIds[] = $parent->id;
                 }
             }
             $pid = $parent->pid;
@@ -256,20 +251,19 @@ class SolBonusService
         if (!empty($userIds)) {
             $rate = $this->same_level_rate;
             $parent_bonus = round($bonus * $rate, 6);
-            foreach ($userIds as $user_id => $identity) {
+            foreach ($userIds as $user_id) {
                 DB::table('assets')
                     ->where('user_id', $user_id)
                     ->where('coin', $transaction->coin)
                     ->update([
-                        'money' => DB::raw('money + ' . $parent_bonus),
+                        'amount' => DB::raw('amount + ' . $parent_bonus),
                         'bonus' => DB::raw('bonus + ' . $parent_bonus),
                     ]);
 
                 DB::table('assets_logs')->insert([
                     'user_id' => $user_id,
-                    'identity' => $identity,
                     'coin' => $transaction->coin,
-                    'money' => $parent_bonus,
+                    'amount' => $parent_bonus,
                     'rate' => $this->same_level_rate,
                     'transaction_id' => $transaction->id,
                     'transaction_log_id' => $transactionLogId,

@@ -48,23 +48,32 @@ class AuthController
         if (empty($identity)) {
             return json_fail('用户凭证不能为空');
         }
-        $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
+        Db::beginTransaction();
+        try {
+            $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
 
-        if (empty($user)) {
-            return json_fail('凭证错误,登录失败');
+            if (empty($user)) {
+                return json_fail('凭证错误,登录失败');
+            }
+            $token = JwtUtil::generateToken($user->id);
+
+            //登录日志
+            $login_logs = new LoginLog;
+            $login_logs->user_id = $user->id;
+            $login_logs->ip = $request->getRealIp();
+            $login_logs->user_agent = $request->header('User-Agent');
+            $login_logs->datetime = Carbon::now()->timestamp;
+            $login_logs->save();
+
+            $user->last_login_ip = $request->getRealIp();
+            $user->last_login_at = Carbon::now();
+            $user->save();
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return json_fail($e->getMessage());
         }
-        $token = JwtUtil::generateToken($user->id);
-
-        //登录日志
-        $login_logs = new LoginLog;
-        $login_logs->user_id = $user->id;
-        $login_logs->identity = $user->identity;
-        $login_logs->ip = $request->getRealIp();
-        $login_logs->user_agent = $request->header('User-Agent');
-        $login_logs->datetime = Carbon::now()->timestamp;
-        $login_logs->save();
-
-
         return json_success([
             'token' => $token,
         ], '登录成功');

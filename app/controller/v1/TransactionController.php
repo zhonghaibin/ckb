@@ -24,14 +24,14 @@ class TransactionController
     public function ckb(Request $request)
     {
         $coin = $request->post('coin', CoinTypes::ONE);
-        $money = $request->post('money', 500);
+        $amount = $request->post('amount', 500);
         $day = $request->post('day', 15);
 
         if (!in_array($coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
             return json_fail('币种错误');
         }
 
-        if ($money < 500) {
+        if ($amount < 500) {
             return json_fail('最低500起');
         }
 
@@ -44,15 +44,14 @@ class TransactionController
 
         try {
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            if ($assets->money < $money) {
+            if ($assets->amount < $amount) {
                 throw new \Exception('钱包金额不足');
             }
-            $assets->decrement('money', $money);
+            $assets->decrement('amount', $amount);
             $transaction = new Transaction();
             $transaction->user_id = $user->id;
-            $transaction->identity = $user->identity;
             $transaction->coin = $coin;
-            $transaction->money = $money;
+            $transaction->amount = $amount;
             $transaction->day = $day;
             $transaction->datetime = Carbon::now()->timestamp;
             $transaction->transaction_type = TransactionTypes::CKB;
@@ -62,8 +61,7 @@ class TransactionController
             $assets_log = new AssetsLog;
             $assets_log->user_id = $transaction->user_id;
             $assets_log->coin = $transaction->coin;
-            $assets_log->identity = $transaction->identity;
-            $assets_log->money = -$money;
+            $assets_log->amount = -$amount;
             $assets_log->transaction_id = $transaction->id;
             $assets_log->type = AssetsLogTypes::EXPENSE;
             $assets_log->remark = AssetsLogTypes::EXPENSE->label();
@@ -88,10 +86,10 @@ class TransactionController
     public function sol(Request $request)
     {
         $coin = CoinTypes::USDT;
-        $money = $request->post('money', 500);
+        $amount = $request->post('amount', 500);
         $day = $request->post('day', 1);
 
-        if ($money < 500) {
+        if ($amount < 500) {
             return json_fail('最低500起');
         }
 
@@ -104,15 +102,14 @@ class TransactionController
 
         try {
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            if ($assets->money < $money) {
+            if ($assets->amount < $amount) {
                 throw new \Exception('钱包金额不足');
             }
-            $assets->decrement('money', $money);
+            $assets->decrement('amount', $amount);
             $transaction = new Transaction();
             $transaction->user_id = $user->id;
-            $transaction->identity = $user->identity;
             $transaction->coin = $coin;
-            $transaction->money = $money;
+            $transaction->amount = $amount;
             $transaction->day = $day;
             $transaction->datetime = Carbon::now()->timestamp;
             $transaction->transaction_type = TransactionTypes::SOL;
@@ -122,8 +119,7 @@ class TransactionController
             $assets_log = new AssetsLog;
             $assets_log->user_id = $transaction->user_id;
             $assets_log->coin = $transaction->coin;
-            $assets_log->identity = $transaction->identity;
-            $assets_log->money = -$money;
+            $assets_log->amount = -$amount;
             $assets_log->transaction_id = $transaction->id;
             $assets_log->type = AssetsLogTypes::EXPENSE;
             $assets_log->remark = AssetsLogTypes::EXPENSE->label();
@@ -154,7 +150,7 @@ class TransactionController
         }
         $transactions = Db::table('transactions')->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)
-            ->select(['coin', 'money', 'bonus', 'day', 'status', 'datetime', 'created_at'])
+            ->select(['coin', 'amount', 'bonus', 'day', 'status', 'datetime', 'created_at'])
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());

@@ -53,7 +53,7 @@ class AssetsController
     public function rechargeList(Request $request)
     {
         $recharges = Db::table('recharges')->where('user_id', $request->userId)
-            ->select(['identity', 'money', 'created_at'])
+            ->select([ 'amount', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
             ->paginate(10)
@@ -71,7 +71,7 @@ class AssetsController
     public function withdrawList(Request $request)
     {
         $recharges = Db::table('withdraws')->where('user_id', $request->userId)
-            ->select(['identity', 'money', 'created_at'])
+            ->select([ 'amount', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
             ->paginate(10)
@@ -85,7 +85,7 @@ class AssetsController
     {
         $from_coin = $request->post('from_coin');
         $to_coin = $request->post('to_coin');
-        $money = $request->post('money');
+        $amount = $request->post('amount');
         $rate = $request->post('rate', 0);
         $fee = $request->post('fee', 0);
 
@@ -97,7 +97,7 @@ class AssetsController
             return json_fail('转换币种错误');
         }
 
-        if ($money <= 0) {
+        if ($amount <= 0) {
             return json_fail('请输入兑换数量');
         }
 
@@ -106,35 +106,33 @@ class AssetsController
         try {
             $user = User::query()->where(['id' => $request->userId])->firstOrFail();
             $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
-            if ($from_assets->money < $money) {
+            if ($from_assets->amount < $amount) {
                 throw new \Exception('钱包金额不足');
             }
-            $to_money = $money;
+            $to_amount = $amount;
             if ($rate != 0) {
-                $to_money = round($money * $rate, 6);
+                $to_amount = round($amount * $rate, 6);
             }
 
             $exchange = new Exchange();
             $exchange->user_id = $user->id;
-            $exchange->identity = $user->identity;
             $exchange->from_coin = $from_coin;
             $exchange->to_coin = $to_coin;
             $exchange->rate = $rate;
-            $exchange->from_money = $money;
-            $exchange->to_money = $to_money;
+            $exchange->from_amount = $amount;
+            $exchange->to_amount = $to_amount;
             $exchange->fee = $fee;
             $exchange->status = ExchangeStatus::SUCCESS;
             $exchange->datetime = Carbon::now()->timestamp;
             $exchange->save();
 
 
-            $from_assets->decrement('money', $money);
+            $from_assets->decrement('amount', $amount);
 
             $from_assets_log = new AssetsLog;
             $from_assets_log->user_id = $user->id;
             $from_assets_log->coin = $from_coin;
-            $from_assets_log->identity = $user->identity;
-            $from_assets_log->money = -$money;
+            $from_assets_log->amount = -$amount;
             $from_assets_log->rate = $rate;
             $from_assets_log->type = AssetsLogTypes::EXCHANGE;
             $from_assets_log->remark = AssetsLogTypes::EXCHANGE->label();
@@ -144,12 +142,11 @@ class AssetsController
 
 
             $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->firstOrFail();
-            $to_assets->increment('money', $money);
+            $to_assets->increment('amount', $amount);
             $to_assets_log = new AssetsLog;
             $to_assets_log->user_id = $user->id;
             $to_assets_log->coin = $to_coin;
-            $to_assets_log->identity = $user->identity;
-            $to_assets_log->money = $to_money;
+            $to_assets_log->amount = $to_amount;
             $to_assets_log->rate = $rate;
             $to_assets_log->type = AssetsLogTypes::EXCHANGE;
             $to_assets_log->remark = AssetsLogTypes::EXCHANGE->label();

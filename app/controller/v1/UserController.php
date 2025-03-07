@@ -28,7 +28,7 @@ class UserController
 
         $assets = Db::table('assets')
             ->where('user_id', $userId)
-            ->select('user_id', 'coin', 'money', 'bonus')
+            ->select('user_id', 'coin', 'amount', 'bonus')
             ->first();
 
 
@@ -40,7 +40,7 @@ class UserController
         $direct_bonus = Db::table('assets_logs')
             ->where('type', AssetsLogTypes::DIRECTBONUS)
             ->where('user_id', $userId)
-            ->sum('money');
+            ->sum('amount');
 
 
         $data = [
@@ -83,15 +83,15 @@ class UserController
         $realTeamCount = get_team_count($request->userId, true);
 
         $team_ids = get_team_user_ids($request->userId);
-        $team_money = Db::table('recharges')
+        $team_amount = Db::table('recharges')
             ->whereIn('user_id', $team_ids)
-            ->sum('money');
+            ->sum('amount');
 
         return json_success([
             [
                 'total_team_count' => $totalTeamCount,
                 'real_team_count' => $realTeamCount,
-                'team_money' => $team_money
+                'team_amount' => $team_amount
             ]
         ]);
     }

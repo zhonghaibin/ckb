@@ -55,7 +55,7 @@ class CkbBonusService
                 try {
                     $month_day = get_time_in_month($transaction->datetime);
                     $rate = $this->rates[$transaction->day] ?? 0;
-                    $bonus = round($transaction->money * $rate / $month_day, 6);
+                    $bonus = round($transaction->amount * $rate / $month_day, 6);
 
 
 
@@ -68,7 +68,6 @@ class CkbBonusService
                     // 创建交易日志
                     $transactionLogId = DB::table('transaction_logs')->insertGetId([
                         'user_id' => $transaction->user_id,
-                        'identity' => $transaction->identity,
                         'transaction_id' => $transaction->id,
                         'coin' => $transaction->coin,
                         'rate' => $rate,
@@ -84,7 +83,7 @@ class CkbBonusService
                         ->where('user_id', $transaction->user_id)
                         ->where('coin', $transaction->coin)
                         ->update([
-                            'money' => DB::raw('money + ' . $bonus),
+                            'amount' => DB::raw('amount + ' . $bonus),
                             'bonus' => DB::raw('bonus + ' . $bonus),
                         ]);
 
@@ -92,8 +91,7 @@ class CkbBonusService
                     DB::table('assets_logs')->insert([
                         'user_id' => $transaction->user_id,
                         'coin' => $transaction->coin,
-                        'identity' => $transaction->identity,
-                        'money' => $bonus,
+                        'amount' => $bonus,
                         'rate' => $rate,
                         'transaction_id' => $transaction->id,
                         'transaction_log_id' => $transactionLogId,
@@ -111,12 +109,11 @@ class CkbBonusService
                         DB::table('assets')
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
-                            ->increment('money', $transaction->money);
+                            ->increment('amount', $transaction->amount);
                         DB::table('assets_logs')->insert([
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
-                            'identity' => $transaction->identity,
-                            'money' => $transaction->money,
+                            'amount' => $transaction->amount,
                             'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,
@@ -163,7 +160,7 @@ class CkbBonusService
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
                 ->update([
-                    'money' => DB::raw('money + ' . $parent_bonus),
+                    'amount' => DB::raw('amount + ' . $parent_bonus),
                     'bonus' => DB::raw('bonus + ' . $parent_bonus),
                 ]);
 
@@ -171,8 +168,7 @@ class CkbBonusService
             DB::table('assets_logs')->insert([
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
-                'identity' => $parent->identity,
-                'money' => $parent_bonus,
+                'amount' => $parent_bonus,
                 'rate' => $this->direct_rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -197,15 +193,14 @@ class CkbBonusService
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
                 ->update([
-                    'money' => DB::raw('money + ' . $parent_bonus),
+                    'amount' => DB::raw('amount + ' . $parent_bonus),
                     'bonus' => DB::raw('bonus + ' . $parent_bonus),
                 ]);
 
             DB::table('assets_logs')->insert([
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
-                'identity' => $parent->identity,
-                'money' => $parent_bonus,
+                'amount' => $parent_bonus,
                 'rate' => $level_diff_rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -240,7 +235,7 @@ class CkbBonusService
             if ($parent->level == 9) {
                 $hasSameLevelSub = DB::table('users')->where('pid', $parent->id)->where('level', 9)->exists();
                 if ($hasSameLevelSub) {
-                    $userIds[$parent->id] = $parent->identity;
+                    $userIds[] =$parent->id;
                 }
             }
             $pid = $parent->pid;
@@ -249,20 +244,19 @@ class CkbBonusService
         if (!empty($userIds)) {
             $rate = $this->same_level_rate;
             $parent_bonus = round($bonus * $rate, 6);
-            foreach ($userIds as $user_id => $identity) {
+            foreach ($userIds as $user_id) {
                 DB::table('assets')
                     ->where('user_id', $user_id)
                     ->where('coin', $transaction->coin)
                     ->update([
-                        'money' => DB::raw('money + ' . $parent_bonus),
+                        'amount' => DB::raw('amount + ' . $parent_bonus),
                         'bonus' => DB::raw('bonus + ' . $parent_bonus),
                     ]);
 
                 DB::table('assets_logs')->insert([
                     'user_id' => $user_id,
-                    'identity' => $identity,
                     'coin' => $transaction->coin,
-                    'money' => $parent_bonus,
+                    'amount' => $parent_bonus,
                     'rate' => $this->same_level_rate,
                     'transaction_id' => $transaction->id,
                     'transaction_log_id' => $transactionLogId,

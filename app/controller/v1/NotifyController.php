@@ -2,16 +2,18 @@
 
 namespace app\controller\v1;
 
+use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
+use app\enums\RechargeStatus;
 use app\enums\UserStatus;
 use app\model\Assets;
+use app\model\AssetsLog;
+use app\model\Recharge;
 use app\model\User;
 use Carbon\Carbon;
 use support\Request;
 use support\Db;
-use app\utils\JwtUtil;
-use app\utils\AesUtil;
 
 class NotifyController
 {
@@ -47,9 +49,9 @@ class NotifyController
                 DB::rollBack();
                 return json_fail($e->getMessage());
             }
-            $token = JwtUtil::generateToken($user->id);
 
-            return json_success($token);
+
+            return json_success('ok');
         }
 
         return json_fail('出错了');
@@ -57,11 +59,47 @@ class NotifyController
     }
 
 
-    public function recharge(){
+    public function recharge(Request $request)
+    {
+        $amount = 1;
+        $identity = 1;
+        $coin = CoinTypes::USDT;
+        Db::beginTransaction();
+        try {
+            $user = User::query()->where('identity', $identity)->first();
+            $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
+            $assets->increment('amount', $amount);
+
+            $recharge = new Recharge();
+            $recharge->user_id = $user->id;
+            $recharge->coin = $coin;
+            $recharge->amount = $amount;
+            $recharge->remark = '';
+            $recharge->status = RechargeStatus::SUCCESS;
+            $recharge->fee = 0;
+            $recharge->datetime = Carbon::now()->timestamp;
+            $recharge->save();
+
+            $assets_log = new AssetsLog;
+            $assets_log->user_id = $user->id;
+            $assets_log->coin = $coin;
+            $assets_log->amount = $amount;
+            $assets_log->type = AssetsLogTypes::RECHARGE;
+            $assets_log->remark = AssetsLogTypes::RECHARGE->label();
+            $assets_log->datetime = Carbon::now()->timestamp;
+            $assets_log->recharge_id = $recharge->id;
+            $assets_log->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return json_fail($e->getMessage());
+        }
+        return json_success();
 
     }
 
-    public function withdraw(){
+    public function withdraw(Request $request)
+    {
 
     }
 
