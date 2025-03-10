@@ -14,27 +14,38 @@ use support\Log;
 class SolBonusService
 {
     protected array $rates = [
-        1 => [0.06, 0.08],
-        15 => [0.08, 0.1],
-        30 => [0.1, 0.13],
+        1 => [6, 8],
+        15 => [8, 10],
+        30 => [10, 13],
     ];
 
-    protected float $direct_rate = 0.2;
+    protected float $direct_rate = 20;
 
     protected array $level_diff_rates = [
         0 => 0,
-        1 => 0.05,
-        2 => 0.1,
-        3 => 0.15,
-        4 => 0.20,
-        5 => 0.25,
-        6 => 0.30,
-        7 => 0.35,
-        8 => 0.40,
-        9 => 0.50,
+        1 => 5,
+        2 => 10,
+        3 => 15,
+        4 => 20,
+        5 => 25,
+        6 => 30,
+        7 => 35,
+        8 => 40,
+        9 => 50,
     ];
 
-    protected float $same_level_rate = 0.05;
+    protected float $same_level_rate = 5;
+
+    public function __construct()
+    {
+        $value = Db::table('options')->where('name', 'config')->value('value');
+        $value = json_decode($value, true);
+        $params = $value['sol'];
+        $this->rates = $params['staticRate'];
+        $this->direct_rate = $params['directRate'];
+        $this->level_diff_rates = $params['levelDiffRate'];
+        $this->same_level_rate = $params['sameLevelRate'];
+    }
 
     public function run()
     {
@@ -60,7 +71,8 @@ class SolBonusService
                     $max = $rateRange[1];
                     $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
                     $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
-                    $rate = round(($randomRate1 + $randomRate2) / 2, 6);
+
+                    $rate = round(($randomRate1 + $randomRate2) / 2, 2) / 100;
                     // 计算 bonus
                     $bonus = round($transaction->amount * $rate / $month_day, 6);
 
@@ -161,7 +173,8 @@ class SolBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $parent_bonus = round($this->direct_rate * $bonus, 6);
+            $rate = $this->direct_rate / 100;
+            $parent_bonus = round($rate * $bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
@@ -175,7 +188,7 @@ class SolBonusService
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
                 'amount' => $parent_bonus,
-                'rate' => $this->direct_rate,
+                'rate' => $rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
                 'type' => AssetsLogTypes::DIRECTBONUS,
@@ -190,8 +203,8 @@ class SolBonusService
     private function levelDiffBonus($parent, $bonus, $transaction, $transactionLogId, $user_level)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $user_level_diff_rate = $this->level_diff_rates[$user_level] ?? 0;
-            $parent_level_diff_rate = $this->level_diff_rates[$parent->level] ?? 0;
+            $user_level_diff_rate = ($this->level_diff_rates[$user_level] ?? 0) / 100;
+            $parent_level_diff_rate = ($this->level_diff_rates[$parent->level] ?? 0) / 100;
             $level_diff_rate = $parent_level_diff_rate - $user_level_diff_rate;
             $parent_bonus = round($level_diff_rate * $bonus, 6);
 
@@ -249,7 +262,7 @@ class SolBonusService
         }
 
         if (!empty($userIds)) {
-            $rate = $this->same_level_rate;
+            $rate = $this->same_level_rate / 100;
             $parent_bonus = round($bonus * $rate, 6);
             foreach ($userIds as $user_id) {
                 DB::table('assets')
@@ -264,7 +277,7 @@ class SolBonusService
                     'user_id' => $user_id,
                     'coin' => $transaction->coin,
                     'amount' => $parent_bonus,
-                    'rate' => $this->same_level_rate,
+                    'rate' => $rate,
                     'transaction_id' => $transaction->id,
                     'transaction_log_id' => $transactionLogId,
                     'type' => AssetsLogTypes::SAMELEVELBONUS,

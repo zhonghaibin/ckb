@@ -2,44 +2,44 @@
   "base_info":{"web_url":""},
   "ckb": {
     "staticRate": [
-      {"day": "15","rate": "0.08"},
-      {"day": "30","rate": "0.12"},
-      {"day": "60","rate": "0.15"}
+      {"day": "15","rate": "8"},
+      {"day": "30","rate": "12"},
+      {"day": "60","rate": "15"}
     ],
-    "directRate": "0.2",
+    "directRate": "20",
     "levelDiffRate": [
       {"level": "Vip0","rate": "0"},
-      {"level": "Vip1","rate": "0.02"},
-      {"level": "Vip2","rate": "0.04"},
-      {"level": "Vip3","rate": "0.06"},
-      {"level": "Vip4","rate": "0.08"},
-      {"level": "Vip5","rate": "0.10"},
-      {"level": "Vip6","rate": "0.15"},
-      {"level": "Vip7","rate": "0.20"},
-      {"level": "Vip8","rate": "0.25"},
-      {"level": "Vip9","rate": "0.30"}
+      {"level": "Vip1","rate": "2"},
+      {"level": "Vip2","rate": "4"},
+      {"level": "Vip3","rate": "6"},
+      {"level": "Vip4","rate": "8"},
+      {"level": "Vip5","rate": "10"},
+      {"level": "Vip6","rate": "15"},
+      {"level": "Vip7","rate": "20"},
+      {"level": "Vip8","rate": "25"},
+      {"level": "Vip9","rate": "30"}
     ],
     "sameLevelRate": "0.05"
   },
   "sol": {
     "staticRate": [
-      {"day": "1","rate": {"min": "0.06","max": "0.08"}},
-      {"day": "15","rate": {"min": "0.08","max": "0.1"}},
-      {"day": "30","rate": {"min": "0.1","max": "0.13"}}
+      {"day": "1","rate": {"min": "6","max": "8"}},
+      {"day": "15","rate": {"min": "8","max": "10"}},
+      {"day": "30","rate": {"min": "10","max": "13"}}
     ],
     "directRate": "0.2",
     "levelDiffRate": [
       {"level": "Vip0","rate": "0"},
-      {"level": "Vip1","rate": "0.02"},
-      {"level": "Vip2","rate": "0.04"},
-      {"level": "Vip3","rate": "0.06"},
-      {"level": "Vip4","rate": "0.08"},
-      {"level": "Vip5","rate": "0.10"},
-      {"level": "Vip6","rate": "0.15"},
-      {"level": "Vip7","rate": "0.20"},
-      {"level": "Vip8","rate": "0.25"},
-      {"level": "Vip9","rate": "0.30"}
+      {"level": "Vip1","rate": "5"},
+      {"level": "Vip2","rate": "10"},
+      {"level": "Vip3","rate": "15"},
+      {"level": "Vip4","rate": "20"},
+      {"level": "Vip5","rate": "25"},
+      {"level": "Vip6","rate": "30"},
+      {"level": "Vip7","rate": "35"},
+      {"level": "Vip8","rate": "40"},
+      {"level": "Vip9","rate": "50"}
     ],
-    "sameLevelRate": "0.05"
+    "sameLevelRate": "5"
   }
 }

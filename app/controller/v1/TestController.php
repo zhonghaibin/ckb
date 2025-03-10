@@ -21,6 +21,18 @@ class TestController
 {
     public function index(Request $request)
     {
+        $min = 6;
+        $max = 8;
+
+// 生成符合范围的随机数
+        $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
+        $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
+
+// 计算平均值并四舍五入到 2 位小数
+        $rate = round(($randomRate1 + $randomRate2) / 2, 2)/100;
+
+
+        return  response($rate);
 //         Redis::publish('market.btcusdt.ticker',json_encode([
 //             "ch" => "market.oneusdt.ticker",
 //             "ts" => 1741231648141,

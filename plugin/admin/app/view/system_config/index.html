@@ -284,11 +284,11 @@
                 var row = `<div class="layui-form-item">
                                 <div class="layui-inline">
                                     <div class="layui-input-inline" style="width: 100px;">
-                                        <input type="number" name="staticRate[${index}][day]"  value="${item.day}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                        <input type="number" name="staticRate[${index}][day]"  value="${item.day}" placeholder="" autocomplete="off" class="layui-input" min="0"  max="100" step="1" lay-affix="number">
                                     </div>
                                     <div class="layui-form-mid">天</div>
                                     <div class="layui-input-inline" style="width: 100px;">
-                                        <input type="number" name="staticRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                        <input type="number" name="staticRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" max="100" step="1" lay-affix="number">
                                     </div>
                                     <div class="layui-form-mid">%</div>
                                 </div>
@@ -316,9 +316,9 @@
                                     <div class="layui-form-mid">-</div>
                                     <div class="layui-input-inline" style="width: 100px;">`;
                 if(index===0) {
-                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" disabled value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" disabled value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0"  max="100" step="1" lay-affix="number">`;
                 }else{
-                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" max="100" step="1" lay-affix="number">`;
 
                 }
                 row += `</div>
@@ -350,11 +350,11 @@
 
                                     <div class="layui-inline" style="width: 400px">
                                     <div class="layui-input-inline" style="width: 100px;">
-                                        <input type="number" name="staticRate[${index}][rate][min]"  value="${item.rate.min}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                        <input type="number" name="staticRate[${index}][rate][min]"  value="${item.rate.min}" placeholder="" autocomplete="off" class="layui-input" min="0" max="100" step="1" lay-affix="number">
                                     </div>
                                     <div class="layui-form-mid">-</div>
                                     <div class="layui-input-inline" style="width: 100px;">
-                                        <input type="number" name="staticRate[${index}][rate][max]" value="${item.rate.max}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                        <input type="number" name="staticRate[${index}][rate][max]" value="${item.rate.max}" placeholder="" autocomplete="off" class="layui-input" min="0"  max="100" step="1" lay-affix="number">
                                     </div>
                                     <div class="layui-form-mid">%</div>
                                 </div>
@@ -387,9 +387,9 @@
                                     <div class="layui-form-mid">-</div>
                                     <div class="layui-input-inline" style="width: 100px;">`;
                 if(index===0) {
-                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" disabled value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" disabled value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" max="100" step="1" lay-affix="number">`;
                 }else{
-                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" max="100" step="1" lay-affix="number">`;
 
                 }
                 row += `</div>
