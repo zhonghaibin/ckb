@@ -59,6 +59,46 @@ class SystemConfigController extends Base
         return json_decode($config, true);
     }
 
+    function parseNestedArray($flatArray) {
+        $nestedArray = [];
+
+        foreach ($flatArray as $flatKey => $value) {
+            $keys = [];
+            if (preg_match_all('/\[(.*?)\]/', $flatKey, $matches)) {
+                $mainKey = strstr($flatKey, '[', true);
+                $keys = $matches[1];
+            } else {
+                $mainKey = $flatKey;
+            }
+
+            $ref = &$nestedArray;
+            if (!empty($keys)) {
+                if (!isset($nestedArray[$mainKey])) {
+                    $nestedArray[$mainKey] = [];
+                }
+                $ref = &$nestedArray[$mainKey];
+
+                foreach ($keys as $i => $key) {
+                    if (!isset($ref[$key])) {
+                        $ref[$key] = [];
+                    }
+                    if ($i === count($keys) - 1) {
+                        $ref[$key] = $value;
+                    } else {
+                        $ref = &$ref[$key];
+                    }
+                }
+            } else {
+                $nestedArray[$mainKey] = $value;
+            }
+        }
+
+        return $nestedArray;
+    }
+
+
+
+
     /**
      * 更改
      * @param Request $request
@@ -70,6 +110,7 @@ class SystemConfigController extends Base
         $post = $request->post();
         $config = $this->getByDefault();
         $data = [];
+
         foreach ($post as $section => $items) {
             if (!isset($config[$section])) {
                 continue;
@@ -79,9 +120,14 @@ class SystemConfigController extends Base
                     $data[$section]['web_url'] = $items['web_url'] ?? '';
                     break;
                 case 'ckb':
+                    $flatArray = json_decode($post[$section], true);
+                    $items = $this->parseNestedArray($flatArray);
+                    $data[$section]=$items;
                     break;
                 case 'sol':
-                    //
+                    $flatArray = json_decode($post[$section], true);
+                    $items = $this->parseNestedArray($flatArray);
+                    $data[$section]=$items;
             }
         }
         $config = array_merge($config, $data);

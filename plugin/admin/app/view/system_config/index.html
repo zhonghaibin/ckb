@@ -1,299 +1,408 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-        <link rel="stylesheet" href="/app/admin/component/layui/css/layui.css?v=2.8.12" />
-        <link rel="stylesheet" href="/app/admin/component/pear/css/pear.css" />
-        <link rel="stylesheet" href="/app/admin/admin/css/reset.css" />
-    </head>
-    <body class="pear-container">
-        <style>
-            .layui-input-block input {
-                width: 300px;
-            }
-        </style>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/app/admin/component/layui/css/layui.css?v=2.8.12"/>
+    <link rel="stylesheet" href="/app/admin/component/pear/css/pear.css"/>
+    <link rel="stylesheet" href="/app/admin/admin/css/reset.css"/>
+</head>
+<body class="pear-container">
+<style>
+    .layui-input-block input {
+        width: 300px;
+    }
+</style>
 
-        <div class="layui-card">
-            <div class="layui-card-body">
+<div class="layui-card">
+    <div class="layui-card-body">
 
-                <div class="layui-tab layui-tab-brief">
-                <ul class="layui-tab-title">
-                    <li class="layui-this">基本信息</li>
-                    <li>CKB质押</li>
-                    <li>SOL套利</li>
-                </ul>
-                <div class="layui-tab-content">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                <li>CKB质押</li>
+                <li>SOL套利</li>
+            </ul>
+            <div class="layui-tab-content">
 
-                    <!-- 基本信息 -->
-                    <div class="layui-tab-item layui-show">
+                <!-- 基本信息 -->
+                <div class="layui-tab-item layui-show">
 
-                        <form class="layui-form" lay-filter="baseInfo">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">官方网址</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="web_url"  placeholder="请输入官方网址" autocomplete="off" class="layui-input">
-                                </div>
+                    <form class="layui-form" lay-filter="baseInfo">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">官方网址</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="web_url" placeholder="请输入官方网址" autocomplete="off"
+                                       class="layui-input">
                             </div>
+                        </div>
 
-                            <div class="layui-form-item">
-                                <div class="layui-input-block">
-                                    <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit="" lay-filter="saveBaseInfo">
-                                        提交
-                                    </button>
-                                </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
+                                        lay-filter="saveBaseInfo">
+                                    提交
+                                </button>
                             </div>
-                        </form>
-
-                    </div>
-
-<!--                    &lt;!&ndash; 菜单设置 &ndash;&gt;-->
-<!--                    <div class="layui-tab-item">-->
-
-<!--                        <form class="layui-form" lay-filter="menuInfo">-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">天</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="text" name="data" required  lay-verify="required" placeholder="请输入菜单url" autocomplete="off" class="layui-input">-->
-<!--                                </div>-->
-<!--                                <label class="layui-form-label">比例</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="text" name="data" required  lay-verify="required" placeholder="请输入菜单url" autocomplete="off" class="layui-input">-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">默认菜单ID</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="number" name="select" required  lay-verify="required" placeholder="请输入默认菜单ID" autocomplete="off" class="layui-input">-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">开启手风琴</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="checkbox" name="accordion" id="accordion" lay-skin="switch" />-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">折叠菜单</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="checkbox" id="collapse" name="collapse" lay-skin="switch" />-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-<!--                            <div class="layui-form-item">-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit="" lay-filter="saveCkb">-->
-<!--                                        提交-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </form>-->
-
-<!--                    </div>-->
-
-<!--                    &lt;!&ndash; tab设置 &ndash;&gt;-->
-<!--                    <div class="layui-tab-item">-->
-
-<!--                        <form class="layui-form" lay-filter="tabInfo">-->
-
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">保持标签</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="checkbox" name="keepState" lay-skin="switch" />-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">记住标签</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="checkbox" name="session" lay-skin="switch" />-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">预加载标签</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="checkbox" name="preload" lay-skin="switch" />-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">最大标签数</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="number" name="max" required  lay-verify="required" placeholder="请输入最大标签数" autocomplete="off" class="layui-input">-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">主标签标题</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入主页标签标题" autocomplete="off" class="layui-input">-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">主标签URL</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="text" name="href" required  lay-verify="required" placeholder="请输入菜单url" autocomplete="off" class="layui-input">-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-item">-->
-<!--                                <label class="layui-form-label">主标签ID</label>-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <input type="number" name="id" required  lay-verify="required" placeholder="请输入主页标签ID" autocomplete="off" class="layui-input">-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-<!--                            <div class="layui-form-item">-->
-<!--                                <div class="layui-input-block">-->
-<!--                                    <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit="" lay-filter="saveSol">-->
-<!--                                        提交-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </form>-->
-
-<!--                    </div>-->
+                        </div>
+                    </form>
 
                 </div>
-            </div>
+
+                <!-- 菜单设置 -->
+                <div class="layui-tab-item">
+                    <form class="layui-form" lay-filter="ckbInfo">
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">每日收益</div>
+                        </div>
+                        <div id="staticRateContainer"></div>
+
+
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">直推分享奖</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="number" name="directRate" placeholder="" autocomplete="off"
+                                           class="layui-input" min="0" step="1" lay-affix="number">
+                                </div>
+                                <div class="layui-form-mid">%</div>
+                            </div>
+                        </div>
+
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">动态分享</div>
+                        </div>
+                        <div id="levelDiffRateContainer"></div>
+
+
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">平级奖</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="number" name="sameLevelRate" placeholder="" autocomplete="off"
+                                           class="layui-input" min="0" step="1" lay-affix="number">
+                                </div>
+                                <div class="layui-form-mid">%</div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
+                                        lay-filter="saveCkb">
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- tab设置 -->
+                <div class="layui-tab-item">
+
+                    <form class="layui-form" lay-filter="solInfo">
+
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">每日收益</div>
+                        </div>
+                        <div id="solStaticRateContainer"></div>
+
+
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">直推分享奖</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="number" name="directRate" placeholder="" autocomplete="off"
+                                           class="layui-input" min="0" step="1" lay-affix="number">
+                                </div>
+                                <div class="layui-form-mid">%</div>
+                            </div>
+                        </div>
+
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">动态分享</div>
+                        </div>
+                        <div id="solLevelDiffRateContainer"></div>
+
+
+                        <div class="layui-card" style="margin-top: 10px;">
+                            <div class="layui-card-header">平级奖</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="number" name="sameLevelRate" placeholder="" autocomplete="off"
+                                           class="layui-input" min="0" step="1" lay-affix="number">
+                                </div>
+                                <div class="layui-form-mid">%</div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
+                                        lay-filter="saveSol">
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
 
             </div>
         </div>
 
+    </div>
+</div>
 
-        <script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
-        <script src="/app/admin/component/pear/pear.js"></script>
-        <script src="/app/admin/admin/js/permission.js"></script>
-        <script>
 
-            // 基础设置
-            layui.use(["upload", "layer", "popup"], function() {
-                let $ = layui.$;
-                let form = layui.form;
+<script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
+<script src="/app/admin/component/pear/pear.js"></script>
+<script src="/app/admin/admin/js/permission.js"></script>
+<script>
+    window.onload = function () {
+        // 基础设置
+        layui.use(["upload", "layer", "popup"], function () {
+            let $ = layui.$;
+            let form = layui.form;
 
-                // image
-                let input = $("#image").prev();
-                input.prev().attr("src", input.val());
-                layui.$("#attachment-choose-image").on("click", function() {
-                    parent.layer.open({
-                        type: 2,
-                        title: "选择附件",
-                        content: "/app/admin/upload/attachment?ext=jpg,jpeg,png,gif,bmp",
-                        area: ["95%", "90%"],
-                        success: function (layero, index) {
-                            parent.layui.$("#layui-layer" + index).data("callback", function (data) {
-                                input.val(data.url).prev().attr("src", data.url);
-                            });
-                        }
-                    });
-                });
-                layui.upload.render({
-                    elem: "#image",
-                    url: "/app/admin/upload/avatar",
-                    acceptMime: "image/gif,image/jpeg,image/jpg,image/png",
-                    done: function (res) {
-                        if (res.code) {
-                            return layui.popup.failure(res.msg);
-                        }
-                        this.item.prev().val(res.data.url).prev().attr("src", res.data.url);
-                    }
-                });
-
-                // 提交
-                form.on("submit(saveBaseInfo)", function(data){
-                    $.ajax({
-                        url: "/app/admin/systemConfig/update",
-                        dataType: "json",
-                        type: "POST",
-                        data: {base_info: data.field},
-                        success: function (res) {
-                            if (res.code) {
-                                return layui.popup.failure(res.msg);
-                            }
-                            return layui.popup.success("操作成功");
-                        }
-                    });
-                    return false;
-                });
-            });
-
-            // 菜单设置
-            layui.use(["upload", "layer", "popup"], function() {
-                let $ = layui.$;
-                let form = layui.form;
-                // 提交
-                form.on("submit(saveCkb)", function(data){
-                    $.ajax({
-                        url: "/app/admin/systemConfig/update",
-                        dataType: "json",
-                        type: "POST",
-                        data: {menu: data.field},
-                        success: function (res) {
-                            if (res.code) {
-                                return layui.popup.failure(res.msg);
-                            }
-                            return layui.popup.success("操作成功");
-                        }
-                    });
-                    return false;
-                });
-            });
-
-            // 标签设置
-            layui.use(["upload", "layer", "popup"], function() {
-                let $ = layui.$;
-                let form = layui.form;
-                // 提交
-                form.on("submit(saveSol)", function(data){
-                    let field = data.field;
-                    field.index = {
-                        id: field.id,
-                        href: field.href,
-                        title: field.title,
-                    };
-                    delete data.field;
-                    $.ajax({
-                        url: "/app/admin/systemConfig/update",
-                        dataType: "json",
-                        type: "POST",
-                        data: {tab: field},
-                        success: function (res) {
-                            if (res.code) {
-                                return layui.popup.failure(res.msg);
-                            }
-                            return layui.popup.success("操作成功");
-                        }
-                    });
-                    // 删除sessionStorage缓存
-                    sessionStorage.clear();
-                    return false;
-                });
-            });
-
-            layui.use(["form"], function () {
-                let form = layui.form;
-                let $ = layui.$;
+            // 提交
+            form.on("submit(saveBaseInfo)", function (data) {
                 $.ajax({
-                    url: "/app/admin/systemConfig/get",
+                    url: "/app/admin/systemConfig/update",
                     dataType: "json",
+                    type: "POST",
+                    data: {base_info: data.field},
                     success: function (res) {
                         if (res.code) {
                             return layui.popup.failure(res.msg);
                         }
-                        form.val("baseInfo", res.logo);
-                        $("#image").prev().val(res.logo.image).prev().attr("src", res.logo.image);
-                        form.val("menuInfo", res.menu);
-                        let tab = res.tab;
-                        let index = tab.index;
-                        delete tab.index;
-                        tab.id = index.id;
-                        tab.title = index.title;
-                        tab.href= index.href;
-                        form.val("tabInfo", res.tab);
+                        return layui.popup.success("操作成功");
                     }
                 });
+                return false;
+            });
+        });
 
+        // 菜单设置
+        layui.use(["upload", "layer", "popup"], function () {
+            let $ = layui.$;
+            let form = layui.form;
+            // 提交
+            form.on("submit(saveCkb)", function (data) {
+                $.ajax({
+                    url: "/app/admin/systemConfig/update",
+                    dataType: "json",
+                    type: "POST",
+                    data: {ckb: JSON.stringify( data.field)},
+                    success: function (res) {
+                        if (res.code) {
+                            return layui.popup.failure(res.msg);
+                        }
+                        return layui.popup.success("操作成功");
+                    }
+                });
+                return false;
+            });
+        });
+
+        // 标签设置
+        layui.use(["upload", "layer", "popup"], function () {
+            let $ = layui.$;
+            let form = layui.form;
+            // 提交
+            form.on("submit(saveSol)", function (data) {
+                let field = data.field;
+                delete data.field;
+                $.ajax({
+                    url: "/app/admin/systemConfig/update",
+                    dataType: "json",
+                    type: "POST",
+                    data: {sol: JSON.stringify( field)},
+                    success: function (res) {
+                        if (res.code) {
+                            return layui.popup.failure(res.msg);
+                        }
+                        return layui.popup.success("操作成功");
+                    }
+                });
+                // 删除sessionStorage缓存
+                sessionStorage.clear();
+                return false;
+            });
+        });
+
+        layui.use(["form"], function () {
+            let form = layui.form;
+            let $ = layui.$;
+            $.ajax({
+                url: "/app/admin/systemConfig/get",
+                dataType: "json",
+                success: function (res) {
+                    if (res.code) {
+                        return layui.popup.failure(res.msg);
+                    }
+
+                    form.val("ckbInfo", {
+                        "directRate": res.ckb.directRate,
+                        "sameLevelRate": res.ckb.sameLevelRate
+                    });
+
+                    renderStaticRateTable(res.ckb.staticRate);
+                    renderLevelDiffRateTable(res.ckb.levelDiffRate);
+
+                    form.val("solInfo", {
+                        "directRate": res.sol.directRate,
+                        "sameLevelRate": res.sol.sameLevelRate
+                    });
+
+                    renderSolStaticRateTable(res.sol.staticRate);
+                    renderSolLevelDiffRateTable(res.sol.levelDiffRate);
+                }
             });
 
-        </script>
 
-    </body>
+        });
+
+        function renderStaticRateTable(data) {
+            var container = document.getElementById("staticRateContainer");
+
+            if (!container) {
+                console.error("找不到 #staticRateContainer 元素！");
+                return;
+            }
+            container.innerHTML = ""; // 清空原有内容
+            data.forEach(function (item, index) {
+                var row = `<div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="number" name="staticRate[${index}][day]"  value="${item.day}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                    </div>
+                                    <div class="layui-form-mid">天</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="number" name="staticRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                    </div>
+                                    <div class="layui-form-mid">%</div>
+                                </div>
+                            </div>`;
+                container.innerHTML += row;
+            });
+
+            // form.render(); // 重新渲染表单
+        }
+
+        function renderLevelDiffRateTable(data) {
+            var container = document.getElementById("levelDiffRateContainer");
+
+            if (!container) {
+                console.error("找不到 #levelDiffRateContainer 元素！");
+                return;
+            }
+            container.innerHTML = ""; // 清空原有内容
+            data.forEach(function (item, index) {
+                var row = `<div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" disabled name="levelDiffRate[${index}][level]"  value="${item.level}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                    </div>
+                                    <div class="layui-form-mid">-</div>
+                                    <div class="layui-input-inline" style="width: 100px;">`;
+                if(index===0) {
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" disabled value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+                }else{
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+
+                }
+                row += `</div>
+                                    <div class="layui-form-mid">%</div>
+                                </div>
+                            </div>`;
+                container.innerHTML += row;
+            });
+
+            // form.render(); // 重新渲染表单
+        }
+
+        function renderSolStaticRateTable(data) {
+            var container = document.getElementById("solStaticRateContainer");
+
+            if (!container) {
+                console.error("找不到 #staticRateContainer 元素！");
+                return;
+            }
+            container.innerHTML = ""; // 清空原有内容
+            data.forEach(function (item, index) {
+                var row = `<div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="number" name="staticRate[${index}][day]"  value="${item.day}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                    </div>
+                                    <div class="layui-form-mid">天</div>
+                                    <div class="layui-input-inline"  >
+
+                                    <div class="layui-inline" style="width: 400px">
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="number" name="staticRate[${index}][rate][min]"  value="${item.rate.min}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                    </div>
+                                    <div class="layui-form-mid">-</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="number" name="staticRate[${index}][rate][max]" value="${item.rate.max}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                    </div>
+                                    <div class="layui-form-mid">%</div>
+                                </div>
+`;
+
+                row += `</div>
+
+                                </div>
+                            </div>`;
+                container.innerHTML += row;
+            });
+
+            // form.render(); // 重新渲染表单
+        }
+
+        function renderSolLevelDiffRateTable(data) {
+            var container = document.getElementById("solLevelDiffRateContainer");
+
+            if (!container) {
+                console.error("找不到 #levelDiffRateContainer 元素！");
+                return;
+            }
+            container.innerHTML = ""; // 清空原有内容
+            data.forEach(function (item, index) {
+                var row = `<div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" disabled name="levelDiffRate[${index}][level]"  value="${item.level}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">
+                                    </div>
+                                    <div class="layui-form-mid">-</div>
+                                    <div class="layui-input-inline" style="width: 100px;">`;
+                if(index===0) {
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" disabled value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+                }else{
+                    row += `  <input type="number" name="levelDiffRate[${index}][rate]" value="${item.rate}" placeholder="" autocomplete="off" class="layui-input" min="0" step="1" lay-affix="number">`;
+
+                }
+                row += `</div>
+                                    <div class="layui-form-mid">%</div>
+                                </div>
+                            </div>`;
+                container.innerHTML += row;
+            });
+
+            // form.render(); // 重新渲染表单
+        }
+    };
+</script>
+
+</body>
 </html>
