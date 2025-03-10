@@ -250,7 +250,7 @@
                     if (res.code) {
                         return layui.popup.failure(res.msg);
                     }
-
+                    form.val("baseInfo", res.base_info);
                     form.val("ckbInfo", {
                         "directRate": res.ckb.directRate,
                         "sameLevelRate": res.ckb.sameLevelRate

@@ -38,9 +38,9 @@ class SolBonusService
 
     public function __construct()
     {
-        $value = Db::table('options')->where('name', 'config')->value('value');
-        $value = json_decode($value, true);
-        $params = $value['sol'];
+        $config = Db::table('options')->where('name', 'config')->value('value');
+        $config = json_decode($config, true);
+        $params = $config['sol'];
         $this->rates = $params['staticRate'];
         $this->direct_rate = $params['directRate'];
         $this->level_diff_rates = $params['levelDiffRate'];
