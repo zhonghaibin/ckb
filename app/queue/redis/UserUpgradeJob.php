@@ -18,7 +18,7 @@ class UserUpgradeJob implements Consumer
      * php start.php queue:restart
      * @var string
      */
-    public $queue = UserUpgrade::USER_UPGRADE_JOB;
+    public $queue = UserUpgrade::USER_UPGRADE_JOB->value;
 
     public function consume($data)
     {

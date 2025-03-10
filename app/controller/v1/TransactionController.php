@@ -74,7 +74,7 @@ class TransactionController
                 $user->save();
             }
             DB::commit();
-            Redis::send(UserUpgrade::USER_UPGRADE_JOB, ['user_id' => $user->id]);
+            Redis::send(UserUpgrade::USER_UPGRADE_JOB->value, ['user_id' => $user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
@@ -132,7 +132,7 @@ class TransactionController
                 $user->save();
             }
             DB::commit();
-            Redis::send(UserUpgrade::USER_UPGRADE_JOB, ['user_id' => $user->id]);
+            Redis::send(UserUpgrade::USER_UPGRADE_JOB->value, ['user_id' => $user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
