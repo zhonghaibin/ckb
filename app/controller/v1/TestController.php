@@ -20,30 +20,32 @@ class TestController
 {
     public function index(Request $request)
     {
-         Redis::publish('market.btcusdt.ticker',json_encode([
-             "ch" => "market.oneusdt.ticker",
-             "ts" => 1741231648141,
-             "tick" => [
-                 "open" => 0.012964,
-                 "high" => 0.013707,
-                 "low" => 0.012684,
-                 "close" => 0.013604,
-                 "amount" => 314458962.3252614,
-                 "vol" => 4174127.77528359,
-                 "count" => 57986,
-                 "bid" => 0.01359,
-                 "bidSize" => 7931,
-                 "ask" => 0.01362,
-                 "askSize" => 87217.42,
-                 "lastPrice" => 0.013604,
-                 "lastSize" => 6524.51
-             ]
-         ]));
+//         Redis::publish('market.btcusdt.ticker',json_encode([
+//             "ch" => "market.oneusdt.ticker",
+//             "ts" => 1741231648141,
+//             "tick" => [
+//                 "open" => 0.012964,
+//                 "high" => 0.013707,
+//                 "low" => 0.012684,
+//                 "close" => 0.013604,
+//                 "amount" => 314458962.3252614,
+//                 "vol" => 4174127.77528359,
+//                 "count" => 57986,
+//                 "bid" => 0.01359,
+//                 "bidSize" => 7931,
+//                 "ask" => 0.01362,
+//                 "askSize" => 87217.42,
+//                 "lastPrice" => 0.013604,
+//                 "lastSize" => 6524.51
+//             ]
+//         ]));
 
 //        Redis::send('user-upgrade-job', ['user_id'=>2]);
 
 
-//        $user = User::find(1);
+//        $user =Db::table('users')->find(1);
+//
+////        return json($user);
 //        $dd = new UserUpgradeService();
 //
 //        $ddd = $dd->setUser($user)->updateLevel();

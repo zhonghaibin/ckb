@@ -29,8 +29,7 @@ class UserUpgradeJob implements Consumer
 
     public function executeForParentUsers($user_id): void
     {
-
-        $user = User::query()->find($user_id);
+        $user =Db::table('users')->find($user_id);
         if ($user) {
             $userUpgradeService = new UserUpgradeService();
             $userUpgradeService->setUser($user)->updateLevel();
