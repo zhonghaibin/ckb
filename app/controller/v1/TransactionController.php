@@ -21,7 +21,7 @@ class TransactionController
 {
 
 
-    //CKB质押挖矿
+    //CKB质押
     public function ckb(Request $request)
     {
         $coin = $request->post('coin', CoinTypes::ONE);
