@@ -7,6 +7,7 @@ use app\enums\CoinTypes;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
 use app\enums\UserIsReal;
+use app\enums\UserUpgrade;
 use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\User;
@@ -68,12 +69,12 @@ class TransactionController
             $assets_log->datetime = Carbon::now()->timestamp;
             $assets_log->save();
 
-            if (!$user->is_real==UserIsReal::DISABLE->value) {
+            if (!$user->is_real == UserIsReal::DISABLE->value) {
                 $user->is_real = UserIsReal::NORMAL->value;
                 $user->save();
             }
             DB::commit();
-            Redis::send('user-upgrade-job', ['user_id'=>$user->id]);
+            Redis::send(UserUpgrade::USER_UPGRADE_JOB, ['user_id' => $user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
@@ -126,12 +127,12 @@ class TransactionController
             $assets_log->datetime = Carbon::now()->timestamp;
             $assets_log->save();
 
-            if (!$user->is_real==UserIsReal::DISABLE->value) {
+            if (!$user->is_real == UserIsReal::DISABLE->value) {
                 $user->is_real = UserIsReal::NORMAL->value;
                 $user->save();
             }
             DB::commit();
-            Redis::send('user-upgrade-job', ['user_id'=>$user->id]);
+            Redis::send(UserUpgrade::USER_UPGRADE_JOB, ['user_id' => $user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());

@@ -2,6 +2,7 @@
 
 namespace app\queue\redis;
 
+use app\enums\UserUpgrade;
 use app\model\User;
 use app\services\UserUpgradeService;
 use support\Db;
@@ -17,7 +18,7 @@ class UserUpgradeJob implements Consumer
      * php start.php queue:restart
      * @var string
      */
-    public $queue = 'user-upgrade-job';
+    public $queue = UserUpgrade::USER_UPGRADE_JOB;
 
     public function consume($data)
     {

@@ -4,6 +4,7 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
+use app\enums\UserUpgrade;
 use app\model\Assets;
 use app\model\User;
 use app\services\CkbBonusService;
@@ -40,7 +41,7 @@ class TestController
 //             ]
 //         ]));
 
-//        Redis::send('user-upgrade-job', ['user_id'=>2]);
+//        Redis::send(UserUpgrade::USER_UPGRADE_JOB, ['user_id'=>2]);
 
 
 //        $user =Db::table('users')->find(1);
