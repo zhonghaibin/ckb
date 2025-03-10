@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 07/03/2025 18:36:30
+ Date: 10/03/2025 20:18:02
 */
 
 SET NAMES utf8mb4;
@@ -58,8 +58,8 @@ CREATE TABLE `admins`  (
 -- ----------------------------
 -- Records of admins
 -- ----------------------------
-INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-07 15:09:06', '2025-03-07 15:09:06', NULL);
-INSERT INTO `admins` VALUES (2, 'admin', 'admin', '$2y$10$Ax5DCAi.mn0folyU9OXzGuymieZtzfKoErVZ4Z0hoWz.AJVjKlUQ6', '/app/admin/avatar.png', '', '', '2025-03-06 16:24:29', '2025-03-07 18:00:56', '2025-03-07 18:00:56', NULL);
+INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-10 10:42:17', '2025-03-10 10:42:17', NULL);
+INSERT INTO `admins` VALUES (2, 'admin', 'admin', '$2y$10$Ax5DCAi.mn0folyU9OXzGuymieZtzfKoErVZ4Z0hoWz.AJVjKlUQ6', '/app/admin/avatar.png', '', '', '2025-03-06 16:24:29', '2025-03-07 18:49:47', '2025-03-07 18:49:47', NULL);
 
 -- ----------------------------
 -- Table structure for assets
@@ -83,7 +83,7 @@ CREATE TABLE `assets`  (
 -- Records of assets
 -- ----------------------------
 INSERT INTO `assets` VALUES (1, 1, 'USDT', 2.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-07 13:49:53');
-INSERT INTO `assets` VALUES (2, 1, 'ONE', 0.450000, 0.450000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
+INSERT INTO `assets` VALUES (2, 1, 'ONE', 0.527418, 0.527418, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (3, 1, 'CBK', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (4, 2, 'USDT', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (5, 2, 'ONE', 0.390000, 0.390000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
@@ -95,22 +95,22 @@ INSERT INTO `assets` VALUES (10, 4, 'USDT', 0.000000, 0.000000, '2025-03-05 14:1
 INSERT INTO `assets` VALUES (11, 4, 'ONE', 0.260000, 0.260000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (12, 4, 'CBK', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (13, 5, 'USDT', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
-INSERT INTO `assets` VALUES (14, 5, 'ONE', 0.190000, 0.190000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
+INSERT INTO `assets` VALUES (14, 5, 'ONE', 0.770644, 0.770644, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (15, 5, 'CBK', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (16, 6, 'USDT', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
-INSERT INTO `assets` VALUES (17, 6, 'ONE', 0.130000, 0.130000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
+INSERT INTO `assets` VALUES (17, 6, 'ONE', 0.517096, 0.517096, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (18, 6, 'CBK', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (19, 7, 'USDT', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
-INSERT INTO `assets` VALUES (20, 7, 'ONE', 0.100000, 0.100000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
+INSERT INTO `assets` VALUES (20, 7, 'ONE', 0.409678, 0.409678, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (21, 7, 'CBK', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (22, 8, 'USDT', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
-INSERT INTO `assets` VALUES (23, 8, 'ONE', 0.080000, 0.080000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
+INSERT INTO `assets` VALUES (23, 8, 'ONE', 0.312257, 0.312257, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (24, 8, 'CBK', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (25, 9, 'USDT', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
-INSERT INTO `assets` VALUES (26, 9, 'ONE', 0.310000, 0.310000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
+INSERT INTO `assets` VALUES (26, 9, 'ONE', 1.239034, 1.239034, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (27, 9, 'CBK', 0.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-05 14:10:30');
 INSERT INTO `assets` VALUES (28, 10, 'USDT', 99.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-07 14:35:14');
-INSERT INTO `assets` VALUES (29, 10, 'ONE', 1.290000, 1.290000, '2025-03-05 14:10:30', '2025-03-05 14:15:54');
+INSERT INTO `assets` VALUES (29, 10, 'ONE', 5.160969, 5.160969, '2025-03-05 14:10:30', '2025-03-05 14:15:54');
 INSERT INTO `assets` VALUES (30, 10, 'CBK', 400.000000, 0.000000, '2025-03-05 14:10:30', '2025-03-07 11:58:38');
 
 -- ----------------------------
@@ -135,7 +135,7 @@ CREATE TABLE `assets_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`id`, `user_id`, `coin`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of assets_logs
@@ -158,6 +158,33 @@ INSERT INTO `assets_logs` VALUES (15, 10, 'USDT', 100.000000, 1.000000, 0, 0, 1,
 INSERT INTO `assets_logs` VALUES (16, 1, 'USDT', 1.000000, 0.000000, 0, 0, 0, NULL, 0, 1, '充值', 1741326516, '2025-03-07 13:48:36', '2025-03-07 13:48:36');
 INSERT INTO `assets_logs` VALUES (17, 1, 'USDT', 1.000000, 0.000000, 0, 0, 0, 2, 0, 1, '充值', 1741326593, '2025-03-07 13:49:53', '2025-03-07 13:49:53');
 INSERT INTO `assets_logs` VALUES (18, 10, 'USDT', -1.000000, 0.000000, 0, 0, 0, 0, 1, 2, '提现', 1741329314, '2025-03-07 14:35:14', '2025-03-07 14:35:14');
+INSERT INTO `assets_logs` VALUES (19, 10, 'ONE', 1.290323, 0.080000, 1, 2, 0, 0, 0, 6, '每日收益', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (20, 9, 'ONE', 0.258065, 0.200000, 1, 2, 0, 0, 0, 7, '直推收益', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (21, 9, 'ONE', 0.051613, 0.040000, 1, 2, 0, 0, 0, 8, '极差奖', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (22, 8, 'ONE', 0.077419, 0.060000, 1, 2, 0, 0, 0, 8, '极差奖', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (23, 7, 'ONE', 0.103226, 0.080000, 1, 2, 0, 0, 0, 8, '极差奖', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (24, 6, 'ONE', 0.129032, 0.100000, 1, 2, 0, 0, 0, 8, '极差奖', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (25, 5, 'ONE', 0.193548, 0.150000, 1, 2, 0, 0, 0, 8, '极差奖', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (26, 4, 'ONE', 0.000000, 0.000000, 1, 2, 0, 0, 0, 8, '极差奖', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (27, 1, 'ONE', 0.025806, 0.020000, 1, 2, 0, 0, 0, 8, '极差奖', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `assets_logs` VALUES (28, 10, 'ONE', 1.290323, 0.080000, 1, 3, 0, 0, 0, 6, '每日收益', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (29, 9, 'ONE', 0.258065, 0.200000, 1, 3, 0, 0, 0, 7, '直推收益', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (30, 9, 'ONE', 0.051613, 0.040000, 1, 3, 0, 0, 0, 8, '极差奖', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (31, 8, 'ONE', 0.077419, 0.060000, 1, 3, 0, 0, 0, 8, '极差奖', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (32, 7, 'ONE', 0.103226, 0.080000, 1, 3, 0, 0, 0, 8, '极差奖', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (33, 6, 'ONE', 0.129032, 0.100000, 1, 3, 0, 0, 0, 8, '极差奖', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (34, 5, 'ONE', 0.193548, 0.150000, 1, 3, 0, 0, 0, 8, '极差奖', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (35, 4, 'ONE', 0.000000, 0.000000, 1, 3, 0, 0, 0, 8, '极差奖', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (36, 1, 'ONE', 0.025806, 0.020000, 1, 3, 0, 0, 0, 8, '极差奖', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `assets_logs` VALUES (37, 10, 'ONE', 1.290323, 0.080000, 1, 4, 0, 0, 0, 6, '每日收益', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (38, 9, 'ONE', 0.258065, 0.200000, 1, 4, 0, 0, 0, 7, '直推收益', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (39, 9, 'ONE', 0.051613, 0.040000, 1, 4, 0, 0, 0, 8, '极差奖', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (40, 8, 'ONE', 0.077419, 0.060000, 1, 4, 0, 0, 0, 8, '极差奖', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (41, 7, 'ONE', 0.103226, 0.080000, 1, 4, 0, 0, 0, 8, '极差奖', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (42, 6, 'ONE', 0.129032, 0.100000, 1, 4, 0, 0, 0, 8, '极差奖', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (43, 5, 'ONE', 0.193548, 0.150000, 1, 4, 0, 0, 0, 8, '极差奖', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (44, 4, 'ONE', 0.000000, 0.000000, 1, 4, 0, 0, 0, 8, '极差奖', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `assets_logs` VALUES (45, 1, 'ONE', 0.025806, 0.020000, 1, 4, 0, 0, 0, 8, '极差奖', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
 
 -- ----------------------------
 -- Table structure for banners
@@ -254,7 +281,7 @@ CREATE TABLE `notices`  (
 -- Records of notices
 -- ----------------------------
 INSERT INTO `notices` VALUES (1, '重要通知', '<p>6664565464566</p>', 1, '2025-03-06 17:23:19', '2025-03-07 17:52:53');
-INSERT INTO `notices` VALUES (2, '65', '<p>555</p>', 0, '2025-03-07 16:56:24', '2025-03-07 17:59:29');
+INSERT INTO `notices` VALUES (2, '65', '<p>555</p>', 1, '2025-03-07 16:56:24', '2025-03-07 18:39:03');
 INSERT INTO `notices` VALUES (3, '676767', '', 1, '2025-03-07 16:57:23', '2025-03-07 17:59:24');
 INSERT INTO `notices` VALUES (4, '4234', '', 0, '2025-03-07 16:58:42', '2025-03-07 16:58:42');
 INSERT INTO `notices` VALUES (5, '7567', NULL, 0, '2025-03-07 17:06:03', '2025-03-07 17:06:03');
@@ -275,12 +302,12 @@ CREATE TABLE `options`  (
   `created_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 106 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of options
 -- ----------------------------
-INSERT INTO `options` VALUES (1, 'system_config', '{\"logo\":{\"title\":\"\\u540e\\u53f0\\u7ba1\\u7406\\u7cfb\\u7edf\",\"image\":\"\\/app\\/admin\\/admin\\/images\\/logo.png\",\"icp\":\"\",\"beian\":\"\",\"footer_txt\":\"\"},\"menu\":{\"data\":\"\\/app\\/admin\\/rule\\/get\",\"method\":\"GET\",\"accordion\":true,\"collapse\":false,\"control\":false,\"controlWidth\":500,\"select\":\"0\",\"async\":true},\"tab\":{\"enable\":true,\"keepState\":true,\"preload\":false,\"session\":true,\"max\":\"30\",\"index\":{\"id\":\"0\",\"href\":\"\\/app\\/admin\\/index\\/dashboard\",\"title\":\"\\u4eea\\u8868\\u76d8\"}},\"theme\":{\"defaultColor\":\"2\",\"defaultMenu\":\"light-theme\",\"defaultHeader\":\"light-theme\",\"allowCustom\":true,\"banner\":false},\"colors\":[{\"id\":\"1\",\"color\":\"#36b368\",\"second\":\"#f0f9eb\"},{\"id\":\"2\",\"color\":\"#2d8cf0\",\"second\":\"#ecf5ff\"},{\"id\":\"3\",\"color\":\"#f6ad55\",\"second\":\"#fdf6ec\"},{\"id\":\"4\",\"color\":\"#f56c6c\",\"second\":\"#fef0f0\"},{\"id\":\"5\",\"color\":\"#3963bc\",\"second\":\"#ecf5ff\"}],\"other\":{\"keepLoad\":\"500\",\"autoHead\":false,\"footer\":false},\"header\":{\"message\":false}}', '2022-12-05 14:49:01', '2025-03-07 13:29:40');
+INSERT INTO `options` VALUES (1, 'system_config', '{\"logo\":{\"title\":\"\\u540e\\u53f0\\u7ba1\\u7406\\u7cfb\\u7edf\",\"image\":\"\\/app\\/admin\\/admin\\/images\\/logo.png\",\"icp\":\"\",\"beian\":\"\",\"footer_txt\":\"\"},\"menu\":{\"data\":\"\\/app\\/admin\\/rule\\/get\",\"accordion\":true,\"collapse\":false,\"control\":false,\"controlWidth\":2000,\"select\":0,\"async\":true},\"tab\":{\"enable\":true,\"keepState\":true,\"preload\":false,\"session\":true,\"max\":\"30\",\"index\":{\"id\":\"0\",\"href\":\"\\/app\\/admin\\/index\\/dashboard\",\"title\":\"\\u4eea\\u8868\\u76d8\"}},\"theme\":{\"defaultColor\":\"2\",\"defaultMenu\":\"light-theme\",\"defaultHeader\":\"light-theme\",\"allowCustom\":true,\"banner\":false},\"colors\":[{\"id\":\"1\",\"color\":\"#36b368\",\"second\":\"#f0f9eb\"},{\"id\":\"2\",\"color\":\"#2d8cf0\",\"second\":\"#ecf5ff\"},{\"id\":\"3\",\"color\":\"#f6ad55\",\"second\":\"#fdf6ec\"},{\"id\":\"4\",\"color\":\"#f56c6c\",\"second\":\"#fef0f0\"},{\"id\":\"5\",\"color\":\"#3963bc\",\"second\":\"#ecf5ff\"}],\"other\":{\"keepLoad\":\"500\",\"autoHead\":false,\"footer\":false},\"header\":{\"message\":false}}', '2022-12-05 14:49:01', '2025-03-10 18:07:53');
 INSERT INTO `options` VALUES (2, 'table_form_schema_wa_users', '{\"id\":{\"field\":\"id\",\"_field_id\":\"0\",\"comment\":\"主键\",\"control\":\"inputNumber\",\"control_args\":\"\",\"list_show\":true,\"enable_sort\":true,\"searchable\":true,\"search_type\":\"normal\",\"form_show\":false},\"username\":{\"field\":\"username\",\"_field_id\":\"1\",\"comment\":\"用户名\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"nickname\":{\"field\":\"nickname\",\"_field_id\":\"2\",\"comment\":\"昵称\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"password\":{\"field\":\"password\",\"_field_id\":\"3\",\"comment\":\"密码\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"search_type\":\"normal\",\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"sex\":{\"field\":\"sex\",\"_field_id\":\"4\",\"comment\":\"性别\",\"control\":\"select\",\"control_args\":\"url:\\/app\\/admin\\/dict\\/get\\/sex\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"avatar\":{\"field\":\"avatar\",\"_field_id\":\"5\",\"comment\":\"头像\",\"control\":\"uploadImage\",\"control_args\":\"url:\\/app\\/admin\\/upload\\/avatar\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"email\":{\"field\":\"email\",\"_field_id\":\"6\",\"comment\":\"邮箱\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"mobile\":{\"field\":\"mobile\",\"_field_id\":\"7\",\"comment\":\"手机\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"level\":{\"field\":\"level\",\"_field_id\":\"8\",\"comment\":\"等级\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"list_show\":false,\"enable_sort\":false},\"birthday\":{\"field\":\"birthday\",\"_field_id\":\"9\",\"comment\":\"生日\",\"control\":\"datePicker\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"between\",\"list_show\":false,\"enable_sort\":false},\"money\":{\"field\":\"money\",\"_field_id\":\"10\",\"comment\":\"余额(元)\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"list_show\":false,\"enable_sort\":false},\"score\":{\"field\":\"score\",\"_field_id\":\"11\",\"comment\":\"积分\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"list_show\":false,\"enable_sort\":false},\"last_time\":{\"field\":\"last_time\",\"_field_id\":\"12\",\"comment\":\"登录时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"between\",\"list_show\":false,\"enable_sort\":false},\"last_ip\":{\"field\":\"last_ip\",\"_field_id\":\"13\",\"comment\":\"登录ip\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"list_show\":false,\"enable_sort\":false},\"join_time\":{\"field\":\"join_time\",\"_field_id\":\"14\",\"comment\":\"注册时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"between\",\"list_show\":false,\"enable_sort\":false},\"join_ip\":{\"field\":\"join_ip\",\"_field_id\":\"15\",\"comment\":\"注册ip\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"list_show\":false,\"enable_sort\":false},\"token\":{\"field\":\"token\",\"_field_id\":\"16\",\"comment\":\"token\",\"control\":\"input\",\"control_args\":\"\",\"search_type\":\"normal\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"created_at\":{\"field\":\"created_at\",\"_field_id\":\"17\",\"comment\":\"创建时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"form_show\":true,\"search_type\":\"between\",\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"updated_at\":{\"field\":\"updated_at\",\"_field_id\":\"18\",\"comment\":\"更新时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"search_type\":\"between\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"role\":{\"field\":\"role\",\"_field_id\":\"19\",\"comment\":\"角色\",\"control\":\"inputNumber\",\"control_args\":\"\",\"search_type\":\"normal\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"status\":{\"field\":\"status\",\"_field_id\":\"20\",\"comment\":\"禁用\",\"control\":\"switch\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false}}', '2022-08-15 00:00:00', '2022-12-23 15:28:13');
 INSERT INTO `options` VALUES (3, 'table_form_schema_wa_roles', '{\"id\":{\"field\":\"id\",\"_field_id\":\"0\",\"comment\":\"主键\",\"control\":\"inputNumber\",\"control_args\":\"\",\"list_show\":true,\"search_type\":\"normal\",\"form_show\":false,\"enable_sort\":false,\"searchable\":false},\"name\":{\"field\":\"name\",\"_field_id\":\"1\",\"comment\":\"角色组\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"rules\":{\"field\":\"rules\",\"_field_id\":\"2\",\"comment\":\"权限\",\"control\":\"treeSelectMulti\",\"control_args\":\"url:\\/app\\/admin\\/rule\\/get?type=0,1,2\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"created_at\":{\"field\":\"created_at\",\"_field_id\":\"3\",\"comment\":\"创建时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"search_type\":\"normal\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"updated_at\":{\"field\":\"updated_at\",\"_field_id\":\"4\",\"comment\":\"更新时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"search_type\":\"normal\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"pid\":{\"field\":\"pid\",\"_field_id\":\"5\",\"comment\":\"父级\",\"control\":\"select\",\"control_args\":\"url:\\/app\\/admin\\/role\\/select?format=tree\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false}}', '2022-08-15 00:00:00', '2022-12-19 14:24:25');
 INSERT INTO `options` VALUES (4, 'table_form_schema_wa_rules', '{\"id\":{\"field\":\"id\",\"_field_id\":\"0\",\"comment\":\"主键\",\"control\":\"inputNumber\",\"control_args\":\"\",\"search_type\":\"normal\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"title\":{\"field\":\"title\",\"_field_id\":\"1\",\"comment\":\"标题\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"icon\":{\"field\":\"icon\",\"_field_id\":\"2\",\"comment\":\"图标\",\"control\":\"iconPicker\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"key\":{\"field\":\"key\",\"_field_id\":\"3\",\"comment\":\"标识\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"pid\":{\"field\":\"pid\",\"_field_id\":\"4\",\"comment\":\"上级菜单\",\"control\":\"treeSelect\",\"control_args\":\"\\/app\\/admin\\/rule\\/select?format=tree&type=0,1\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"created_at\":{\"field\":\"created_at\",\"_field_id\":\"5\",\"comment\":\"创建时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"search_type\":\"normal\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"updated_at\":{\"field\":\"updated_at\",\"_field_id\":\"6\",\"comment\":\"更新时间\",\"control\":\"dateTimePicker\",\"control_args\":\"\",\"search_type\":\"normal\",\"form_show\":false,\"list_show\":false,\"enable_sort\":false,\"searchable\":false},\"href\":{\"field\":\"href\",\"_field_id\":\"7\",\"comment\":\"url\",\"control\":\"input\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"type\":{\"field\":\"type\",\"_field_id\":\"8\",\"comment\":\"类型\",\"control\":\"select\",\"control_args\":\"data:0:目录,1:菜单,2:权限\",\"form_show\":true,\"list_show\":true,\"searchable\":true,\"search_type\":\"normal\",\"enable_sort\":false},\"weight\":{\"field\":\"weight\",\"_field_id\":\"9\",\"comment\":\"排序\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false}}', '2022-08-15 00:00:00', '2022-12-08 11:44:45');
@@ -293,7 +320,11 @@ INSERT INTO `options` VALUES (10, 'dict_sex', '[{\"value\":\"0\",\"name\":\"女\
 INSERT INTO `options` VALUES (11, 'dict_status', '[{\"value\":\"0\",\"name\":\"正常\"},{\"value\":\"1\",\"name\":\"禁用\"}]', '2022-12-04 15:05:09', '2022-12-04 15:05:09');
 INSERT INTO `options` VALUES (17, 'table_form_schema_wa_admin_roles', '{\"id\":{\"field\":\"id\",\"_field_id\":\"0\",\"comment\":\"主键\",\"control\":\"inputNumber\",\"control_args\":\"\",\"list_show\":true,\"enable_sort\":true,\"searchable\":true,\"search_type\":\"normal\",\"form_show\":false},\"role_id\":{\"field\":\"role_id\",\"_field_id\":\"1\",\"comment\":\"角色id\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false},\"admin_id\":{\"field\":\"admin_id\",\"_field_id\":\"2\",\"comment\":\"管理员id\",\"control\":\"inputNumber\",\"control_args\":\"\",\"form_show\":true,\"list_show\":true,\"search_type\":\"normal\",\"enable_sort\":false,\"searchable\":false}}', '2022-08-15 00:00:00', '2022-12-20 19:42:51');
 INSERT INTO `options` VALUES (18, 'dict_dict_name', '[{\"value\":\"dict_name\",\"name\":\"字典名称\"},{\"value\":\"status\",\"name\":\"启禁用状态\"},{\"value\":\"sex\",\"name\":\"性别\"},{\"value\":\"upload\",\"name\":\"附件分类\"}]', '2022-08-15 00:00:00', '2022-12-20 19:42:51');
-INSERT INTO `options` VALUES (19, 'config', '{\"base_info\":{\"web_url\":\"66\"}}', '2022-12-05 14:49:01', '2025-03-07 16:41:56');
+INSERT INTO `options` VALUES (20, 'dict_transaction_status', '[{\"value\":\"1\",\"name\":\"进行中\"},{\"value\":\"2\",\"name\":\"已完成\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
+INSERT INTO `options` VALUES (21, 'dict_exchange_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"已完成\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
+INSERT INTO `options` VALUES (22, 'dict_recharge_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"成功\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
+INSERT INTO `options` VALUES (23, 'dict_withdraw_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"成功\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
+INSERT INTO `options` VALUES (105, 'config', '{\"base_info\":{\"web_url\":\"7567567\"},\"ckb\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"0.05\"},\"sol\":{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"0.2\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}}', '2025-03-10 20:12:02', '2025-03-10 20:15:08');
 
 -- ----------------------------
 -- Table structure for recharges
@@ -337,7 +368,7 @@ CREATE TABLE `roles`  (
 -- Records of roles
 -- ----------------------------
 INSERT INTO `roles` VALUES (1, '超级管理员', '*', '2022-08-13 16:15:01', '2022-12-23 12:05:07', NULL);
-INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88,116,117,118,119,122,123,124,125,126,121', '2025-03-06 16:23:57', '2025-03-07 18:00:25', 1);
+INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88,116,117,118,119,122,123,124,125,126,121,129,132,133,146,147,131,137,138,148,149,142,143,144,145', '2025-03-06 16:23:57', '2025-03-10 15:59:11', 1);
 
 -- ----------------------------
 -- Table structure for rules
@@ -355,7 +386,7 @@ CREATE TABLE `rules`  (
   `type` int(11) NOT NULL DEFAULT 1 COMMENT '类型',
   `weight` int(11) NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 127 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限规则' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 175 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限规则' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of rules
@@ -446,7 +477,7 @@ INSERT INTO `rules` VALUES (83, '更新', NULL, 'plugin\\admin\\app\\controller\
 INSERT INTO `rules` VALUES (84, '删除', NULL, 'plugin\\admin\\app\\controller\\RuleController@delete', 6, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (85, '插入', NULL, 'plugin\\admin\\app\\controller\\UserController@insert', 8, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (86, '更新', NULL, 'plugin\\admin\\app\\controller\\UserController@update', 8, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
-INSERT INTO `rules` VALUES (87, '查询', NULL, 'plugin\\admin\\app\\controller\\UserController@select', 8, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
+INSERT INTO `rules` VALUES (87, 'select', NULL, 'plugin\\admin\\app\\controller\\UserController@select', 8, '2025-03-05 09:51:00', '2025-03-10 14:51:13', NULL, 2, 0);
 INSERT INTO `rules` VALUES (88, '删除', NULL, 'plugin\\admin\\app\\controller\\UserController@delete', 8, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (89, '更新', NULL, 'plugin\\admin\\app\\controller\\AccountController@update', 10, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (90, '修改密码', NULL, 'plugin\\admin\\app\\controller\\AccountController@password', 10, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
@@ -486,6 +517,48 @@ INSERT INTO `rules` VALUES (123, '更新', NULL, 'plugin\\admin\\app\\controller
 INSERT INTO `rules` VALUES (124, '查询', NULL, 'plugin\\admin\\app\\controller\\NoticeController@select', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (125, '删除', NULL, 'plugin\\admin\\app\\controller\\NoticeController@delete', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (126, '更改', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController@update', 120, '2025-03-07 18:00:02', '2025-03-07 18:00:02', NULL, 2, 0);
+INSERT INTO `rules` VALUES (127, '财务管理', 'layui-icon-rmb', 'finance', NULL, '2025-03-07 14:39:52', '2025-03-10 20:11:17', '', 0, 0);
+INSERT INTO `rules` VALUES (128, 'CKB质押', '', 'plugin\\admin\\app\\controller\\CkbController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/ckb/index', 1, 0);
+INSERT INTO `rules` VALUES (129, 'select', NULL, 'plugin\\admin\\app\\controller\\CkbController@select', 128, '2025-03-05 09:51:00', '2025-03-10 20:10:26', NULL, 2, 0);
+INSERT INTO `rules` VALUES (130, 'SOL套利', '', 'plugin\\admin\\app\\controller\\SolController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/sol/index', 1, 0);
+INSERT INTO `rules` VALUES (131, 'select', NULL, 'plugin\\admin\\app\\controller\\SolController@select', 130, '2025-03-05 09:51:00', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (132, 'staticIncome', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncome', 128, '2025-03-05 09:51:00', '2025-03-10 20:10:26', NULL, 2, 0);
+INSERT INTO `rules` VALUES (133, 'staticIncomes', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncomes', 128, '2025-03-10 14:51:13', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (137, 'staticIncome', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncome', 130, '2025-03-10 14:51:13', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (138, 'staticIncomes', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncomes', 130, '2025-03-10 14:51:13', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (142, '货币兑换', '', 'plugin\\admin\\app\\controller\\ExchangeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/exchange/index', 1, 0);
+INSERT INTO `rules` VALUES (143, '充值列表', '', 'plugin\\admin\\app\\controller\\RechargeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/recharge/index', 1, 0);
+INSERT INTO `rules` VALUES (144, '提现列表', '', 'plugin\\admin\\app\\controller\\WithdrawController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/withdraw/index', 1, 0);
+INSERT INTO `rules` VALUES (145, '资金明细', '', 'plugin\\admin\\app\\controller\\AssetsLogController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/assetsLog/index', 1, 0);
+INSERT INTO `rules` VALUES (146, 'dynamicIncome', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncome', 128, '2025-03-10 14:51:13', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (147, 'dynamicIncomes', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncomes', 128, '2025-03-10 14:51:13', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (148, 'dynamicIncome', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncome', 130, '2025-03-10 14:51:13', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (149, 'dynamicIncomes', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncomes', 130, '2025-03-10 14:51:13', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (150, 'parseNestedArray', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController@parseNestedArray', 120, '2025-03-10 20:10:26', '2025-03-10 20:10:26', NULL, 2, 0);
+INSERT INTO `rules` VALUES (151, 'show', NULL, 'plugin\\admin\\app\\controller\\CkbController@show', 128, '2025-03-10 20:10:26', '2025-03-10 20:10:26', NULL, 2, 0);
+INSERT INTO `rules` VALUES (152, 'ckbLogs', NULL, 'plugin\\admin\\app\\controller\\CkbController@ckbLogs', 128, '2025-03-10 20:10:26', '2025-03-10 20:10:26', NULL, 2, 0);
+INSERT INTO `rules` VALUES (153, '添加', NULL, 'plugin\\admin\\app\\controller\\CkbController@insert', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (154, '更新', NULL, 'plugin\\admin\\app\\controller\\CkbController@update', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (155, '删除', NULL, 'plugin\\admin\\app\\controller\\CkbController@delete', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (156, '添加', NULL, 'plugin\\admin\\app\\controller\\SolController@insert', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (157, '更新', NULL, 'plugin\\admin\\app\\controller\\SolController@update', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (158, '删除', NULL, 'plugin\\admin\\app\\controller\\SolController@delete', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (159, 'select', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@select', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (160, '添加', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@insert', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (161, '更新', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@update', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (162, '删除', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@delete', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (163, 'select', NULL, 'plugin\\admin\\app\\controller\\RechargeController@select', 143, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (164, '添加', NULL, 'plugin\\admin\\app\\controller\\RechargeController@insert', 143, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (165, '更新', NULL, 'plugin\\admin\\app\\controller\\RechargeController@update', 143, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (166, '删除', NULL, 'plugin\\admin\\app\\controller\\RechargeController@delete', 143, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (167, 'select', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@select', 144, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (168, '添加', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@insert', 144, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (169, '更新', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@update', 144, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (170, '删除', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@delete', 144, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (171, 'select', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@select', 145, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (172, '添加', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@insert', 145, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (173, '更新', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@update', 145, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (174, '删除', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@delete', 145, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 
 -- ----------------------------
 -- Table structure for transaction_logs
@@ -504,12 +577,16 @@ CREATE TABLE `transaction_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of transaction_logs
 -- ----------------------------
 INSERT INTO `transaction_logs` VALUES (1, 10, 1, 'ONE', 1.290000, 0.080000, 'CKB', 1741159440, '2025-03-05 15:24:00', '2025-03-05 15:24:00');
+INSERT INTO `transaction_logs` VALUES (2, 10, 1, 'ONE', 1.290323, 0.080000, 'CKB', 1741363201, '2025-03-08 00:00:01', '2025-03-08 00:00:01');
+INSERT INTO `transaction_logs` VALUES (3, 10, 1, 'ONE', 1.290323, 0.080000, 'CKB', 1741449600, '2025-03-09 00:00:00', '2025-03-09 00:00:00');
+INSERT INTO `transaction_logs` VALUES (4, 10, 1, 'ONE', 1.290323, 0.080000, 'CKB', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
+INSERT INTO `transaction_logs` VALUES (5, 10, 2, 'USDT', 1.290323, 0.080000, 'SOL', 1741536000, '2025-03-10 00:00:00', '2025-03-10 00:00:00');
 
 -- ----------------------------
 -- Table structure for transactions
@@ -530,12 +607,13 @@ CREATE TABLE `transactions`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
-INSERT INTO `transactions` VALUES (1, 10, 'ONE', 500.000000, 1.290000, 15, 1, 1741155354, 1741104000, 1, 'CKB', '2025-03-05 14:15:54', '2025-03-05 14:15:54');
+INSERT INTO `transactions` VALUES (1, 10, 'ONE', 500.000000, 5.160969, 15, 4, 1741155354, 1741536000, 1, 'CKB', '2025-03-05 14:15:54', '2025-03-05 14:15:54');
+INSERT INTO `transactions` VALUES (2, 10, 'USDT', 500.000000, 5.160969, 15, 4, 1741155354, 1741536000, 1, 'SOL', '2025-03-05 14:15:54', '2025-03-05 14:15:54');
 
 -- ----------------------------
 -- Table structure for uploads
