@@ -2,6 +2,7 @@
 
 namespace process;
 
+use app\enums\HtxMarket;
 use Ratchet\Client\WebSocket;
 use Ratchet\Client\Connector as WebSocketConnector;
 use React\EventLoop\Factory;
@@ -51,14 +52,14 @@ class HtxWebSocketClient
 
                 // 订阅 BTC/USDT 的实时行情
                 $subscribeBtcMessage = [
-                    'sub' => 'market.btcusdt.ticker',
+                    'sub' => HtxMarket::BTCUSDT_TICKER->value,
                     'id' => 'btcusdt_ticker_' . time(),
                 ];
                 $conn->send(json_encode($subscribeBtcMessage));
 
                 // 订阅 ONE/USDT 的实时行情
                 $subscribeOneMessage = [
-                    'sub' => 'market.oneusdt.ticker',
+                    'sub' => HtxMarket::ONEUSDT_TICKER->value,
                     'id' => 'oneusdt_ticker_' . time(),
                 ];
                 $conn->send(json_encode($subscribeOneMessage));
@@ -78,8 +79,8 @@ class HtxWebSocketClient
                         $conn->send(json_encode(['pong' => $data['ping']]));
                     } elseif (isset($data['ch'])) {
                         // 存入 Redis
-                        Redis::set($data['ch'], json_encode($data));
-                        Log::info("Saved data to Redis: " . json_encode($data));
+                        Redis::publish($data['ch'], json_encode($data));
+//                        Log::info("Saved data to Redis: " . json_encode($data));
                     } else {
                         // 其他消息
                         Log::info("Received: " . json_encode($data));
