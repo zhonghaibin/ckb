@@ -75,4 +75,35 @@ class UserController extends Crud
         return raw_view('user/update');
     }
 
+    public function direct(): Response
+    {
+        return raw_view('user/direct');
+    }
+
+    public function directList(Request $request)
+    {
+
+        $this->model = new User;
+        [$where, $format, $limit, $field, $order] = $this->selectInput($request);
+        $query = $this->doSelect($where, $field, $order);
+        $query = $query->with('assets');
+        return $this->doFormat($query, $format, $limit);
+    }
+
+    public function team(): Response
+    {
+        return raw_view('user/team');
+    }
+
+    public function teamList(Request $request)
+    {
+        $user_id = $request->get('user_id');
+        $user_ids= get_team_user_ids($user_id);
+        $this->model = new User;
+        [$where, $format, $limit, $field, $order] = $this->selectInput($request);
+        $where['id']=['in',$user_ids];
+        $query = $this->doSelect($where, $field, $order);
+        $query = $query->with('assets');
+        return $this->doFormat($query, $format, $limit);
+    }
 }

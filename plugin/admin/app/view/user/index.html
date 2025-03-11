@@ -89,7 +89,27 @@
             const DELETE_API = "/app/admin/user/delete";
             const INSERT_URL = "/app/admin/user/insert";
             const UPDATE_URL = "/app/admin/user/update";
+            let  showDirectUsers = function (userId) {
+                layer.open({
+                    type: 2,  // iframe 类型
+                    title: "直推用户",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['80%', '80%'], // 宽高
+                    content: `/app/admin/user/direct?pid=` + userId
+                });
+            }
 
+            let  showTeamUsers = function (userId) {
+                layer.open({
+                    type: 2,  // iframe 类型
+                    title: "团队用户",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['80%', '80%'], // 宽高
+                    content: `/app/admin/user/team?user_id=` + userId
+                });
+            }
 
             layui.use(["jquery", "xmSelect", "popup"], function() {
                 layui.$.ajax({
@@ -169,13 +189,13 @@
                         title: "直推人数",
                         field: "direct_count",
                         templet: function(d) {
-                            return d.direct_count;
+                            return `<a href="javascript:void(0);" onclick="showDirectUsers(${d.id})">${d.direct_count}</a>`;
                         }
                     },{
                         title: "团队人数",
                         field: "team_count",
                         templet: function(d) {
-                            return d.team_count;
+                            return `<a href="javascript:void(0);" onclick="showTeamUsers(${d.id})">${d.team_count}</a>`;
                         }
                     },{
                         title: "分享链接",
@@ -192,7 +212,6 @@
                     },{
 						title: "创建时间",
 						field: "created_at",
-						hide: true,
 					},{
 						title: "更新时间",
 						field: "updated_at",
@@ -230,7 +249,10 @@
 					}
 				];
 
-				// 渲染表格
+
+
+
+                // 渲染表格
 				function render()
 				{
 				    table.render({
