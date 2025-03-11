@@ -31,10 +31,9 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">等级</label>
                         <div class="layui-input-block">
-                            <input type="number" name="level" value="" class="layui-input">
+                            <div name="level" id="level" value="" ></div>
                         </div>
                     </div>
-
 
 
                     <div class="layui-form-item layui-inline">
@@ -92,7 +91,28 @@
             const UPDATE_URL = "/app/admin/user/update";
 
 
-
+            layui.use(["jquery", "xmSelect", "popup"], function() {
+                layui.$.ajax({
+                    url: "/app/admin/dict/get/user_level",
+                    dataType: "json",
+                    success: function (res) {
+                        let value = layui.$("#status").attr("value");
+                        let initValue = value ? value.split(",") : [];
+                        layui.xmSelect.render({
+                            el: "#level",
+                            name: "level",
+                            initValue: initValue,
+                            data: res.data,
+                            model: {"icon":"hidden","label":{"type":"text"}},
+                            clickClose: true,
+                            radio: true,
+                        });
+                        if (res.code) {
+                            layui.popup.failure(res.msg);
+                        }
+                    }
+                });
+            });
 
             // 字段 注册时间 created_at
             layui.use(["laydate"], function() {
@@ -136,8 +156,14 @@
                     {
 						title: "等级",
 						field: "level",
-                        templet: function(d) {
-                            return "Vip"+d.level;
+                        templet: function (d) {
+                            let field = "level";
+                            if (typeof d[field] == "undefined") return "";
+                            let items = [];
+                            layui.each((d[field] + "").split(","), function (k , v) {
+                                items.push(apiResults[field][v] || v);
+                            });
+                            return util.escape(items.join(","));
                         }
 					},{
                         title: "直推人数",
@@ -229,9 +255,9 @@
 
 				// 获取表格中下拉或树形组件数据
 				let apis = [];
-				apis.push(["sex", "/app/admin/dict/get/sex"]);
+                apis.push(["level", "/app/admin/dict/get/user_level"]);
 				let apiResults = {};
-				apiResults["sex"] = [];
+				apiResults["level"] = [];
 				let count = apis.length;
 				layui.each(apis, function (k, item) {
 				    let [field, url] = item;

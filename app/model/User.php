@@ -33,15 +33,16 @@ class User extends Base
 
     public function assets(): HasMany
     {
-        return $this->hasMany(Assets::class,'user_id','id');
+        return $this->hasMany(Assets::class, 'user_id', 'id');
     }
 
     protected $appends = ['share_link']; // 自动追加 full_name
 
     public function getShareLinkAttribute()
     {
-          $code = AesUtil::encrypt($this->id);
-
-          return 'http:://xxxx.com?code='.$code;
+        $code = AesUtil::encrypt($this->id);
+        $config = get_system_config();
+        $share_url = $config['base_info']['share_url'];
+        return $share_url . $code;
     }
 }
