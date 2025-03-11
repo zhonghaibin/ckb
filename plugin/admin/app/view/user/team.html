@@ -37,7 +37,7 @@
             url: "/app/admin/dict/get/user_level",
             dataType: "json",
             success: function (res) {
-                let value = layui.$("#status").attr("value");
+                let value = layui.$("#level").attr("value");
                 let initValue = value ? value.split(",") : [];
                 layui.xmSelect.render({
                     el: "#level",
@@ -67,9 +67,16 @@
                 field: "id",
                 sort: true,
             },{
-                title: "主键",
-                field: "id",
-                sort: true,
+                title: "有效用户",
+                field: "is_real",
+                templet: function (d) {
+                    if(d.is_real){
+                        return "是";
+                    }else{
+                        return '否'
+                    }
+
+                }
             },{
                 title: "账户",
                 field: "identity",

@@ -116,7 +116,7 @@
                     url: "/app/admin/dict/get/user_level",
                     dataType: "json",
                     success: function (res) {
-                        let value = layui.$("#status").attr("value");
+                        let value = layui.$("#level").attr("value");
                         let initValue = value ? value.split(",") : [];
                         layui.xmSelect.render({
                             el: "#level",
