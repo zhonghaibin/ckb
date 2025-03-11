@@ -8,19 +8,19 @@
         <link rel="stylesheet" href="/app/admin/admin/css/reset.css" />
     </head>
     <body class="pear-container">
-    
+
         <!-- 顶部查询表单 -->
         <div class="layui-card">
             <div class="layui-card-body">
                 <form class="layui-form top-search-from">
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">主键</label>
                         <div class="layui-input-block">
                             <input type="number" name="id" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">账户</label>
                         <div class="layui-input-block">
@@ -34,7 +34,7 @@
                             <input type="number" name="level" value="" class="layui-input">
                         </div>
                     </div>
-                    
+
 
 
                     <div class="layui-form-item layui-inline">
@@ -53,7 +53,7 @@
                 </form>
             </div>
         </div>
-        
+
         <!-- 数据表格 -->
         <div class="layui-card">
             <div class="layui-card-body">
@@ -102,7 +102,7 @@
                     type: "datetime",
                 });
             })
-            
+
             // 表格渲染
             layui.use(["table", "form", "common", "popup", "util"], function() {
                 let table = layui.table;
@@ -110,7 +110,7 @@
                 let $ = layui.$;
                 let common = layui.common;
                 let util = layui.util;
-                
+
 				// 表头参数
 				let cols = [
 					{
@@ -140,6 +140,24 @@
                             return "Vip"+d.level;
                         }
 					},{
+                        title: "直推人数",
+                        field: "direct_count",
+                        templet: function(d) {
+                            return d.direct_count;
+                        }
+                    },{
+                        title: "团队人数",
+                        field: "team_count",
+                        templet: function(d) {
+                            return d.team_count;
+                        }
+                    },{
+                        title: "分享链接",
+                        field: "share_link",
+                        templet: function(d) {
+                            return d.share_link;
+                        }
+                    },{
                         title: "登录IP",
                         field: "last_login_ip",
                     },{
@@ -185,7 +203,7 @@
                         width: 130,
 					}
 				];
-				
+
 				// 渲染表格
 				function render()
 				{
@@ -208,7 +226,7 @@
 				        }
 				    });
 				}
-				
+
 				// 获取表格中下拉或树形组件数据
 				let apis = [];
 				apis.push(["sex", "/app/admin/dict/get/sex"]);
@@ -245,7 +263,7 @@
 				if (!count) {
 				    render();
 				}
-				
+
                 // 编辑或删除行事件
                 table.on("tool(data-table)", function(obj) {
                     if (obj.event === "remove") {
@@ -276,7 +294,7 @@
                     })
                     return false;
                 });
-                
+
                 // 表格顶部搜索重置事件
                 form.on("submit(table-reset)", function(data) {
                     table.reload("data-table", {

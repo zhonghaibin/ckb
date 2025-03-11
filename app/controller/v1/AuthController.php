@@ -4,6 +4,7 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
+use app\enums\UserJob;
 use app\enums\UserStatus;
 use app\model\Assets;
 use app\model\LoginLog;
@@ -13,6 +14,7 @@ use support\Request;
 use support\Db;
 use app\utils\JwtUtil;
 use app\utils\AesUtil;
+use Webman\RedisQueue\Redis;
 
 class AuthController
 {
@@ -104,12 +106,12 @@ class AuthController
             $user->avatar = '/images/avatars/avatar' . mt_rand(0, 5) . '.png';
             $user->save();
             $user->lang = LangTypes::ZH_CN;
+            $pid = 0;
             if (!empty($code)) {
                 $pid = AesUtil::decrypt($code);
                 if (is_numeric($pid)) {
                     $user->pid = $pid;
                 }
-
             }
             $user->save();
             $assetsList = CoinTypes::list();
@@ -119,8 +121,13 @@ class AuthController
                 $assets->coin = $value;
                 $assets->save();
             }
-
             Db::commit();
+
+            if ($pid) {
+                Redis::send(UserJob::UPDATE_INVITE_COUNT->value, ['user_id' => $pid]);
+            }
+
+
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());

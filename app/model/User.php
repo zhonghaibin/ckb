@@ -2,6 +2,7 @@
 
 namespace app\model;
 
+use app\utils\AesUtil;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use app\model\Base;
 
@@ -33,5 +34,14 @@ class User extends Base
     public function assets(): HasMany
     {
         return $this->hasMany(Assets::class,'user_id','id');
+    }
+
+    protected $appends = ['share_link']; // 自动追加 full_name
+
+    public function getShareLinkAttribute()
+    {
+          $code = AesUtil::encrypt($this->id);
+
+          return 'http:://xxxx.com?code='.$code;
     }
 }

@@ -38,7 +38,6 @@ Route::group('/v1', function () {
 Route::group('/v1', function () {
 
     Route::get('/user/info', [app\controller\v1\UserController::class, 'info']);
-    Route::get('/user/shareLink', [app\controller\v1\UserController::class, 'shareLink']);
     Route::get('/user/referralList', [app\controller\v1\UserController::class, 'referralList']);
     Route::get('/user/teamList', [app\controller\v1\UserController::class, 'teamList']);
 
