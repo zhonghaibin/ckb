@@ -4,6 +4,7 @@ return [
     'success' => '操作成功',
     'token_not_provided' => 'Token 未提供',
     'token_invalid' => 'Token 无效或已过期英文',
+    'code_error' => '邀请码错误',
     'tips_1' => '请输入提现金额',
     'tips_2' => '最低:min_number起',
     'tips_3' => '前后端手续费不一致',
@@ -22,4 +23,5 @@ return [
     'tips_16' => '天数错误',
     'tips_17' => '参数错误',
     'tips_18' => '用户不存在',
+    'tips_19' => '数据保存失败',
 ];

@@ -87,7 +87,6 @@ class AuthController
     public function register(Request $request)
     {
 
-        Db::beginTransaction();
 
         try {
             $identity = $request->post('identity', '');
@@ -109,31 +108,40 @@ class AuthController
             $user->lang = LangTypes::ZH_CN;
             $pid = 0;
             if (!empty($code)) {
-                $pid = AesUtil::decrypt($code);
-                if (is_numeric($pid)) {
-                    $user->pid = $pid;
+                try {
+                    $pid = AesUtil::decrypt($code);
+                    if (is_numeric($pid)) {
+                        $user->pid = $pid;
+                    }
+                } catch (\Throwable $e) {
+                    return json_fail(Lang::get('code_error'));
                 }
             }
-            $user->save();
+            if (!$user->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
+
             $assetsList = CoinTypes::list();
             foreach ($assetsList as $value) {
                 $assets = new Assets;
                 $assets->user_id = $user->id;
                 $assets->coin = $value;
-                $assets->save();
+                if (!$assets->save()) {
+                    throw new \Exception(Lang::get('tips_19'));
+                }
             }
-            Db::commit();
+
 
             if ($pid) {
                 Redis::send(UserJob::UPDATE_INVITE_COUNT->value, ['user_id' => $pid]);
             }
+            return json_success();
 
+        } catch (\Throwable $e) {
 
-        } catch (\Exception $e) {
-            DB::rollBack();
             return json_fail($e->getMessage());
         }
-        return json_success();
+
 
     }
 
