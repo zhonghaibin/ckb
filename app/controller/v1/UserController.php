@@ -41,9 +41,7 @@ class UserController
             ->where('user_id', $userId)
             ->sum('amount');
 
-        $config = Db::table('options')->where('name', 'config')->value('value');
-        $config = json_decode($config, true);
-        $params = $config['base_info'];
+
         $data = [
             'avatar' => $user->avatar,
             'identity' => $user->identity,
@@ -51,7 +49,6 @@ class UserController
             'direct_count' => $direct_count, // 直推人数
             'direct_bonus' => $direct_bonus, // 直推收益
             'assets' => $assets, // 用户资产
-            'web_url' => $params['web_url'],
         ];
         return json_success($data);
     }

@@ -117,7 +117,10 @@ class SystemConfigController extends Base
             }
             switch ($section) {
                 case 'base_info':
+                    $data[$section]['maintenance_mode'] = $items['maintenance_mode'] ?? false;
+                    $data[$section]['maintenance_message'] = $items['maintenance_message'] ?? '';
                     $data[$section]['web_url'] = $items['web_url'] ?? '';
+                    $data[$section]['withdraw_fee_rate'] = $items['withdraw_fee_rate'] ?? 0;
                     break;
                 case 'ckb':
                     $flatArray = json_decode($post[$section], true);

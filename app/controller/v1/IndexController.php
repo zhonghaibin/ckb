@@ -8,6 +8,11 @@ use support\Db;
 class IndexController
 {
 
+    public function baseInfo(){
+        $config = Db::table('options')->where('name', 'config')->value('value');
+        $config = json_decode($config, true);
+        return json_success($config);
+    }
 
     public function banner()
     {

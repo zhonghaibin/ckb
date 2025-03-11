@@ -1,5 +1,10 @@
 {
-  "base_info":{"web_url":""},
+  "base_info":{
+    "maintenance_mode": false,
+    "maintenance_message": "系统正在维护，请稍后再试。",
+    "web_url":"",
+    "withdraw_fee_rate": "0"
+  },
   "ckb": {
     "staticRate": [
       {"day": "15","rate": "8"},
