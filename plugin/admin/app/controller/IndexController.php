@@ -4,7 +4,7 @@ namespace plugin\admin\app\controller;
 
 use plugin\admin\app\common\Util;
 use plugin\admin\app\model\Option;
-use plugin\admin\app\model\User;
+use app\model\User;
 use support\exception\BusinessException;
 use support\Request;
 use support\Response;
