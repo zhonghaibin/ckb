@@ -26,12 +26,9 @@ class TimersTask
 
         // 每天的00点00执行，注意这里省略了秒位
         new Crontab('0 0 * * *', function () {
+            CkbBonusService::getInstance()->run();
+            SolBonusService::getInstance()->run();
 
-            $ckb = new CkbBonusService();
-            $ckb->run();
-
-            $sol = new SolBonusService();
-            $sol->run();
         });
 
     }

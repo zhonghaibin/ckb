@@ -35,11 +35,10 @@ class TestController
     public function index(Request $request)
     {
 
-        $ckb = new CkbBonusService();
-        $ckb->run();
 
-        $sol = new SolBonusService();
-        $sol->run();
+
+//        CkbBonusService::getInstance()->run();
+//        SolBonusService::getInstance()->run();
 
 //        $midnightTimestamp = Carbon::today()->timestamp;
 //

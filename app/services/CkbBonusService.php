@@ -21,6 +21,25 @@ class CkbBonusService
 
     protected float $same_level_rate = 0;
 
+    private static $instance = null; // 存储唯一实例
+
+    private function __construct() {
+        // 私有构造函数，防止外部实例化
+    }
+
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    private function __clone() {
+        // 禁止克隆
+    }
+
+
+
     public function run()
     {
         try {
