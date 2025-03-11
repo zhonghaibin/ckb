@@ -80,7 +80,7 @@ class UserController extends Crud
         return raw_view('user/direct');
     }
 
-    public function directList(Request $request)
+    public function directs(Request $request)
     {
 
         $this->model = new User;
@@ -95,7 +95,7 @@ class UserController extends Crud
         return raw_view('user/team');
     }
 
-    public function teamList(Request $request)
+    public function teams(Request $request)
     {
         $user_id = $request->get('user_id');
         $user_ids= get_team_user_ids($user_id);
