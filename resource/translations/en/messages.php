@@ -1,5 +1,22 @@
 <?php
 
 return [
-    'hello' => 'Hello webman',
+    'tips_1' => 'Please enter the withdrawal amount',
+    'tips_2' => 'Minimum :min_number required',
+    'tips_3' => 'Inconsistent fees between front-end and back-end',
+    'tips_4' => 'Insufficient balance',
+    'tips_5' => 'Incorrect exchange currency',
+    'tips_6' => 'Incorrect conversion currency',
+    'tips_7' => 'This currency cannot be exchanged',
+    'tips_8' => 'Please enter the exchange amount',
+    'tips_9' => 'User credential cannot be empty',
+    'tips_10' => 'Invalid credentials, login failed',
+    'tips_11' => 'Login successful',
+    'tips_12' => 'User ID cannot be empty',
+    'tips_13' => 'User already exists',
+    'tips_14' => 'An error occurred',
+    'tips_15' => 'Invalid currency',
+    'tips_16' => 'Invalid number of days',
+    'tips_17' => 'Invalid parameters',
+    'tips_18' => 'User does not exist',
 ];

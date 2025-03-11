@@ -4,6 +4,7 @@ namespace app\controller\v1;
 
 use app\enums\AssetsLogTypes;
 use app\model\User;
+use app\support\Lang;
 use support\Request;
 use app\utils\AesUtil;
 use support\Db;
@@ -22,7 +23,7 @@ class UserController
             ->first();
 
         if (!$user) {
-            return json_fail('用户不存在');
+            return json_fail(Lang::get('tips_18'));
         }
 
 

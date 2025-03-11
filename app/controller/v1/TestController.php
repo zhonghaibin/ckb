@@ -12,6 +12,7 @@ use app\model\User;
 use app\services\CkbBonusService;
 use app\services\SolBonusService;
 use app\services\UserUpgradeService;
+use app\support\Lang;
 use Carbon\Carbon;
 use support\Db;
 use support\Log;
@@ -35,8 +36,8 @@ class TestController
     public function index(Request $request)
     {
 
-
-
+        $dd = Lang::get('aaa');
+        return json_success($dd);
 //        CkbBonusService::getInstance()->run();
 //        SolBonusService::getInstance()->run();
 

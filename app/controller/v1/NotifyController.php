@@ -11,6 +11,7 @@ use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\Recharge;
 use app\model\User;
+use app\support\Lang;
 use Carbon\Carbon;
 use support\Request;
 use support\Db;
@@ -54,7 +55,7 @@ class NotifyController
             return json_success('ok');
         }
 
-        return json_fail('出错了');
+        return json_fail(Lang::get('tips_14'));
 
     }
 

@@ -9,6 +9,7 @@ use app\enums\UserStatus;
 use app\model\Assets;
 use app\model\LoginLog;
 use app\model\User;
+use app\support\Lang;
 use Carbon\Carbon;
 use support\Request;
 use support\Db;
@@ -48,14 +49,14 @@ class AuthController
     {
         $identity = $request->post('identity', '');
         if (empty($identity)) {
-            return json_fail('用户凭证不能为空');
+            return json_fail(Lang::get('tips_9'));
         }
         Db::beginTransaction();
         try {
             $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
 
             if (empty($user)) {
-                return json_fail('凭证错误,登录失败');
+                return json_fail(Lang::get('tips_10'));
             }
             $token = JwtUtil::generateToken($user->id);
 
@@ -78,7 +79,7 @@ class AuthController
         }
         return json_success([
             'token' => $token,
-        ], '登录成功');
+        ], Lang::get('tips_11'));
 
     }
 
@@ -92,12 +93,12 @@ class AuthController
             $identity = $request->post('identity', '');
             $code = $request->post('code', '');
             if (empty($identity)) {
-                return json_fail('用户Id不能为空');
+                return json_fail(Lang::get('tips_12'));
             }
             $user = User::query()->where(['identity' => $identity])->first();
 
             if ($user) {
-                return json_fail('用户已存在');
+                return json_fail(Lang::get('tips_13'));
             }
 
             $user = new User;

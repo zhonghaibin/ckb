@@ -12,6 +12,7 @@ use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\User;
 use app\model\Transaction;
+use app\support\Lang;
 use Webman\RedisQueue\Redis;
 use support\Request;
 use support\Db;
@@ -29,20 +30,20 @@ class TransactionController
         $day = $request->post('day', 15);
 
         if (!in_array($coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
-            return json_fail('币种错误');
+            return json_fail(Lang::get('tips_15'));
         }
 
         $config = get_system_config();
         $min_number = $config['base_info']['ckb_min_number'];
         if ($amount < $min_number) {
-            return json_fail("最低{$min_number}起");
+            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
         }
 
         $params = $config['ckb'];
         $days = array_column($params['staticRate'], 'day');
 
         if (!in_array($day, $days)) {
-            return json_fail('天数错误');
+            return json_fail(Lang::get('tips_16'));
         }
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
@@ -53,7 +54,7 @@ class TransactionController
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
             $new_balance = $assets->amount - $amount;
             if ($new_balance < 0) {
-                throw new \Exception("余额不足");
+                throw new \Exception(Lang::get('tips_4'));
             }
 
             $assets->decrement('amount', $amount);
@@ -103,14 +104,14 @@ class TransactionController
         $config = get_system_config();
         $min_number = $config['base_info']['sol_min_number'];
         if ($amount < $min_number) {
-            return json_fail("最低{$min_number}起");
+            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
         }
 
         $params = $config['sol'];
         $days = array_column($params['staticRate'], 'day');
 
         if (!in_array($day, $days)) {
-            return json_fail('天数错误');
+            return json_fail(Lang::get('tips_16'));
         }
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
@@ -121,7 +122,7 @@ class TransactionController
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
             $new_balance = $assets->amount - $amount;
             if ($new_balance < 0) {
-                throw new \Exception("余额不足");
+                throw new \Exception(Lang::get('tips_4'));
             }
 
             $assets->decrement('amount', $amount);
@@ -167,7 +168,7 @@ class TransactionController
         $transactionType = $request->get('transactionType', TransactionTypes::SOL);
 
         if (!in_array($transactionType, [TransactionTypes::SOL->value, TransactionTypes::CKB->value])) {
-            return json_fail('参数错误');
+            return json_fail(Lang::get('tips_17'));
         }
         $transactions = Db::table('transactions')->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)
@@ -185,7 +186,7 @@ class TransactionController
         $transactionType = $request->get('transactionType', TransactionTypes::SOL);
 
         if (!in_array($transactionType, [TransactionTypes::SOL->value, TransactionTypes::CKB->value])) {
-            return json_fail('参数错误');
+            return json_fail(Lang::get('tips_17'));
         }
         $transactionLogs = Db::table('transaction_logs')->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)

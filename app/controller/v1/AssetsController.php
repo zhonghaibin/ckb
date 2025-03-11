@@ -12,8 +12,10 @@ use app\model\AssetsLog;
 use app\model\Exchange;
 use app\model\User;
 use app\model\Withdraw;
+use app\support\Lang;
 use Carbon\Carbon;
 use support\Db;
+use support\Log;
 use support\Request;
 
 
@@ -70,19 +72,19 @@ class AssetsController
         $amount = $request->post('amount');
         $fee = $request->post('fee', 0);
         if ($amount <= 0) {
-            return json_fail('请输入提现金额');
+            return json_fail(Lang::get('tips_1'));
         }
 
         $config = get_system_config();
         $min_number = $config['base_info']['withdraw_min_number'] ?? 0;
         if ($amount < $min_number) {
-            return json_fail("最低{$min_number}起");
+            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
         }
 
         $withdraw_fee_rate = ($config['base_info']['withdraw_fee_rate'] ?? 0) / 100;
         $withdraw_fee = $withdraw_fee_rate * $amount;
         if ($withdraw_fee != $fee) {
-            return json_fail('前后端手续费不一致');
+            return json_fail(Lang::get('tips_3'));
         }
 
 
@@ -95,7 +97,7 @@ class AssetsController
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
             $new_balance = $assets->amount - $amount;
             if ($new_balance < 0) {
-                throw new \Exception("余额不足");
+                throw new \Exception(Lang::get('tips_4'));
             }
 
             $assets->decrement('amount', $amount);
@@ -151,23 +153,23 @@ class AssetsController
         $config = get_system_config();
         $min_number = $config['base_info']['exchange_min_number'] ?? 0;
         if ($amount < $min_number) {
-            return json_fail("最低{$min_number}起");
+            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
         }
 
         if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value, CoinTypes::USDT->value])) {
-            return json_fail('兑换币种错误');
+            return json_fail(Lang::get('tips_5'));
         }
 
         if (!in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value, CoinTypes::USDT->value])) {
-            return json_fail('转换币种错误');
+            return json_fail(Lang::get('tips_6'));
         }
 
         if (in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value]) && in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
-            return json_fail('不能兑换该币种');
+            return json_fail(Lang::get('tips_7'));
         }
 
         if ($amount <= 0) {
-            return json_fail('请输入兑换数量');
+            return json_fail(Lang::get('tips_8'));
         }
 
 
@@ -177,7 +179,7 @@ class AssetsController
             $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
             $from_new_balance = $from_assets->amount - $amount;
             if ($from_new_balance < 0) {
-                throw new \Exception("余额不足");
+                throw new \Exception(Lang::get('tips_4'));
             }
 
             $to_amount = $amount;
