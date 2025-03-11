@@ -4,13 +4,17 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
+use app\enums\TransactionStatus;
+use app\enums\TransactionTypes;
 use app\enums\UserUpgrade;
 use app\model\Assets;
 use app\model\User;
 use app\services\CkbBonusService;
 use app\services\UserUpgradeService;
+use Carbon\Carbon;
 use support\Db;
 use support\Log;
+
 //use Webman\RedisQueue\Redis;
 use support\Request;
 use Webman\Event\Event;
@@ -19,20 +23,51 @@ use support\Redis;
 
 class TestController
 {
+    protected array $rates = [];
+
+    protected float $direct_rate = 0;
+
+    protected array $level_diff_rates = [];
+
+    protected float $same_level_rate = 0;
+
     public function index(Request $request)
     {
-        $min = 6;
-        $max = 8;
+        $midnightTimestamp = Carbon::today()->timestamp;
 
-// 生成符合范围的随机数
-        $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
-        $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
+        // 获取符合条件的交易记录
+        $transactions = DB::table('transactions')
+            ->where('transaction_type', TransactionTypes::SOL)
+            ->where('status', TransactionStatus::NORMAL)
+            ->whereRaw('run_day < day')
+            ->where('runtime', '<', $midnightTimestamp)
+            ->get();
 
-// 计算平均值并四舍五入到 2 位小数
-        $rate = round(($randomRate1 + $randomRate2) / 2, 2)/100;
+        return  json_success($transactions);
+        foreach ($transactions as $transaction) {
+            $params = json_decode($transaction->rates, true);
+            $this->rates = array_column(array_map(fn($item) => [$item['day'], [(int)$item['rate']['min'], (int)$item['rate']['max']]], $params['staticRate']), 1, 0);
+            $this->direct_rate = $params['directRate'];
+            $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
+            $this->same_level_rate = $params['sameLevelRate'];
+            $data = [$this->rates, $this->direct_rate, $this->level_diff_rates, $this->same_level_rate];
+
+            return json_success($data);
+        }
 
 
-        return  response($rate);
+//        $min = 6;
+//        $max = 8;
+//
+//// 生成符合范围的随机数
+//        $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
+//        $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
+//
+//// 计算平均值并四舍五入到 2 位小数
+//        $rate = round(($randomRate1 + $randomRate2) / 2, 2)/100;
+
+
+//        return  response($rate);
 //         Redis::publish('market.btcusdt.ticker',json_encode([
 //             "ch" => "market.oneusdt.ticker",
 //             "ts" => 1741231648141,

@@ -61,8 +61,8 @@ class NotifyController
 
     public function recharge(Request $request)
     {
-        $amount = 1;
-        $identity = 1;
+        $amount = $request->post('amount');
+        $identity = $request->post('identity');
         $coin = CoinTypes::USDT;
         Db::beginTransaction();
         try {

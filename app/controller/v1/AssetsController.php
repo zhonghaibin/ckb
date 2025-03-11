@@ -149,12 +149,16 @@ class AssetsController
             return json_fail("最低{$min_number}起");
         }
 
-        if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
+        if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value, CoinTypes::USDT->value])) {
             return json_fail('兑换币种错误');
         }
 
-        if (!in_array($to_coin, [CoinTypes::USDT->value])) {
+        if (!in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value, CoinTypes::USDT->value])) {
             return json_fail('转换币种错误');
+        }
+
+        if (in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value]) && in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
+            return json_fail('不能兑换该币种');
         }
 
         if ($amount <= 0) {

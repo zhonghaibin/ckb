@@ -114,8 +114,6 @@
 				// 表头参数
 				let cols = [
 					{
-						type: "checkbox"
-					},{
 						title: "主键",
 						field: "id",
 						sort: true,
@@ -138,6 +136,9 @@
                     {
 						title: "等级",
 						field: "level",
+                        templet: function(d) {
+                            return "Vip"+d.level;
+                        }
 					},{
                         title: "登录IP",
                         field: "last_login_ip",

@@ -13,39 +13,13 @@ use support\Log;
 
 class SolBonusService
 {
-    protected array $rates = [
-        1 => [6, 8],
-        15 => [8, 10],
-        30 => [10, 13],
-    ];
+    protected array $rates = [];
 
-    protected float $direct_rate = 20;
+    protected float $direct_rate = 0;
 
-    protected array $level_diff_rates = [
-        0 => 0,
-        1 => 5,
-        2 => 10,
-        3 => 15,
-        4 => 20,
-        5 => 25,
-        6 => 30,
-        7 => 35,
-        8 => 40,
-        9 => 50,
-    ];
+    protected array $level_diff_rates = [];
 
-    protected float $same_level_rate = 5;
-
-    public function __construct()
-    {
-        $config = Db::table('options')->where('name', 'config')->value('value');
-        $config = json_decode($config, true);
-        $params = $config['sol'];
-        $this->rates = $params['staticRate'];
-        $this->direct_rate = $params['directRate'];
-        $this->level_diff_rates = $params['levelDiffRate'];
-        $this->same_level_rate = $params['sameLevelRate'];
-    }
+    protected float $same_level_rate = 0;
 
     public function run()
     {
@@ -61,6 +35,11 @@ class SolBonusService
                 ->get();
 
             foreach ($transactions as $transaction) {
+                $params = json_decode($transaction->rates, true);
+                $this->rates = array_column(array_map(fn($item) => [$item['day'], [(int)$item['rate']['min'], (int)$item['rate']['max']]], $params['staticRate']), 1, 0);
+                $this->direct_rate = $params['directRate'];
+                $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
+                $this->same_level_rate = $params['sameLevelRate'];
                 DB::beginTransaction();
 
                 try {
@@ -173,7 +152,7 @@ class SolBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $rate = $this->direct_rate / 100;
+            $rate = round( $this->direct_rate / 100,2);
             $parent_bonus = round($rate * $bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
@@ -203,9 +182,10 @@ class SolBonusService
     private function levelDiffBonus($parent, $bonus, $transaction, $transactionLogId, $user_level)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $user_level_diff_rate = ($this->level_diff_rates[$user_level] ?? 0) / 100;
-            $parent_level_diff_rate = ($this->level_diff_rates[$parent->level] ?? 0) / 100;
-            $level_diff_rate = $parent_level_diff_rate - $user_level_diff_rate;
+            $user_level_diff_rate = round(($this->level_diff_rates[$user_level] ?? 0) / 100, 2);
+            $parent_level_diff_rate = round(($this->level_diff_rates[$parent->level] ?? 0) / 100, 2);
+            $level_diff_rate = round($parent_level_diff_rate - $user_level_diff_rate, 2);
+
             $parent_bonus = round($level_diff_rate * $bonus, 6);
 
             DB::table('assets')
@@ -262,7 +242,7 @@ class SolBonusService
         }
 
         if (!empty($userIds)) {
-            $rate = $this->same_level_rate / 100;
+            $rate = round($this->same_level_rate / 100, 2);
             $parent_bonus = round($bonus * $rate, 6);
             foreach ($userIds as $user_id) {
                 DB::table('assets')

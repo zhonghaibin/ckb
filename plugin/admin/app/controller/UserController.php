@@ -2,7 +2,8 @@
 
 namespace plugin\admin\app\controller;
 
-use plugin\admin\app\model\User;
+
+use app\model\User;
 use support\exception\BusinessException;
 use support\Request;
 use support\Response;

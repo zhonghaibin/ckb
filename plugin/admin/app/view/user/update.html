@@ -16,7 +16,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">账户</label>
                         <div class="layui-input-block">
-                            <input type="text" name="identity" value="" required lay-verify="required" class="layui-input">
+                            <input type="text" disabled name="identity" value="" required lay-verify="required" class="layui-input">
                         </div>
                     </div>
 
@@ -38,7 +38,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">等级</label>
                         <div class="layui-input-block">
-                            <input type="number" name="level" value="" class="layui-input">
+                            <input type="number" name="level" value="" min="0" max="9" class="layui-input">
                         </div>
                     </div>
 

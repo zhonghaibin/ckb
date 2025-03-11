@@ -13,39 +13,13 @@ use support\Log;
 
 class CkbBonusService
 {
-    protected array $rates = [
-        15 => 8,
-        30 => 12,
-        60 => 15,
-    ];
+    protected array $rates = [];
 
-    protected float $direct_rate = 20;
+    protected float $direct_rate = 0;
 
-    protected array $level_diff_rates = [
-        0 => 0,
-        1 => 2,
-        2 => 4,
-        3 => 6,
-        4 => 8,
-        5 => 10,
-        6 => 15,
-        7 => 20,
-        8 => 25,
-        9 => 30,
-    ];
+    protected array $level_diff_rates = [];
 
-    protected float $same_level_rate = 5;
-
-    public function __construct()
-    {
-        $config = Db::table('options')->where('name', 'config')->value('value');
-        $config = json_decode($config, true);
-        $params = $config['ckb'];
-        $this->rates = $params['staticRate'];
-        $this->direct_rate = $params['directRate'];
-        $this->level_diff_rates = $params['levelDiffRate'];
-        $this->same_level_rate = $params['sameLevelRate'];
-    }
+    protected float $same_level_rate = 0;
 
     public function run()
     {
@@ -59,18 +33,19 @@ class CkbBonusService
                 ->whereRaw('run_day < day')
                 ->where('runtime', '<', $midnightTimestamp)
                 ->get();
-
             foreach ($transactions as $transaction) {
+                $params = json_decode($transaction->rates, true);
+                $this->rates = array_column($params['staticRate'], 'rate', 'day');
+                $this->direct_rate = $params['directRate'] ?? 0;
+                $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
+                $this->same_level_rate = $params['sameLevelRate'] ?? 0;
+
                 DB::beginTransaction();
 
                 try {
                     $month_day = get_time_in_month($transaction->datetime);
-                    $rate = isset($this->rates[$transaction->day])
-                        ? $this->rates[$transaction->day] / 100
-                        : 0;
-
+                    $rate = round(($this->rates[$transaction->day] ?? 0) / 100, 2);
                     $bonus = round($transaction->amount * $rate / $month_day, 6);
-
 
                     DB::table('transactions')->where('id', $transaction->id)->update([
                         'bonus' => DB::raw("bonus + $bonus"),
@@ -168,7 +143,7 @@ class CkbBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $rate = $this->direct_rate / 100;
+            $rate = round( $this->direct_rate / 100,2);
             $parent_bonus = round($rate * $bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
@@ -198,9 +173,10 @@ class CkbBonusService
     private function levelDiffBonus($parent, $bonus, $transaction, $transactionLogId, $user_level)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $user_level_diff_rate = ($this->level_diff_rates[$user_level] ?? 0) / 100;
-            $parent_level_diff_rate = ($this->level_diff_rates[$parent->level] ?? 0) / 100;
-            $level_diff_rate = $parent_level_diff_rate - $user_level_diff_rate;
+            $user_level_diff_rate = round(($this->level_diff_rates[$user_level] ?? 0) / 100, 2);
+            $parent_level_diff_rate = round(($this->level_diff_rates[$parent->level] ?? 0) / 100, 2);
+            $level_diff_rate = round($parent_level_diff_rate - $user_level_diff_rate, 2);
+
             $parent_bonus = round($level_diff_rate * $bonus, 6);
 
             DB::table('assets')
@@ -256,7 +232,7 @@ class CkbBonusService
         }
 
         if (!empty($userIds)) {
-            $rate = $this->same_level_rate / 100;
+            $rate = round($this->same_level_rate / 100, 2);
             $parent_bonus = round($bonus * $rate, 6);
             foreach ($userIds as $user_id) {
                 DB::table('assets')

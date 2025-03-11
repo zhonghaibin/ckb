@@ -25,7 +25,7 @@ class TimersTask
 //        });
 
         // 每天的00点00执行，注意这里省略了秒位
-        new Crontab('0 0 * * *', function(){
+        new Crontab('*/5 * * * * *', function(){
 
             $ckb = new CkbBonusService();
             $ckb->run();
