@@ -30,7 +30,7 @@ class HtxWebSocketService
         };
 
         $worker->onMessage = function (TcpConnection $connection, $data) {
-            Log::info("Received message: {$data}");
+//            Log::info("Received message: {$data}");
             $data = json_decode($data, true);
 
             if (isset($data['sub'])) {
