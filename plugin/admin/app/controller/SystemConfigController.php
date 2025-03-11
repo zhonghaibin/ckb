@@ -80,9 +80,10 @@ class SystemConfigController extends Base
                     $data[$section]['maintenance_mode'] = $items['maintenance_mode'] ?? false;
                     $data[$section]['maintenance_message'] = $items['maintenance_message'] ?? '';
                     $data[$section]['web_url'] = $items['web_url'] ?? '';
-                    $data[$section]['ckb_min_number'] = $items['ckb_min_number'] ?? '';
-                    $data[$section]['sol_min_number'] = $items['sol_min_number'] ?? '';
-                    $data[$section]['withdraw_min_number'] = $items['withdraw_min_number'] ?? '';
+                    $data[$section]['ckb_min_number'] = $items['ckb_min_number'] ?? 500;
+                    $data[$section]['sol_min_number'] = $items['sol_min_number'] ?? 500;
+                    $data[$section]['exchange_min_number'] = $items['exchange_min_number'] ?? 1;
+                    $data[$section]['withdraw_min_number'] = $items['withdraw_min_number'] ?? 100;
                     $data[$section]['withdraw_fee_rate'] = $items['withdraw_fee_rate'] ?? 0;
                     break;
                 case 'ckb':

@@ -5,6 +5,7 @@
     "web_url":"",
     "ckb_min_number": "500",
     "sol_min_number": "500",
+    "exchange_min_number": "1",
     "withdraw_min_number": "100",
     "withdraw_fee_rate": "0"
   },

@@ -143,6 +143,12 @@ class AssetsController
         $rate = $request->post('rate', 0);
         $fee = $request->post('fee', 0);
 
+        $config = get_system_config();
+        $min_number = $config['base_info']['exchange_min_number'] ?? 0;
+        if ($amount < $min_number) {
+            return json_fail("最低{$min_number}起");
+        }
+
         if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
             return json_fail('兑换币种错误');
         }
