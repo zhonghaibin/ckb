@@ -44,7 +44,7 @@ class CkbBonusService
 
                 try {
                     $month_day = get_time_in_month($transaction->datetime);
-                    $rate = round(($this->rates[$transaction->day] ?? 0) / 100, 2);
+                    $rate = round(($this->rates[$transaction->day] ?? 0) / 100, 4);
                     $bonus = round($transaction->amount * $rate / $month_day, 6);
 
                     DB::table('transactions')->where('id', $transaction->id)->update([
@@ -143,7 +143,7 @@ class CkbBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $rate = round( $this->direct_rate / 100,2);
+            $rate = round( $this->direct_rate / 100,4);
             $parent_bonus = round($rate * $bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
@@ -173,9 +173,9 @@ class CkbBonusService
     private function levelDiffBonus($parent, $bonus, $transaction, $transactionLogId, $user_level)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $user_level_diff_rate = round(($this->level_diff_rates[$user_level] ?? 0) / 100, 2);
-            $parent_level_diff_rate = round(($this->level_diff_rates[$parent->level] ?? 0) / 100, 2);
-            $level_diff_rate = round($parent_level_diff_rate - $user_level_diff_rate, 2);
+            $user_level_diff_rate = round(($this->level_diff_rates[$user_level] ?? 0) / 100, 4);
+            $parent_level_diff_rate = round(($this->level_diff_rates[$parent->level] ?? 0) / 100, 4);
+            $level_diff_rate = round($parent_level_diff_rate - $user_level_diff_rate, 4);
 
             $parent_bonus = round($level_diff_rate * $bonus, 6);
 
@@ -232,7 +232,7 @@ class CkbBonusService
         }
 
         if (!empty($userIds)) {
-            $rate = round($this->same_level_rate / 100, 2);
+            $rate = round($this->same_level_rate / 100, 4);
             $parent_bonus = round($bonus * $rate, 6);
             foreach ($userIds as $user_id) {
                 DB::table('assets')

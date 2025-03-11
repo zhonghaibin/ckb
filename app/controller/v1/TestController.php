@@ -10,6 +10,7 @@ use app\enums\UserUpgrade;
 use app\model\Assets;
 use app\model\User;
 use app\services\CkbBonusService;
+use app\services\SolBonusService;
 use app\services\UserUpgradeService;
 use Carbon\Carbon;
 use support\Db;
@@ -33,27 +34,34 @@ class TestController
 
     public function index(Request $request)
     {
-        $midnightTimestamp = Carbon::today()->timestamp;
 
-        // 获取符合条件的交易记录
-        $transactions = DB::table('transactions')
-            ->where('transaction_type', TransactionTypes::SOL)
-            ->where('status', TransactionStatus::NORMAL)
-            ->whereRaw('run_day < day')
-            ->where('runtime', '<', $midnightTimestamp)
-            ->get();
+        $ckb = new CkbBonusService();
+        $ckb->run();
 
-        return  json_success($transactions);
-        foreach ($transactions as $transaction) {
-            $params = json_decode($transaction->rates, true);
-            $this->rates = array_column(array_map(fn($item) => [$item['day'], [(int)$item['rate']['min'], (int)$item['rate']['max']]], $params['staticRate']), 1, 0);
-            $this->direct_rate = $params['directRate'];
-            $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
-            $this->same_level_rate = $params['sameLevelRate'];
-            $data = [$this->rates, $this->direct_rate, $this->level_diff_rates, $this->same_level_rate];
+        $sol = new SolBonusService();
+        $sol->run();
 
-            return json_success($data);
-        }
+//        $midnightTimestamp = Carbon::today()->timestamp;
+//
+//        // 获取符合条件的交易记录
+//        $transactions = DB::table('transactions')
+//            ->where('transaction_type', TransactionTypes::SOL)
+//            ->where('status', TransactionStatus::NORMAL)
+//            ->whereRaw('run_day < day')
+//            ->where('runtime', '<', $midnightTimestamp)
+//            ->get();
+//
+//        return  json_success($transactions);
+//        foreach ($transactions as $transaction) {
+//            $params = json_decode($transaction->rates, true);
+//            $this->rates = array_column(array_map(fn($item) => [$item['day'], [(int)$item['rate']['min'], (int)$item['rate']['max']]], $params['staticRate']), 1, 0);
+//            $this->direct_rate = $params['directRate'];
+//            $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
+//            $this->same_level_rate = $params['sameLevelRate'];
+//            $data = [$this->rates, $this->direct_rate, $this->level_diff_rates, $this->same_level_rate];
+//
+//            return json_success($data);
+//        }
 
 
 //        $min = 6;

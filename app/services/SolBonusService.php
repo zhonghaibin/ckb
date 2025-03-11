@@ -51,7 +51,7 @@ class SolBonusService
                     $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
                     $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
 
-                    $rate = round(($randomRate1 + $randomRate2) / 2, 2) / 100;
+                    $rate = round(($randomRate1 + $randomRate2) / 2, 4) / 100;
                     // 计算 bonus
                     $bonus = round($transaction->amount * $rate / $month_day, 6);
 
@@ -152,7 +152,7 @@ class SolBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $rate = round( $this->direct_rate / 100,2);
+            $rate = round( $this->direct_rate / 100,4);
             $parent_bonus = round($rate * $bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
@@ -182,9 +182,9 @@ class SolBonusService
     private function levelDiffBonus($parent, $bonus, $transaction, $transactionLogId, $user_level)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $user_level_diff_rate = round(($this->level_diff_rates[$user_level] ?? 0) / 100, 2);
-            $parent_level_diff_rate = round(($this->level_diff_rates[$parent->level] ?? 0) / 100, 2);
-            $level_diff_rate = round($parent_level_diff_rate - $user_level_diff_rate, 2);
+            $user_level_diff_rate = round(($this->level_diff_rates[$user_level] ?? 0) / 100, 4);
+            $parent_level_diff_rate = round(($this->level_diff_rates[$parent->level] ?? 0) / 100, 4);
+            $level_diff_rate = round($parent_level_diff_rate - $user_level_diff_rate, 4);
 
             $parent_bonus = round($level_diff_rate * $bonus, 6);
 
@@ -242,7 +242,7 @@ class SolBonusService
         }
 
         if (!empty($userIds)) {
-            $rate = round($this->same_level_rate / 100, 2);
+            $rate = round($this->same_level_rate / 100, 4);
             $parent_bonus = round($bonus * $rate, 6);
             foreach ($userIds as $user_id) {
                 DB::table('assets')
