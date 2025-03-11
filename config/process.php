@@ -69,7 +69,7 @@ return [
 //    ],
     'htx_websocket_service' => [
         'handler' => process\HtxWebSocketService::class,
-        'listen' => 'websocket://0.0.0.0:8080',
+        'listen' => 'websocket://0.0.0.0:8788',
         'count' => 4, // 进程数
     ],
 ];
