@@ -51,8 +51,11 @@
                 title: "收益",
                 field: "bonus",
             },{
-                title: "比例",
+                title: "比率",
                 field: "rate",
+                templet: function(d) {
+                    return d.rate*100+'%';
+                }
             },{
                 title: "创建时间",
                 field: "created_at",

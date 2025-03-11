@@ -90,8 +90,11 @@
                 title: "收益",
                 field: "amount",
             },{
-                title: "比例",
+                title: "比率",
                 field: "rate",
+                templet: function(d) {
+                    return d.rate*100+'%';
+                }
             },{
                 title: "备注",
                 field: "remark",
