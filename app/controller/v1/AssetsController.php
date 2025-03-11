@@ -93,8 +93,12 @@ class AssetsController
 
             $user = User::query()->find($request->userId);
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            $assets->decrement('amount', $amount);
+            $new_balance = $assets->amount - $amount;
+            if ($new_balance < 0) {
+                throw new \Exception("余额不足");
+            }
 
+            $assets->decrement('amount', $amount);
             $withdraw = new Withdraw();
             $withdraw->user_id = $user->id;
             $withdraw->coin = $coin;
@@ -109,6 +113,7 @@ class AssetsController
             $assets_log->user_id = $user->id;
             $assets_log->coin = $coin;
             $assets_log->amount = -$amount;
+            $assets_log->balance = $new_balance;
             $assets_log->type = AssetsLogTypes::WITHDRAW;
             $assets_log->remark = AssetsLogTypes::WITHDRAW->label();
             $assets_log->datetime = Carbon::now()->timestamp;
@@ -170,9 +175,11 @@ class AssetsController
         try {
             $user = User::query()->where(['id' => $request->userId])->firstOrFail();
             $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
-            if ($from_assets->amount < $amount) {
-                throw new \Exception('钱包金额不足');
+            $from_new_balance = $from_assets->amount - $amount;
+            if ($from_new_balance < 0) {
+                throw new \Exception("余额不足");
             }
+
             $to_amount = $amount;
             if ($rate != 0) {
                 $to_amount = round($amount * $rate, 6);
@@ -197,6 +204,7 @@ class AssetsController
             $from_assets_log->user_id = $user->id;
             $from_assets_log->coin = $from_coin;
             $from_assets_log->amount = -$amount;
+            $from_assets_log->balance = $from_new_balance;
             $from_assets_log->rate = $rate;
             $from_assets_log->type = AssetsLogTypes::EXCHANGE;
             $from_assets_log->remark = AssetsLogTypes::EXCHANGE->label();
@@ -206,11 +214,14 @@ class AssetsController
 
 
             $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->firstOrFail();
+            $to_new_balance = $to_assets->amount + $to_amount;
+
             $to_assets->increment('amount', $amount);
             $to_assets_log = new AssetsLog;
             $to_assets_log->user_id = $user->id;
             $to_assets_log->coin = $to_coin;
             $to_assets_log->amount = $to_amount;
+            $to_assets_log->balance = $to_new_balance;
             $to_assets_log->rate = $rate;
             $to_assets_log->type = AssetsLogTypes::EXCHANGE;
             $to_assets_log->remark = AssetsLogTypes::EXCHANGE->label();

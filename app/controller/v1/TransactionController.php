@@ -51,9 +51,11 @@ class TransactionController
 
         try {
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            if ($assets->amount < $amount) {
-                throw new \Exception('钱包金额不足');
+            $new_balance = $assets->amount - $amount;
+            if ($new_balance < 0) {
+                throw new \Exception("余额不足");
             }
+
             $assets->decrement('amount', $amount);
             $transaction = new Transaction();
             $transaction->user_id = $user->id;
@@ -70,6 +72,7 @@ class TransactionController
             $assets_log->user_id = $transaction->user_id;
             $assets_log->coin = $transaction->coin;
             $assets_log->amount = -$amount;
+            $assets_log->balance = $new_balance;
             $assets_log->transaction_id = $transaction->id;
             $assets_log->type = AssetsLogTypes::EXPENSE;
             $assets_log->remark = AssetsLogTypes::EXPENSE->label();
@@ -116,9 +119,11 @@ class TransactionController
 
         try {
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            if ($assets->amount < $amount) {
-                throw new \Exception('钱包金额不足');
+            $new_balance = $assets->amount - $amount;
+            if ($new_balance < 0) {
+                throw new \Exception("余额不足");
             }
+
             $assets->decrement('amount', $amount);
             $transaction = new Transaction();
             $transaction->user_id = $user->id;
@@ -135,6 +140,7 @@ class TransactionController
             $assets_log->user_id = $transaction->user_id;
             $assets_log->coin = $transaction->coin;
             $assets_log->amount = -$amount;
+            $assets_log->balance = $new_balance;
             $assets_log->transaction_id = $transaction->id;
             $assets_log->type = AssetsLogTypes::EXPENSE;
             $assets_log->remark = AssetsLogTypes::EXPENSE->label();

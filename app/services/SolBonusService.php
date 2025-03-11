@@ -94,6 +94,11 @@ class SolBonusService
                         'updated_at' => Carbon::now(),
                     ]);
 
+                    $assets = DB::table('assets')
+                        ->where('user_id', $transaction->user_id)
+                        ->where('coin', $transaction->coin)
+                        ->first();
+                    $new_balance = $assets->amount + $bonus;
                     //更新每日收益
                     DB::table('assets')
                         ->where('user_id', $transaction->user_id)
@@ -108,6 +113,7 @@ class SolBonusService
                         'user_id' => $transaction->user_id,
                         'coin' => $transaction->coin,
                         'amount' => $bonus,
+                        'balance'=> $new_balance,
                         'rate' => $rate,
                         'transaction_id' => $transaction->id,
                         'transaction_log_id' => $transactionLogId,
@@ -121,6 +127,11 @@ class SolBonusService
                     if ($transaction->run_day + 1 == $transaction->day) {
                         //返还本金
                         DB::table('transactions')->where('id', $transaction->id)->update(['status' => TransactionStatus::DONE]);
+                        $assets = DB::table('assets')
+                            ->where('user_id', $transaction->user_id)
+                            ->where('coin', $transaction->coin)
+                            ->first();
+                        $new_balance = $assets->amount + $bonus;
                         DB::table('assets')
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
@@ -129,6 +140,7 @@ class SolBonusService
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
                             'amount' => $transaction->amount,
+                            'balance'=> $new_balance,
                             'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,
@@ -173,6 +185,11 @@ class SolBonusService
         if ($parent->is_real == UserIsReal::NORMAL->value) {
             $rate = round( $this->direct_rate / 100,4);
             $parent_bonus = round($rate * $bonus, 6);
+            $assets = DB::table('assets')
+                ->where('user_id', $parent->id)
+                ->where('coin', $transaction->coin)
+                ->first();
+            $new_balance = $assets->amount + $parent_bonus;
             DB::table('assets')
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
@@ -180,12 +197,11 @@ class SolBonusService
                     'amount' => DB::raw('amount + ' . $parent_bonus),
                     'bonus' => DB::raw('bonus + ' . $parent_bonus),
                 ]);
-
-
             DB::table('assets_logs')->insert([
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
                 'amount' => $parent_bonus,
+                'balance'=> $new_balance,
                 'rate' => $rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -206,7 +222,11 @@ class SolBonusService
             $level_diff_rate = round($parent_level_diff_rate - $user_level_diff_rate, 4);
 
             $parent_bonus = round($level_diff_rate * $bonus, 6);
-
+            $assets = DB::table('assets')
+                ->where('user_id', $parent->id)
+                ->where('coin', $transaction->coin)
+                ->first();
+            $new_balance = $assets->amount + $parent_bonus;
             DB::table('assets')
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
@@ -220,6 +240,7 @@ class SolBonusService
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
                 'amount' => $parent_bonus,
+                'balance'=> $new_balance,
                 'rate' => $level_diff_rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -264,6 +285,11 @@ class SolBonusService
             $rate = round($this->same_level_rate / 100, 4);
             $parent_bonus = round($bonus * $rate, 6);
             foreach ($userIds as $user_id) {
+                $assets = DB::table('assets')
+                    ->where('user_id', $user_id)
+                    ->where('coin', $transaction->coin)
+                    ->first();
+                $new_balance = $assets->amount + $parent_bonus;
                 DB::table('assets')
                     ->where('user_id', $user_id)
                     ->where('coin', $transaction->coin)
@@ -276,6 +302,7 @@ class SolBonusService
                     'user_id' => $user_id,
                     'coin' => $transaction->coin,
                     'amount' => $parent_bonus,
+                    'balance'=> $new_balance,
                     'rate' => $rate,
                     'transaction_id' => $transaction->id,
                     'transaction_log_id' => $transactionLogId,

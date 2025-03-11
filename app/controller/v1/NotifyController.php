@@ -68,6 +68,8 @@ class NotifyController
         try {
             $user = User::query()->where('identity', $identity)->first();
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
+            $new_balance = $assets->amount + $amount;
+
             $assets->increment('amount', $amount);
 
             $recharge = new Recharge();
@@ -84,6 +86,7 @@ class NotifyController
             $assets_log->user_id = $user->id;
             $assets_log->coin = $coin;
             $assets_log->amount = $amount;
+            $assets_log->balance = $new_balance;
             $assets_log->type = AssetsLogTypes::RECHARGE;
             $assets_log->remark = AssetsLogTypes::RECHARGE->label();
             $assets_log->datetime = Carbon::now()->timestamp;
