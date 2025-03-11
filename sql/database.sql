@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 11/03/2025 17:38:00
+ Date: 11/03/2025 18:02:28
 */
 
 SET NAMES utf8mb4;
@@ -269,7 +269,7 @@ CREATE TABLE `roles`  (
 -- Records of roles
 -- ----------------------------
 INSERT INTO `roles` VALUES (1, '超级管理员', '*', '2022-08-13 16:15:01', '2022-12-23 12:05:07', NULL);
-INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88,176,178,89,90,91,92,93,94,95,96,97,98,99,100,101,116,117,118,119,122,123,124,125,126,121,129,132,133,146,147,151,152,153,154,155,131,137,138,148,149,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,177', '2025-03-06 16:23:57', '2025-03-11 17:32:45', 1);
+INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88,175,176,177,178,89,90,91,92,93,94,95,96,97,98,99,100,101,116,117,118,119,122,123,124,125,126,121,129,132,133,146,147,151,152,153,154,155,131,137,138,148,149,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174', '2025-03-06 16:23:57', '2025-03-11 18:01:39', 1);
 
 -- ----------------------------
 -- Table structure for rules
@@ -420,49 +420,49 @@ INSERT INTO `rules` VALUES (125, '删除', NULL, 'plugin\\admin\\app\\controller
 INSERT INTO `rules` VALUES (126, '更改', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController@update', 120, '2025-03-07 18:00:02', '2025-03-07 18:00:02', NULL, 2, 0);
 INSERT INTO `rules` VALUES (127, '财务管理', 'layui-icon-rmb', 'finance', NULL, '2025-03-07 14:39:52', '2025-03-10 20:11:17', '', 0, 0);
 INSERT INTO `rules` VALUES (128, '质押', '', 'plugin\\admin\\app\\controller\\CkbController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/ckb/index', 1, 0);
-INSERT INTO `rules` VALUES (129, 'select', NULL, 'plugin\\admin\\app\\controller\\CkbController@select', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (129, '查询', NULL, 'plugin\\admin\\app\\controller\\CkbController@select', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (130, '套利', '', 'plugin\\admin\\app\\controller\\SolController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/sol/index', 1, 0);
-INSERT INTO `rules` VALUES (131, 'select', NULL, 'plugin\\admin\\app\\controller\\SolController@select', 130, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (132, 'staticIncome', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncome', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (133, 'staticIncomes', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (137, 'staticIncome', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (138, 'staticIncomes', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (131, '查询', NULL, 'plugin\\admin\\app\\controller\\SolController@select', 130, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (132, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncome', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (133, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (137, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (138, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (142, '兑换', '', 'plugin\\admin\\app\\controller\\ExchangeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/exchange/index', 1, 0);
 INSERT INTO `rules` VALUES (143, '充值', '', 'plugin\\admin\\app\\controller\\RechargeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/recharge/index', 1, 0);
 INSERT INTO `rules` VALUES (144, '提现', '', 'plugin\\admin\\app\\controller\\WithdrawController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/withdraw/index', 1, 0);
 INSERT INTO `rules` VALUES (145, '流水', '', 'plugin\\admin\\app\\controller\\AssetsLogController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/assetsLog/index', 1, 0);
-INSERT INTO `rules` VALUES (146, 'dynamicIncome', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncome', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (147, 'dynamicIncomes', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (148, 'dynamicIncome', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (149, 'dynamicIncomes', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (151, 'show', NULL, 'plugin\\admin\\app\\controller\\CkbController@show', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (152, 'ckbLogs', NULL, 'plugin\\admin\\app\\controller\\CkbController@ckbLogs', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (146, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncome', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (147, '查询动态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (148, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (149, '查询动态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (151, '浏览收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@show', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (152, '查询收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@ckbLogs', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (153, '添加', NULL, 'plugin\\admin\\app\\controller\\CkbController@insert', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (154, '更新', NULL, 'plugin\\admin\\app\\controller\\CkbController@update', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (155, '删除', NULL, 'plugin\\admin\\app\\controller\\CkbController@delete', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (156, '添加', NULL, 'plugin\\admin\\app\\controller\\SolController@insert', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (157, '更新', NULL, 'plugin\\admin\\app\\controller\\SolController@update', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (158, '删除', NULL, 'plugin\\admin\\app\\controller\\SolController@delete', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (159, 'select', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@select', 142, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (159, '查询', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@select', 142, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (160, '添加', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@insert', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (161, '更新', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@update', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (162, '删除', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@delete', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (163, 'select', NULL, 'plugin\\admin\\app\\controller\\RechargeController@select', 143, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (163, '查询', NULL, 'plugin\\admin\\app\\controller\\RechargeController@select', 143, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (164, '添加', NULL, 'plugin\\admin\\app\\controller\\RechargeController@insert', 143, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (165, '更新', NULL, 'plugin\\admin\\app\\controller\\RechargeController@update', 143, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (166, '删除', NULL, 'plugin\\admin\\app\\controller\\RechargeController@delete', 143, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (167, 'select', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@select', 144, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (167, '查询', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@select', 144, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (168, '添加', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@insert', 144, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (169, '更新', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@update', 144, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (170, '删除', NULL, 'plugin\\admin\\app\\controller\\WithdrawController@delete', 144, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (171, 'select', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@select', 145, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (171, '查询', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@select', 145, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (172, '添加', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@insert', 145, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (173, '更新', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@update', 145, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (174, '删除', NULL, 'plugin\\admin\\app\\controller\\AssetsLogController@delete', 145, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (175, 'direct', NULL, 'plugin\\admin\\app\\controller\\UserController@direct', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (176, 'directs', NULL, 'plugin\\admin\\app\\controller\\UserController@directs', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (177, 'team', NULL, 'plugin\\admin\\app\\controller\\UserController@team', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (178, 'teams', NULL, 'plugin\\admin\\app\\controller\\UserController@teams', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (175, '浏览直推', NULL, 'plugin\\admin\\app\\controller\\UserController@direct', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (176, '查询直推', NULL, 'plugin\\admin\\app\\controller\\UserController@directs', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (177, '浏览团队', NULL, 'plugin\\admin\\app\\controller\\UserController@team', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (178, '查询团队', NULL, 'plugin\\admin\\app\\controller\\UserController@teams', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
 
 -- ----------------------------
 -- Table structure for transaction_logs

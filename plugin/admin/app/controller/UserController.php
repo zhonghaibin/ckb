@@ -39,6 +39,11 @@ class UserController extends Crud
         return raw_view('user/index');
     }
 
+    /**
+     * 查询
+     * @param Request $request
+     * @return Response
+     */
     public function select(Request $request): Response
     {
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
@@ -75,11 +80,17 @@ class UserController extends Crud
         return raw_view('user/update');
     }
 
+    /**
+     * 浏览直推
+     */
     public function direct(): Response
     {
         return raw_view('user/direct');
     }
 
+    /**
+     * 查询直推
+     */
     public function directs(Request $request)
     {
 
@@ -90,18 +101,24 @@ class UserController extends Crud
         return $this->doFormat($query, $format, $limit);
     }
 
+    /**
+     * 浏览团队
+     */
     public function team(): Response
     {
         return raw_view('user/team');
     }
 
+    /**
+     * 查询团队
+     */
     public function teams(Request $request)
     {
         $user_id = $request->get('user_id');
-        $user_ids= get_team_user_ids($user_id);
+        $user_ids = get_team_user_ids($user_id);
         $this->model = new User;
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
-        $where['id']=['in',$user_ids];
+        $where['id'] = ['in', $user_ids];
         $query = $this->doSelect($where, $field, $order);
         $query = $query->with('assets');
         return $this->doFormat($query, $format, $limit);

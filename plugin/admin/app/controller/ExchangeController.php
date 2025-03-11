@@ -28,6 +28,11 @@ class ExchangeController extends Crud
         $this->model = new Exchange();
     }
 
+    /**
+     * 查询
+     * @param Request $request
+     * @return Response
+     */
     public function select(Request $request): Response
     {
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
@@ -43,6 +48,11 @@ class ExchangeController extends Crud
         return $this->doFormat($query, $format, $limit);
     }
 
+    /**
+     * 浏览
+     * @return Response
+     * @throws Throwable
+     */
     public function index(): Response
     {
         return raw_view('exchange/index');

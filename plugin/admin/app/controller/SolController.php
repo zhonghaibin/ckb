@@ -29,6 +29,9 @@ class SolController extends Crud
         $this->model = new Transaction;
     }
 
+    /**
+     * 查询
+     */
     public function select(Request $request): Response
     {
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
@@ -44,17 +47,25 @@ class SolController extends Crud
         return $this->doFormat($query, $format, $limit);
     }
 
+    /**
+     * 浏览
+     */
     public function index(): Response
     {
         return raw_view('sol/index');
     }
 
-
+    /**
+     * 浏览静态收益
+     */
     public function staticIncome(): Response
     {
         return raw_view('sol/staticIncome');
     }
 
+    /**
+     * 查询静态收益
+     */
     public function staticIncomes(Request $request)
     {
 
@@ -64,11 +75,17 @@ class SolController extends Crud
         return $this->doFormat($query, $format, $limit);
     }
 
+    /**
+     * 浏览动态收益
+     */
     public function dynamicIncome(): Response
     {
         return raw_view('sol/dynamicIncome');
     }
 
+    /**
+     * 查询动态收益
+     */
     public function dynamicIncomes(Request $request)
     {
 

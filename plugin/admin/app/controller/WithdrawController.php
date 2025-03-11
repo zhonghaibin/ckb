@@ -30,6 +30,9 @@ class WithdrawController extends Crud
         $this->model = new Withdraw();
     }
 
+    /**
+     * 查询
+     */
     public function select(Request $request): Response
     {
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
@@ -45,6 +48,9 @@ class WithdrawController extends Crud
         return $this->doFormat($query, $format, $limit);
     }
 
+    /**
+     * 浏览
+     */
     public function index(): Response
     {
         return raw_view('withdraw/index');

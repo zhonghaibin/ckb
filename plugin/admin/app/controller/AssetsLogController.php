@@ -30,6 +30,11 @@ class AssetsLogController extends Crud
         $this->model = new AssetsLog;
     }
 
+    /**
+     * 查询
+     * @param Request $request
+     * @return Response
+     */
     public function select(Request $request): Response
     {
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
@@ -45,6 +50,11 @@ class AssetsLogController extends Crud
         return $this->doFormat($query, $format, $limit);
     }
 
+    /**
+     * 浏览
+     * @return Response
+     * @throws Throwable
+     */
     public function index(): Response
     {
         return raw_view('assets_log/index');

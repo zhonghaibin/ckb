@@ -107,18 +107,5 @@ class SystemConfigController extends Base
         return $this->json(0);
     }
 
-    /**
-     * 颜色检查
-     * @param string $color
-     * @return string
-     * @throws BusinessException
-     */
-    protected function filterColor(string $color): string
-    {
-        if (!preg_match('/\#[a-zA-Z]6/', $color)) {
-            throw new BusinessException('参数错误');
-        }
-        return $color;
-    }
 
 }
