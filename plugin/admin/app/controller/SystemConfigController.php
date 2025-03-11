@@ -59,46 +59,6 @@ class SystemConfigController extends Base
         return json_decode($config, true);
     }
 
-    function parseNestedArray($flatArray) {
-        $nestedArray = [];
-
-        foreach ($flatArray as $flatKey => $value) {
-            $keys = [];
-            if (preg_match_all('/\[(.*?)\]/', $flatKey, $matches)) {
-                $mainKey = strstr($flatKey, '[', true);
-                $keys = $matches[1];
-            } else {
-                $mainKey = $flatKey;
-            }
-
-            $ref = &$nestedArray;
-            if (!empty($keys)) {
-                if (!isset($nestedArray[$mainKey])) {
-                    $nestedArray[$mainKey] = [];
-                }
-                $ref = &$nestedArray[$mainKey];
-
-                foreach ($keys as $i => $key) {
-                    if (!isset($ref[$key])) {
-                        $ref[$key] = [];
-                    }
-                    if ($i === count($keys) - 1) {
-                        $ref[$key] = $value;
-                    } else {
-                        $ref = &$ref[$key];
-                    }
-                }
-            } else {
-                $nestedArray[$mainKey] = $value;
-            }
-        }
-
-        return $nestedArray;
-    }
-
-
-
-
     /**
      * 更改
      * @param Request $request
@@ -120,17 +80,20 @@ class SystemConfigController extends Base
                     $data[$section]['maintenance_mode'] = $items['maintenance_mode'] ?? false;
                     $data[$section]['maintenance_message'] = $items['maintenance_message'] ?? '';
                     $data[$section]['web_url'] = $items['web_url'] ?? '';
+                    $data[$section]['ckb_min_number'] = $items['ckb_min_number'] ?? '';
+                    $data[$section]['sol_min_number'] = $items['sol_min_number'] ?? '';
+                    $data[$section]['withdraw_min_number'] = $items['withdraw_min_number'] ?? '';
                     $data[$section]['withdraw_fee_rate'] = $items['withdraw_fee_rate'] ?? 0;
                     break;
                 case 'ckb':
                     $flatArray = json_decode($post[$section], true);
-                    $items = $this->parseNestedArray($flatArray);
-                    $data[$section]=$items;
+                    $items = parse_nested_array($flatArray);
+                    $data[$section] = $items;
                     break;
                 case 'sol':
                     $flatArray = json_decode($post[$section], true);
-                    $items = $this->parseNestedArray($flatArray);
-                    $data[$section]=$items;
+                    $items = parse_nested_array($flatArray);
+                    $data[$section] = $items;
             }
         }
         $config = array_merge($config, $data);

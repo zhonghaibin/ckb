@@ -3,6 +3,9 @@
     "maintenance_mode": false,
     "maintenance_message": "系统正在维护，请稍后再试。",
     "web_url":"",
+    "ckb_min_number": "500",
+    "sol_min_number": "500",
+    "withdraw_min_number": "100",
     "withdraw_fee_rate": "0"
   },
   "ckb": {
@@ -24,7 +27,7 @@
       {"level": "Vip8","rate": "25"},
       {"level": "Vip9","rate": "30"}
     ],
-    "sameLevelRate": "0.05"
+    "sameLevelRate": "5"
   },
   "sol": {
     "staticRate": [
@@ -32,7 +35,7 @@
       {"day": "15","rate": {"min": "8","max": "10"}},
       {"day": "30","rate": {"min": "10","max": "13"}}
     ],
-    "directRate": "0.2",
+    "directRate": "20",
     "levelDiffRate": [
       {"level": "Vip0","rate": "0"},
       {"level": "Vip1","rate": "5"},

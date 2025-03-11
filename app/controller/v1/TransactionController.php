@@ -32,13 +32,19 @@ class TransactionController
             return json_fail('币种错误');
         }
 
-        if ($amount < 500) {
-            return json_fail('最低500起');
+        $config = get_system_config();
+        $min_number = $config['base_info']['ckb_min_number'];
+        if ($amount < $min_number) {
+            return json_fail("最低{$min_number}起");
         }
 
-        if (!in_array($day, [15, 30, 60])) {
-            return json_fail('时间错误');
+        $params = $config['ckb'];
+        $days = array_column($params['staticRate'], 'day');
+
+        if (!in_array($day, $days)) {
+            return json_fail('天数错误');
         }
+
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
         Db::beginTransaction();
@@ -57,6 +63,7 @@ class TransactionController
             $transaction->datetime = Carbon::now()->timestamp;
             $transaction->transaction_type = TransactionTypes::CKB;
             $transaction->status = TransactionStatus::NORMAL;
+            $transaction->rates = json_encode($params);
             $transaction->save();
 
             $assets_log = new AssetsLog;
@@ -90,13 +97,19 @@ class TransactionController
         $amount = $request->post('amount', 500);
         $day = $request->post('day', 1);
 
-        if ($amount < 500) {
-            return json_fail('最低500起');
+        $config = get_system_config();
+        $min_number = $config['base_info']['sol_min_number'];
+        if ($amount < $min_number) {
+            return json_fail("最低{$min_number}起");
         }
 
-        if (!in_array($day, [1, 15, 30])) {
-            return json_fail('时间错误');
+        $params = $config['sol'];
+        $days = array_column($params['staticRate'], 'day');
+
+        if (!in_array($day, $days)) {
+            return json_fail('天数错误');
         }
+
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
         Db::beginTransaction();
@@ -115,6 +128,7 @@ class TransactionController
             $transaction->datetime = Carbon::now()->timestamp;
             $transaction->transaction_type = TransactionTypes::SOL;
             $transaction->status = TransactionStatus::NORMAL;
+            $transaction->rates = json_encode($params);
             $transaction->save();
 
             $assets_log = new AssetsLog;

@@ -72,9 +72,25 @@ class AssetsController
         if ($amount <= 0) {
             return json_fail('请输入提现金额');
         }
+
+        $config = get_system_config();
+        $min_number = $config['base_info']['withdraw_min_number'] ?? 0;
+        if ($amount < $min_number) {
+            return json_fail("最低{$min_number}起");
+        }
+
+        $withdraw_fee_rate = ($config['base_info']['withdraw_fee_rate'] ?? 0) / 100;
+        $withdraw_fee = $withdraw_fee_rate * $amount;
+        if ($withdraw_fee != $fee) {
+            return json_fail('前后端手续费不一致');
+        }
+
+
         $coin = CoinTypes::USDT;
         Db::beginTransaction();
         try {
+
+
             $user = User::query()->find($request->userId);
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
             $assets->decrement('amount', $amount);
@@ -85,6 +101,7 @@ class AssetsController
             $withdraw->amount = $amount;
             $withdraw->status = WithdrawStatus::PENDING;
             $withdraw->fee = $fee;
+            $withdraw->fee_rate = $withdraw_fee_rate;
             $withdraw->datetime = Carbon::now()->timestamp;
             $withdraw->save();
 
@@ -109,7 +126,7 @@ class AssetsController
     {
         $recharges = Db::table('withdraws')->where('user_id', $request->userId)
             ->select(['amount', 'created_at'])
-            ->where('status', 1)
+            ->where('status', WithdrawStatus::SUCCESS)
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());

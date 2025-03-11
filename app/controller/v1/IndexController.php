@@ -8,10 +8,16 @@ use support\Db;
 class IndexController
 {
 
-    public function baseInfo(){
-        $config = Db::table('options')->where('name', 'config')->value('value');
-        $config = json_decode($config, true);
-        return json_success($config);
+    public function baseInfo()
+    {
+        $config = get_system_config();
+        $params = $config['ckb'];
+        $days=array_column($params['staticRate'],'day');
+        $day=15;
+        if(!in_array($day,$days)){
+            return json_fail('天数不存在');
+        }
+        return json_success($days);
     }
 
     public function banner()

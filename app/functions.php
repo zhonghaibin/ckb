@@ -99,5 +99,52 @@ if (!function_exists('get_team_user_ids')) {
         return $team_ids;
     }
 }
+if (!function_exists('parse_nested_array')) {
+    function parse_nested_array($flatArray)
+    {
+        $nestedArray = [];
 
+        foreach ($flatArray as $flatKey => $value) {
+            $keys = [];
+            if (preg_match_all('/\[(.*?)\]/', $flatKey, $matches)) {
+                $mainKey = strstr($flatKey, '[', true);
+                $keys = $matches[1];
+            } else {
+                $mainKey = $flatKey;
+            }
 
+            $ref = &$nestedArray;
+            if (!empty($keys)) {
+                if (!isset($nestedArray[$mainKey])) {
+                    $nestedArray[$mainKey] = [];
+                }
+                $ref = &$nestedArray[$mainKey];
+
+                foreach ($keys as $i => $key) {
+                    if (!isset($ref[$key])) {
+                        $ref[$key] = [];
+                    }
+                    if ($i === count($keys) - 1) {
+                        $ref[$key] = $value;
+                    } else {
+                        $ref = &$ref[$key];
+                    }
+                }
+            } else {
+                $nestedArray[$mainKey] = $value;
+            }
+        }
+
+        return $nestedArray;
+    }
+
+}
+
+if (!function_exists('get_system_config')) {
+
+    function get_system_config()
+    {
+        $config = Db::table('options')->where('name', 'config')->value('value');
+        return json_decode($config, true);
+    }
+}
