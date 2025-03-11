@@ -129,7 +129,7 @@ class AuthController
             }
 
 
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
         }

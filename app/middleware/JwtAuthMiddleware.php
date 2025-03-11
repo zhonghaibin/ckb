@@ -14,7 +14,7 @@ class JwtAuthMiddleware implements MiddlewareInterface
         $token = $request->header('Authorization');
 
         if (!$token) {
-            return json(['code' => 401, 'msg' => 'Token not provided']);
+            return json(['code' => 401, 'msg' => \app\support\Lang::get('token_not_provided')]);
         }
 
         // 去掉 Bearer 前缀
@@ -25,7 +25,7 @@ class JwtAuthMiddleware implements MiddlewareInterface
         $payload = JwtUtil::validateToken($token);
 
         if (!$payload) {
-            return json(['code' => 401, 'msg' => 'Token is invalid or has expired']);
+            return json(['code' => 401, 'msg' => \app\support\Lang::get('token_invalid')]);
         }
 
         // 将用户信息存储到请求中，方便后续使用

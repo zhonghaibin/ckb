@@ -14,11 +14,11 @@ if (!function_exists('json_success')) {
      * @param int $code 状态码
      * @return \support\Response
      */
-    function json_success($data = null, string $message = '操作成功', int $code = 200)
+    function json_success($data = null, string $message = null, int $code = 200)
     {
         return json([
             'code' => $code,
-            'message' => $message,
+            'message' => $message ?? \app\support\Lang::get('success'),
             'data' => $data,
         ]);
     }

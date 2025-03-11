@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'success' => '操作成功',
+    'token_not_provided' => 'Token 未提供',
+    'token_invalid' => 'Token 无效或已过期英文',
     'tips_1' => '请输入提现金额',
     'tips_2' => '最低:min_number起',
     'tips_3' => '前后端手续费不一致',
