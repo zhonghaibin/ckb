@@ -4,6 +4,7 @@
     "maintenance_message": "系统正在维护，请稍后再试。",
     "web_url":"http://test.dev",
     "share_url":"http://test.dev/code=",
+    "wallet_address":"",
     "ckb_min_number": "500",
     "sol_min_number": "500",
     "exchange_min_number": "1",

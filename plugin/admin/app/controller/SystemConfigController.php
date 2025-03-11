@@ -81,6 +81,7 @@ class SystemConfigController extends Base
                     $data[$section]['maintenance_message'] = $items['maintenance_message'] ?? '';
                     $data[$section]['web_url'] = $items['web_url'] ?? '';
                     $data[$section]['share_url'] = $items['share_url'] ?? '';
+                    $data[$section]['wallet_address'] = $items['wallet_address'] ?? '';
                     $data[$section]['ckb_min_number'] = $items['ckb_min_number'] ?? 500;
                     $data[$section]['sol_min_number'] = $items['sol_min_number'] ?? 500;
                     $data[$section]['exchange_min_number'] = $items['exchange_min_number'] ?? 1;
