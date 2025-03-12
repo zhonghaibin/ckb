@@ -78,7 +78,7 @@ class AssetsController
         $config = get_system_config();
         $min_number = $config['base_info']['withdraw_min_number'] ?? 0;
         if ($amount < $min_number) {
-            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
+            return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
         }
 
         $withdraw_fee_rate = ($config['base_info']['withdraw_fee_rate'] ?? 0) / 100;
@@ -87,20 +87,19 @@ class AssetsController
             return json_fail(Lang::get('tips_3'));
         }
 
-
         $coin = CoinTypes::USDT;
+        $user = User::query()->find($request->userId);
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
+        $new_balance = $assets->amount - $amount;
+        if ($new_balance < 0) {
+            return json_fail(Lang::get('tips_4'));
+        }
+
         Db::beginTransaction();
         try {
-
-
-            $user = User::query()->find($request->userId);
-            $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            $new_balance = $assets->amount - $amount;
-            if ($new_balance < 0) {
-                throw new \Exception(Lang::get('tips_4'));
+            if (!$assets->decrement('amount', $amount)) {
+                throw new \Exception(Lang::get('tips_19'));
             }
-
-            $assets->decrement('amount', $amount);
             $withdraw = new Withdraw();
             $withdraw->user_id = $user->id;
             $withdraw->coin = $coin;
@@ -109,7 +108,9 @@ class AssetsController
             $withdraw->fee = $fee;
             $withdraw->fee_rate = $withdraw_fee_rate;
             $withdraw->datetime = Carbon::now()->timestamp;
-            $withdraw->save();
+            if (!$withdraw->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
             $assets_log = new AssetsLog;
             $assets_log->user_id = $user->id;
@@ -120,7 +121,9 @@ class AssetsController
             $assets_log->remark = AssetsLogTypes::WITHDRAW->label();
             $assets_log->datetime = Carbon::now()->timestamp;
             $assets_log->withdraw_id = $withdraw->id;
-            $assets_log->save();
+            if (!$assets_log->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -153,7 +156,7 @@ class AssetsController
         $config = get_system_config();
         $min_number = $config['base_info']['exchange_min_number'] ?? 0;
         if ($amount < $min_number) {
-            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
+            return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
         }
 
         if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value, CoinTypes::USDT->value])) {
@@ -171,23 +174,23 @@ class AssetsController
         if ($amount <= 0) {
             return json_fail(Lang::get('tips_8'));
         }
-
+        $user = User::query()->where(['id' => $request->userId])->firstOrFail();
+        $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
+        $from_new_balance = $from_assets->amount - $amount;
+        if ($from_new_balance < 0) {
+            return json_fail(Lang::get('tips_4'));
+        }
 
         Db::beginTransaction();
         try {
-            $user = User::query()->where(['id' => $request->userId])->firstOrFail();
-            $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
-            $from_new_balance = $from_assets->amount - $amount;
-            if ($from_new_balance < 0) {
-                throw new \Exception(Lang::get('tips_4'));
-            }
+
 
             $to_amount = $amount;
             if ($rate != 0) {
                 $to_amount = round($amount * $rate, 6);
             }
 
-            $exchange = new Exchange();
+            $exchange = new Exchange;
             $exchange->user_id = $user->id;
             $exchange->from_coin = $from_coin;
             $exchange->to_coin = $to_coin;
@@ -197,10 +200,14 @@ class AssetsController
             $exchange->fee = $fee;
             $exchange->status = ExchangeStatus::SUCCESS;
             $exchange->datetime = Carbon::now()->timestamp;
-            $exchange->save();
+            if (!$exchange->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
+            if (!$from_assets->decrement('amount', $amount)) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
-            $from_assets->decrement('amount', $amount);
 
             $from_assets_log = new AssetsLog;
             $from_assets_log->user_id = $user->id;
@@ -212,8 +219,9 @@ class AssetsController
             $from_assets_log->remark = AssetsLogTypes::EXCHANGE->label();
             $from_assets_log->datetime = Carbon::now()->timestamp;
             $from_assets_log->exchange_id = $exchange->id;
-            $from_assets_log->save();
-
+            if (!$from_assets_log->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
             $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->firstOrFail();
             $to_new_balance = $to_assets->amount + $to_amount;
@@ -229,8 +237,9 @@ class AssetsController
             $to_assets_log->remark = AssetsLogTypes::EXCHANGE->label();
             $to_assets_log->datetime = Carbon::now()->timestamp;
             $to_assets_log->exchange_id = $exchange->id;
-            $to_assets_log->save();
-
+            if (!$to_assets_log->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();

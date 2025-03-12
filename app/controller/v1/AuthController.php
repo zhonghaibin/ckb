@@ -51,32 +51,37 @@ class AuthController
         if (empty($identity)) {
             return json_fail(Lang::get('tips_9'));
         }
+        $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
+
+        if (empty($user)) {
+            return json_fail(Lang::get('tips_10'));
+        }
+
         Db::beginTransaction();
+
         try {
-            $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
-
-            if (empty($user)) {
-                return json_fail(Lang::get('tips_10'));
-            }
-            $token = JwtUtil::generateToken($user->id);
-
             //登录日志
             $login_logs = new LoginLog;
             $login_logs->user_id = $user->id;
             $login_logs->ip = $request->getRealIp();
             $login_logs->user_agent = $request->header('User-Agent');
             $login_logs->datetime = Carbon::now()->timestamp;
-            $login_logs->save();
-
+            if (!$login_logs->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
             $user->last_login_ip = $request->getRealIp();
             $user->last_login_at = Carbon::now();
             $user->save();
-
+            if (!$user->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
         }
+        $token = JwtUtil::generateToken($user->id);
+
         return json_success([
             'token' => $token,
         ], Lang::get('tips_11'));
@@ -88,18 +93,19 @@ class AuthController
     {
 
 
+        $identity = $request->post('identity', '');
+        $code = $request->post('code', '');
+        if (empty($identity)) {
+            return json_fail(Lang::get('tips_12'));
+        }
+        $user = User::query()->where(['identity' => $identity])->exists();
+        if ($user) {
+            return json_fail(Lang::get('tips_13'));
+        }
+
+
+        Db::beginTransaction();
         try {
-            $identity = $request->post('identity', '');
-            $code = $request->post('code', '');
-            if (empty($identity)) {
-                return json_fail(Lang::get('tips_12'));
-            }
-            $user = User::query()->where(['identity' => $identity])->first();
-
-            if ($user) {
-                return json_fail(Lang::get('tips_13'));
-            }
-
             $user = new User;
             $user->identity = $identity;
             $user->remark = '';
@@ -114,7 +120,7 @@ class AuthController
                         $user->pid = $pid;
                     }
                 } catch (\Throwable $e) {
-                    return json_fail(Lang::get('code_error'));
+                    throw new \Exception(Lang::get('code_error'));
                 }
             }
             if (!$user->save()) {
@@ -131,17 +137,15 @@ class AuthController
                 }
             }
 
-
+            DB::commit();
             if ($pid) {
                 Redis::send(UserJob::UPDATE_INVITE_COUNT->value, ['user_id' => $pid]);
             }
-            return json_success();
-
         } catch (\Throwable $e) {
-
+            DB::rollBack();
             return json_fail($e->getMessage());
         }
-
+        return json_success();
 
     }
 

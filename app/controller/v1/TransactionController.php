@@ -36,7 +36,7 @@ class TransactionController
         $config = get_system_config();
         $min_number = $config['base_info']['ckb_min_number'];
         if ($amount < $min_number) {
-            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
+            return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
         }
 
         $params = $config['ckb'];
@@ -48,16 +48,21 @@ class TransactionController
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
+        $new_balance = $assets->amount - $amount;
+        if ($new_balance < 0) {
+            return json_fail(Lang::get('tips_4'));
+        }
+
         Db::beginTransaction();
 
         try {
-            $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            $new_balance = $assets->amount - $amount;
-            if ($new_balance < 0) {
-                throw new \Exception(Lang::get('tips_4'));
+
+            if (!$assets->decrement('amount', $amount)) {
+                throw new \Exception(Lang::get('tips_19'));
             }
 
-            $assets->decrement('amount', $amount);
+
             $transaction = new Transaction();
             $transaction->user_id = $user->id;
             $transaction->coin = $coin;
@@ -67,7 +72,9 @@ class TransactionController
             $transaction->transaction_type = TransactionTypes::CKB;
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->rates = json_encode($params);
-            $transaction->save();
+            if (!$transaction->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
             $assets_log = new AssetsLog;
             $assets_log->user_id = $transaction->user_id;
@@ -78,11 +85,15 @@ class TransactionController
             $assets_log->type = AssetsLogTypes::EXPENSE;
             $assets_log->remark = AssetsLogTypes::EXPENSE->label();
             $assets_log->datetime = Carbon::now()->timestamp;
-            $assets_log->save();
+            if (!$assets_log->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
             if (!$user->is_real == UserIsReal::DISABLE->value) {
                 $user->is_real = UserIsReal::NORMAL->value;
-                $user->save();
+                if (!$user->save()) {
+                    throw new \Exception(Lang::get('tips_19'));
+                }
             }
             DB::commit();
             Redis::send(UserJob::USER_UPGRADE->value, ['user_id' => $user->id]);
@@ -104,7 +115,7 @@ class TransactionController
         $config = get_system_config();
         $min_number = $config['base_info']['sol_min_number'];
         if ($amount < $min_number) {
-            return json_fail(Lang::get('tips_2',['min_number'=>$min_number]));
+            return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
         }
 
         $params = $config['sol'];
@@ -115,17 +126,19 @@ class TransactionController
         }
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
-
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
+        $new_balance = $assets->amount - $amount;
+        if ($new_balance < 0) {
+            return json_fail(Lang::get('tips_4'));
+        }
         Db::beginTransaction();
 
         try {
-            $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-            $new_balance = $assets->amount - $amount;
-            if ($new_balance < 0) {
-                throw new \Exception(Lang::get('tips_4'));
+
+            if (!$assets->decrement('amount', $amount)) {
+                throw new \Exception(Lang::get('tips_19'));
             }
 
-            $assets->decrement('amount', $amount);
             $transaction = new Transaction();
             $transaction->user_id = $user->id;
             $transaction->coin = $coin;
@@ -135,7 +148,9 @@ class TransactionController
             $transaction->transaction_type = TransactionTypes::SOL;
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->rates = json_encode($params);
-            $transaction->save();
+            if (!$transaction->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
             $assets_log = new AssetsLog;
             $assets_log->user_id = $transaction->user_id;
@@ -146,11 +161,15 @@ class TransactionController
             $assets_log->type = AssetsLogTypes::EXPENSE;
             $assets_log->remark = AssetsLogTypes::EXPENSE->label();
             $assets_log->datetime = Carbon::now()->timestamp;
-            $assets_log->save();
+            if (!$assets_log->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
             if (!$user->is_real == UserIsReal::DISABLE->value) {
                 $user->is_real = UserIsReal::NORMAL->value;
-                $user->save();
+                if (!$user->save()) {
+                    throw new \Exception(Lang::get('tips_19'));
+                }
             }
             DB::commit();
             Redis::send(UserJob::USER_UPGRADE->value, ['user_id' => $user->id]);

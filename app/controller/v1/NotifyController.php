@@ -27,7 +27,7 @@ class NotifyController
         if (isset($data['action']) && $data['action'] == 'login') {
             $identity = $data['account'];
             try {
-                $user = User::query()->where(['identity' => $identity])->first();
+                $user = User::query()->where(['identity' => $identity])->exists();
                 if (!$user) {
                     $user = new User;
                     $user->identity = $identity;
@@ -70,8 +70,10 @@ class NotifyController
             $user = User::query()->where('identity', $identity)->first();
             $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
             $new_balance = $assets->amount + $amount;
-
-            $assets->increment('amount', $amount);
+            
+            if (!$assets->increment('amount', $amount)) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
 
             $recharge = new Recharge();
             $recharge->user_id = $user->id;
@@ -81,8 +83,9 @@ class NotifyController
             $recharge->status = RechargeStatus::SUCCESS;
             $recharge->fee = 0;
             $recharge->datetime = Carbon::now()->timestamp;
-            $recharge->save();
-
+            if (!$recharge->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
             $assets_log = new AssetsLog;
             $assets_log->user_id = $user->id;
             $assets_log->coin = $coin;
@@ -92,9 +95,11 @@ class NotifyController
             $assets_log->remark = AssetsLogTypes::RECHARGE->label();
             $assets_log->datetime = Carbon::now()->timestamp;
             $assets_log->recharge_id = $recharge->id;
-            $assets_log->save();
+            if (!$assets_log->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
         }
