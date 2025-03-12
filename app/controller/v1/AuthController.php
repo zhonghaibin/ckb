@@ -120,7 +120,7 @@ class AuthController
                         $user->pid = $pid;
                     }
                 } catch (\Throwable $e) {
-                    throw new \Exception(Lang::get('code_error'));
+                    throw new \Exception(Lang::get('invite_code'));
                 }
             }
             if (!$user->save()) {

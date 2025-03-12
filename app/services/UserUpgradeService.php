@@ -22,6 +22,10 @@ class UserUpgradeService
 
     public function updateLevel()
     {
+        if ($this->user->is_real != UserIsReal::NORMAL->value) {
+            return false;
+        }
+
         if (!$this->directRealChildIds) {
             $this->findRealDirectChildIds();
         }
