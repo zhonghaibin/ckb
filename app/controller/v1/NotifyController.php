@@ -35,7 +35,7 @@ class NotifyController
                     $user->save();
                     $user->lang = LangTypes::ZH_CN;
                     $user->status = UserStatus::NORMAL;
-                    $user->avatar = '/images/avatars/avatar' . mt_rand(0, 5) . '.png';
+                    $user->avatar = '/images/avatars/avatar.png';
                     $user->save();
                     $assetsList = CoinTypes::list();
                     foreach ($assetsList as $value) {

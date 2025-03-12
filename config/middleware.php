@@ -14,7 +14,8 @@
 
 return [
     '' => [
-        app\middleware\DetectLanguage::class,
         app\middleware\CorsMiddleware::class,
+        app\middleware\DetectLanguage::class,
+
     ],
 ];

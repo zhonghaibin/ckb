@@ -11,7 +11,7 @@ use support\Db;
 use support\Log;
 
 
-class SolBonusService
+class MevBonusService
 {
     protected array $rates = [];
 

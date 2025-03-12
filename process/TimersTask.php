@@ -2,8 +2,8 @@
 
 namespace process;
 
-use app\services\CkbBonusService;
-use app\services\SolBonusService;
+use app\services\PledgeBonusService;
+use app\services\MevBonusService;
 use support\Log;
 use support\Redis;
 use Workerman\Crontab\Crontab;
@@ -26,9 +26,8 @@ class TimersTask
 
         // 每天的00点00执行，注意这里省略了秒位
         new Crontab('0 0 * * *', function () {
-            CkbBonusService::getInstance()->run();
-            SolBonusService::getInstance()->run();
-
+            PledgeBonusService::getInstance()->run();
+            MevBonusService::getInstance()->run();
         });
 
     }

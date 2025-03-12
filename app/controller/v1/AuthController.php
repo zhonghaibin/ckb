@@ -109,7 +109,7 @@ class AuthController
             $user = new User;
             $user->identity = $identity;
             $user->remark = '';
-            $user->avatar = '/images/avatars/avatar' . mt_rand(0, 5) . '.png';
+            $user->avatar = '/images/avatars/avatar.png';
             $user->save();
             $user->lang = LangTypes::ZH_CN;
             $pid = 0;

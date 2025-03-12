@@ -23,9 +23,9 @@ class TransactionController
 
 
     //CKB质押
-    public function ckb(Request $request)
+    public function pledge(Request $request)
     {
-        $coin = $request->post('coin', CoinTypes::ONE);
+        $coin = $request->post('coin', CoinTypes::ONE->value);
         $amount = $request->post('amount', 500);
         $day = $request->post('day', 15);
 
@@ -34,12 +34,13 @@ class TransactionController
         }
 
         $config = get_system_config();
-        $min_number = $config['base_info']['ckb_min_number'];
+        $min_number = $config['base_info']['pledge_min_number'];
         if ($amount < $min_number) {
             return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
         }
 
-        $params = $config['ckb'];
+        $params = $config['pledge'][strtolower($coin)];
+
         $days = array_column($params['staticRate'], 'day');
 
         if (!in_array($day, $days)) {
@@ -106,19 +107,19 @@ class TransactionController
     }
 
     //SOL套利
-    public function sol(Request $request)
+    public function mev(Request $request)
     {
-        $coin = CoinTypes::USDT;
+        $coin = CoinTypes::USDT->value;
         $amount = $request->post('amount', 500);
         $day = $request->post('day', 1);
 
         $config = get_system_config();
-        $min_number = $config['base_info']['sol_min_number'];
+        $min_number = $config['base_info']['mev_min_number'];
         if ($amount < $min_number) {
             return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
         }
+        $params = $config['mev'][strtolower($coin)];
 
-        $params = $config['sol'];
         $days = array_column($params['staticRate'], 'day');
 
         if (!in_array($day, $days)) {

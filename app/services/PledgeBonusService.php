@@ -11,7 +11,7 @@ use support\Db;
 use support\Log;
 
 
-class CkbBonusService
+class PledgeBonusService
 {
     protected array $rates = [];
 
