@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 11/03/2025 18:02:28
+ Date: 12/03/2025 10:24:16
 */
 
 SET NAMES utf8mb4;
@@ -58,7 +58,7 @@ CREATE TABLE `admins`  (
 -- ----------------------------
 -- Records of admins
 -- ----------------------------
-INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-10 10:42:17', '2025-03-10 10:42:17', NULL);
+INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-11 18:13:12', '2025-03-11 18:13:12', NULL);
 INSERT INTO `admins` VALUES (2, 'admin', 'admin', '$2y$10$lyohfF1VwjhKMHXf0zzUPuNC1UUwaoN1UBN2GyNcWjG4jj7107rea', '/app/admin/avatar.png', '', '', '2025-03-06 16:24:29', '2025-03-11 15:23:26', '2025-03-11 15:23:26', NULL);
 
 -- ----------------------------
@@ -378,7 +378,7 @@ INSERT INTO `rules` VALUES (83, '更新', NULL, 'plugin\\admin\\app\\controller\
 INSERT INTO `rules` VALUES (84, '删除', NULL, 'plugin\\admin\\app\\controller\\RuleController@delete', 6, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (85, '插入', NULL, 'plugin\\admin\\app\\controller\\UserController@insert', 8, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (86, '更新', NULL, 'plugin\\admin\\app\\controller\\UserController@update', 8, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
-INSERT INTO `rules` VALUES (87, 'select', NULL, 'plugin\\admin\\app\\controller\\UserController@select', 8, '2025-03-05 09:51:00', '2025-03-10 14:51:13', NULL, 2, 0);
+INSERT INTO `rules` VALUES (87, '查询', NULL, 'plugin\\admin\\app\\controller\\UserController@select', 8, '2025-03-05 09:51:00', '2025-03-11 18:02:50', NULL, 2, 0);
 INSERT INTO `rules` VALUES (88, '删除', NULL, 'plugin\\admin\\app\\controller\\UserController@delete', 8, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (89, '更新', NULL, 'plugin\\admin\\app\\controller\\AccountController@update', 10, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (90, '修改密码', NULL, 'plugin\\admin\\app\\controller\\AccountController@password', 10, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
@@ -541,7 +541,6 @@ CREATE TABLE `uploads`  (
 -- ----------------------------
 -- Records of uploads
 -- ----------------------------
-INSERT INTO `uploads` VALUES (1, '未标题-1.png', '/app/admin/upload/files/20250311/67cfd2ad3601.png', 2, 46661, 'image/png', 1890, 1417, 'png', 'local', '2025-03-11', '1', '2025-03-11');
 
 -- ----------------------------
 -- Table structure for users
