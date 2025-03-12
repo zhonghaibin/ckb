@@ -166,7 +166,7 @@ class SolBonusService
                     }
 
                     DB::commit();
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     DB::rollBack();
                     Log::error('Error processing transaction ID: ' . $transaction->id, ['exception' => $e->getMessage()]);
                     continue;
@@ -174,7 +174,7 @@ class SolBonusService
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Error during daily earnings processing', ['exception' => $e->getMessage()]);
             return false;
         }
