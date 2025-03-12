@@ -127,112 +127,190 @@
 
                 </div>
 
-                <!-- 菜单设置 -->
+                <!-- 质押 -->
                 <div class="layui-tab-item">
-                    <form class="layui-form" lay-filter="ckbInfo">
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">每日收益</div>
-                        </div>
-                        <div id="staticRateContainer"></div>
+                    <div class="layui-tab layui-tab-card">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">CKB</li>
+                            <li>ONE</li>
+                        </ul>
+                        <div class="layui-tab-content">
+
+                            <!-- CKB -->
+                            <div class="layui-tab-item layui-show">
+                                <form class="layui-form" lay-filter="ckbInfo" style="padding: 20px;">
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">每日收益</div>
+                                    </div>
+                                    <div id="staticRateCkb"></div>
 
 
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">直推分享奖</div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <div class="layui-input-inline" style="width: 100px;">
-                                    <input type="number" name="directRate" placeholder="" autocomplete="off"
-                                           class="layui-input" min="0" step="1" lay-affix="number">
-                                </div>
-                                <div class="layui-form-mid">%</div>
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">直推分享奖</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <div class="layui-input-inline" style="width: 100px;">
+                                                <input type="number" name="directRate" placeholder="" autocomplete="off"
+                                                       class="layui-input" min="0" step="1" lay-affix="number">
+                                            </div>
+                                            <div class="layui-form-mid">%</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">动态分享</div>
+                                    </div>
+                                    <div id="levelDiffRateCkb"></div>
+
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">平级奖</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <div class="layui-input-inline" style="width: 100px;">
+                                                <input type="number" name="sameLevelRate" placeholder="" autocomplete="off"
+                                                       class="layui-input" min="0" step="1" lay-affix="number">
+                                            </div>
+                                            <div class="layui-form-mid">%</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
+                                                    lay-filter="saveCkb">
+                                                提交
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </div>
 
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">动态分享</div>
-                        </div>
-                        <div id="levelDiffRateContainer"></div>
+                            <!-- ONE -->
+                            <div class="layui-tab-item">
+                                <form class="layui-form" lay-filter="oneInfo" style="padding: 20px;">
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">每日收益</div>
+                                    </div>
+                                    <div id="staticRateOne"></div>
 
 
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">平级奖</div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <div class="layui-input-inline" style="width: 100px;">
-                                    <input type="number" name="sameLevelRate" placeholder="" autocomplete="off"
-                                           class="layui-input" min="0" step="1" lay-affix="number">
-                                </div>
-                                <div class="layui-form-mid">%</div>
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">直推分享奖</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <div class="layui-input-inline" style="width: 100px;">
+                                                <input type="number" name="directRate" placeholder="" autocomplete="off"
+                                                       class="layui-input" min="0" step="1" lay-affix="number">
+                                            </div>
+                                            <div class="layui-form-mid">%</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">动态分享</div>
+                                    </div>
+                                    <div id="levelDiffRateOne"></div>
+
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">平级奖</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <div class="layui-input-inline" style="width: 100px;">
+                                                <input type="number" name="sameLevelRate" placeholder="" autocomplete="off"
+                                                       class="layui-input" min="0" step="1" lay-affix="number">
+                                            </div>
+                                            <div class="layui-form-mid">%</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
+                                                    lay-filter="saveOne">
+                                                提交
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </div>
 
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
-                                        lay-filter="saveCkb">
-                                    提交
-                                </button>
-                            </div>
                         </div>
-                    </form>
-
+                    </div>
                 </div>
 
                 <!-- tab设置 -->
                 <div class="layui-tab-item">
 
-                    <form class="layui-form" lay-filter="solInfo">
+                    <div class="layui-tab layui-tab-card">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">USDT</li>
+                        </ul>
+                        <div class="layui-tab-content">
 
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">每日收益</div>
-                        </div>
-                        <div id="solStaticRateContainer"></div>
+                            <!-- USDT -->
+                            <div class="layui-tab-item layui-show">
+                                <form class="layui-form" lay-filter="usdtInfo" style="padding: 20px;">
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">每日收益</div>
+                                    </div>
+                                    <div id="solStaticRateUsdt"></div>
 
 
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">直推分享奖</div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <div class="layui-input-inline" style="width: 100px;">
-                                    <input type="number" name="directRate" placeholder="" autocomplete="off"
-                                           class="layui-input" min="0" step="1" lay-affix="number">
-                                </div>
-                                <div class="layui-form-mid">%</div>
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">直推分享奖</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <div class="layui-input-inline" style="width: 100px;">
+                                                <input type="number" name="directRate" placeholder="" autocomplete="off"
+                                                       class="layui-input" min="0" step="1" lay-affix="number">
+                                            </div>
+                                            <div class="layui-form-mid">%</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">动态分享</div>
+                                    </div>
+                                    <div id="solLevelDiffRateUsdt"></div>
+
+
+                                    <div class="layui-card" style="margin-top: 10px;">
+                                        <div class="layui-card-header">平级奖</div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <div class="layui-input-inline" style="width: 100px;">
+                                                <input type="number" name="sameLevelRate" placeholder="" autocomplete="off"
+                                                       class="layui-input" min="0" step="1" lay-affix="number">
+                                            </div>
+                                            <div class="layui-form-mid">%</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
+                                                    lay-filter="saveUsdt">
+                                                提交
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </div>
-
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">动态分享</div>
-                        </div>
-                        <div id="solLevelDiffRateContainer"></div>
 
 
-                        <div class="layui-card" style="margin-top: 10px;">
-                            <div class="layui-card-header">平级奖</div>
                         </div>
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <div class="layui-input-inline" style="width: 100px;">
-                                    <input type="number" name="sameLevelRate" placeholder="" autocomplete="off"
-                                           class="layui-input" min="0" step="1" lay-affix="number">
-                                </div>
-                                <div class="layui-form-mid">%</div>
-                            </div>
-                        </div>
-
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-md" lay-submit=""
-                                        lay-filter="saveSol">
-                                    提交
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
+                    </div>
                 </div>
 
             </div>
@@ -270,7 +348,7 @@
             });
         });
 
-        // 菜单设置
+        // ckb
         layui.use(["upload", "layer", "popup"], function () {
             let $ = layui.$;
             let form = layui.form;
@@ -280,7 +358,28 @@
                     url: "/app/admin/systemConfig/update",
                     dataType: "json",
                     type: "POST",
-                    data: {ckb: JSON.stringify( data.field)},
+                    data: {pledge: { "ckb": JSON.stringify(data.field) }},
+                    success: function (res) {
+                        if (res.code) {
+                            return layui.popup.failure(res.msg);
+                        }
+                        return layui.popup.success("操作成功");
+                    }
+                });
+                return false;
+            });
+        });
+
+        layui.use(["upload", "layer", "popup"], function () {
+            let $ = layui.$;
+            let form = layui.form;
+            // 提交
+            form.on("submit(saveOne)", function (data) {
+                $.ajax({
+                    url: "/app/admin/systemConfig/update",
+                    dataType: "json",
+                    type: "POST",
+                    data: {pledge: { "one": JSON.stringify(data.field) }},
                     success: function (res) {
                         if (res.code) {
                             return layui.popup.failure(res.msg);
@@ -297,14 +396,14 @@
             let $ = layui.$;
             let form = layui.form;
             // 提交
-            form.on("submit(saveSol)", function (data) {
+            form.on("submit(saveUsdt)", function (data) {
                 let field = data.field;
                 delete data.field;
                 $.ajax({
                     url: "/app/admin/systemConfig/update",
                     dataType: "json",
                     type: "POST",
-                    data: {sol: JSON.stringify( field)},
+                    data:  {mev: { "usdt": JSON.stringify(field) }},
                     success: function (res) {
                         if (res.code) {
                             return layui.popup.failure(res.msg);
@@ -330,31 +429,37 @@
                     }
                     form.val("baseInfo", res.base_info);
                     form.val("ckbInfo", {
-                        "directRate": res.ckb.directRate,
-                        "sameLevelRate": res.ckb.sameLevelRate
+                        "directRate": res.pledge.ckb.directRate,
+                        "sameLevelRate": res.pledge.ckb.sameLevelRate
+                    });
+                    form.val("oneInfo", {
+                        "directRate": res.pledge.one.directRate,
+                        "sameLevelRate": res.pledge.one.sameLevelRate
                     });
 
-                    renderStaticRateTable(res.ckb.staticRate);
-                    renderLevelDiffRateTable(res.ckb.levelDiffRate);
+                    renderStaticRateTable(res.pledge.ckb.staticRate,"Ckb");
+                    renderStaticRateTable(res.pledge.one.staticRate,"One");
+                    renderLevelDiffRateTable(res.pledge.ckb.levelDiffRate,"Ckb");
+                    renderLevelDiffRateTable(res.pledge.one.levelDiffRate,"One");
 
-                    form.val("solInfo", {
-                        "directRate": res.sol.directRate,
-                        "sameLevelRate": res.sol.sameLevelRate
+                    form.val("usdtInfo", {
+                        "directRate": res.mev.usdt.directRate,
+                        "sameLevelRate": res.mev.usdt.sameLevelRate
                     });
 
-                    renderSolStaticRateTable(res.sol.staticRate);
-                    renderSolLevelDiffRateTable(res.sol.levelDiffRate);
+                    renderSolStaticRateTable(res.mev.usdt.staticRate,"Usdt");
+                    renderSolLevelDiffRateTable(res.mev.usdt.levelDiffRate,"Usdt");
                 }
             });
 
 
         });
 
-        function renderStaticRateTable(data) {
-            var container = document.getElementById("staticRateContainer");
+        function renderStaticRateTable(data,id) {
+            var container = document.getElementById("staticRate"+id);
 
             if (!container) {
-                console.error("找不到 #staticRateContainer 元素！");
+                console.error("找不到 #staticRate元素！"+id);
                 return;
             }
             container.innerHTML = ""; // 清空原有内容
@@ -377,11 +482,11 @@
             // form.render(); // 重新渲染表单
         }
 
-        function renderLevelDiffRateTable(data) {
-            var container = document.getElementById("levelDiffRateContainer");
+        function renderLevelDiffRateTable(data,id) {
+            var container = document.getElementById("levelDiffRate"+id);
 
             if (!container) {
-                console.error("找不到 #levelDiffRateContainer 元素！");
+                console.error("找不到 #levelDiffRate元素！"+id);
                 return;
             }
             container.innerHTML = ""; // 清空原有内容
@@ -409,11 +514,11 @@
             // form.render(); // 重新渲染表单
         }
 
-        function renderSolStaticRateTable(data) {
-            var container = document.getElementById("solStaticRateContainer");
+        function renderSolStaticRateTable(data,id) {
+            var container = document.getElementById("solStaticRate"+id);
 
             if (!container) {
-                console.error("找不到 #staticRateContainer 元素！");
+                console.error("找不到 #staticRate 元素！"+id);
                 return;
             }
             container.innerHTML = ""; // 清空原有内容
@@ -448,11 +553,11 @@
             // form.render(); // 重新渲染表单
         }
 
-        function renderSolLevelDiffRateTable(data) {
-            var container = document.getElementById("solLevelDiffRateContainer");
+        function renderSolLevelDiffRateTable(data,id) {
+            var container = document.getElementById("solLevelDiffRate"+id);
 
             if (!container) {
-                console.error("找不到 #levelDiffRateContainer 元素！");
+                console.error("找不到 #levelDiffRate 元素！"+id);
                 return;
             }
             container.innerHTML = ""; // 清空原有内容

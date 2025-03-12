@@ -36,8 +36,76 @@ class TestController
     public function index(Request $request)
     {
 
-        $dd = Lang::get('aaa');
-        return json_success($dd);
+//        $transferData = [
+//            "amount" => 10, // 10 USDT
+//            "contract" => "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", // Solana USDT 合约地址
+//            "decimal" => 6, // USDT 精度
+//            "desc" => "Solana USDT Transfer",
+//            "from" => "3e71CqSwTdfXxxh5HnYjqju31a2WRQZXt68TkkUTLHpG", // 付款人地址
+//            "to" => "CaGTvRyDdohCZp2teEVws9Mu1NqVUeAwSrrsZ8ZGWoiC", // 收款人地址
+//            "symbol" => "USDT",
+//            "action" => "transfer",
+//            "blockchains" => [
+//                ["chainId" => "101", "network" => "solana"] // Solana 主网
+//            ],
+//            "protocol" => "TokenPocket",
+//            "callbackUrl" => "https://your-server.com/tp-callback.php", // 交易完成后的回调地址
+//        ];
+//        $param = [
+//            "blockchain" => "solana",
+//            "action" => "login",
+//            "actionId" => "1648522106711",
+//            "callbackUrl" => "https://example.com/callback",
+//            "appName" => "MyDApp",
+//            "appIcon" => "https://example.com/icon.png",
+//            "version" => "2.0",
+//            "callbackSchema" => "mySchema://myHost"
+//        ];
+//
+//// 进行 JSON 编码并 URL 编码
+//        $encodedParam = urlencode(json_encode($param));
+//
+//// 生成 TokenPocket DeepLink
+//        $url = "<a href='tpoutside://pull.activity?param=$encodedParam'>Open TokenPocket</a>";
+//
+//        return response($url);
+
+//        $transferData = [
+//            "amount" => 1,
+//            "contract" => "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+//            "decimal" => 6,
+//            "desc" => "",
+//            "from" => "3e71CqSwTdfXxxh5HnYjqju31a2WRQZXt68TkkUTLHpG",
+//            "memo" => "0xe595a6",
+//            "precision" => 0,
+//            "symbol" => "USDT",
+//            "to" => "CaGTvRyDdohCZp2teEVws9Mu1NqVUeAwSrrsZ8ZGWoiC",
+//            "action" => "transfer",
+//            "actionId" => uniqid("web-"),
+//            "blockchains" => [
+//                [
+//                    "chainId" => "1",
+//                    "network" => "ethereum"
+//                ]
+//            ],
+//            "dappIcon" => "https://eosknights.io/img/icon.png",
+//            "dappName" => "Test demo",
+//            "protocol" => "TokenPocket",
+//            "callbackUrl" => "http://115.205.0.178:9011/taaBizApi/taaInitData",
+//            "version" => "2.0"
+//        ];
+//
+//        $encodedParam = urlencode(json_encode($transferData, JSON_UNESCAPED_SLASHES));
+//// 生成 TokenPocket URL
+////        $tpUrl = "tp://open?params=" . urlencode(json_encode($transferData, JSON_UNESCAPED_SLASHES));
+////        header("Location: $tpUrl");
+//// 重定向到 TokenPocket（DeepLink）
+//        $url = "<a href='tpoutside://pull.activity?param=$encodedParam'>Open TokenPocket to transfer</a>";
+//        return response($url);
+
+
+//        $dd = Lang::get('aaa');
+//        return json_success($dd);
 //        CkbBonusService::getInstance()->run();
 //        SolBonusService::getInstance()->run();
 
@@ -121,7 +189,7 @@ class TestController
 //
 //        $hello = trans('hello'); // hello world!
 //        return response($hello);
-        return response('ok');
+//        return response('ok');
     }
 
     public function setData()

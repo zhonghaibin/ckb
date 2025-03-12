@@ -22,7 +22,7 @@ class CorsMiddleware implements MiddlewareInterface
         $response->withHeaders([
             'Access-Control-Allow-Origin' => '*', // 允许所有域名访问
             'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS', // 允许的请求方法
-            'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-Requested-With', // 允许的请求头
+            'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-Requested-With, Accept-Language', // 允许的请求头
             'Access-Control-Allow-Credentials' => 'true', // 允许携带凭证（如 Cookie）
         ]);
 

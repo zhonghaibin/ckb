@@ -71,10 +71,14 @@ class SystemConfigController extends Base
         $config = $this->getByDefault();
         $data = [];
 
+
         foreach ($post as $section => $items) {
+
+
             if (!isset($config[$section])) {
                 continue;
             }
+
             switch ($section) {
                 case 'base_info':
                     $data[$section]['maintenance_mode'] = $items['maintenance_mode'] ?? false;
@@ -87,19 +91,30 @@ class SystemConfigController extends Base
                     $data[$section]['exchange_min_number'] = $items['exchange_min_number'] ?? 1;
                     $data[$section]['withdraw_min_number'] = $items['withdraw_min_number'] ?? 100;
                     $data[$section]['withdraw_fee_rate'] = $items['withdraw_fee_rate'] ?? 0;
+
                     break;
-                case 'ckb':
-                    $flatArray = json_decode($post[$section], true);
-                    $items = parse_nested_array($flatArray);
-                    $data[$section] = $items;
+                case 'pledge'://质押
+                    $pledge = $items;
+                    foreach ($pledge as $key => $val) {
+                        $flatArray = json_decode($pledge[$key], true);
+                        $val = parse_nested_array($flatArray);
+                        $data[$section] =  array_merge($config[$section], [$key=>$val]);
+
+                    }
+
                     break;
-                case 'sol':
-                    $flatArray = json_decode($post[$section], true);
-                    $items = parse_nested_array($flatArray);
-                    $data[$section] = $items;
+                case 'mev'://套利
+                    $mev = $items;
+                    foreach ($mev as $key => $val) {
+                        $flatArray = json_decode($mev[$key], true);
+                        $val = parse_nested_array($flatArray);
+                        $data[$section] =  array_merge($config[$section], [$key=>$val]);
+                    }
+
             }
         }
         $config = array_merge($config, $data);
+
         $name = 'config';
         Option::where('name', $name)->update([
             'value' => json_encode($config)

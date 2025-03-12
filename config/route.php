@@ -30,9 +30,7 @@ Route::group('/v1', function () {
     Route::any('/notify/register', [app\controller\v1\NotifyController::class, 'register']);
     Route::any('/notify/recharge', [app\controller\v1\NotifyController::class, 'recharge']);
     Route::any('/notify/withdraw', [app\controller\v1\NotifyController::class, 'withdraw']);
-})->middleware([
-    \app\middleware\CorsMiddleware::class
-]);
+});
 
 
 Route::group('/v1', function () {
@@ -55,6 +53,5 @@ Route::group('/v1', function () {
 
 })->middleware([
     app\middleware\JwtAuthMiddleware::class,
-    \app\middleware\CorsMiddleware::class
 ]);
 Route::disableDefaultRoute();

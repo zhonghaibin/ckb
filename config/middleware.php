@@ -15,5 +15,6 @@
 return [
     '' => [
         app\middleware\DetectLanguage::class,
+        app\middleware\CorsMiddleware::class,
     ],
 ];
