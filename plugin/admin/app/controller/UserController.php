@@ -118,7 +118,12 @@ class UserController extends Crud
         $user_ids = get_team_user_ids($user_id);
         $this->model = new User;
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
-        $where['id'] = ['in', $user_ids];
+        if ($user_ids) {
+            $where['id'] = ['in', $user_ids];
+        } else {
+            $where['id'] = ['in', 0];
+        }
+
         $query = $this->doSelect($where, $field, $order);
         $query = $query->with('assets');
         return $this->doFormat($query, $format, $limit);
