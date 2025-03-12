@@ -12,7 +12,7 @@ use support\Request;
 use support\Response;
 use Throwable;
 
-class SolController extends Crud
+class PledgeController extends Crud
 {
 
     /**
@@ -31,6 +31,8 @@ class SolController extends Crud
 
     /**
      * 查询
+     * @param Request $request
+     * @return Response
      */
     public function select(Request $request): Response
     {
@@ -43,28 +45,59 @@ class SolController extends Crud
             });
         });
 
-        $query = $query->with('user')->where('transaction_type', TransactionTypes::SOL);
+        $query = $query->with('user')->where('transaction_type', TransactionTypes::PLEDGE);
         return $this->doFormat($query, $format, $limit);
     }
 
     /**
      * 浏览
+     * @return Response
+     * @throws Throwable
      */
     public function index(): Response
     {
-        return raw_view('sol/index');
+        return raw_view('pledge/index');
+    }
+
+
+    /**
+     * 浏览收益
+     * @return Response
+     * @throws Throwable
+     */
+    public function show(): Response
+    {
+        return raw_view('pledge/show');
+    }
+
+    /**
+     * 查询收益
+     * @param Request $request
+     * @return Response
+     */
+    public function ckbLogs(Request $request)
+    {
+
+        $this->model = new TransactionLog;
+        [$where, $format, $limit, $field, $order] = $this->selectInput($request);
+        $query = $this->doSelect($where, $field, $order);
+        return $this->doFormat($query, $format, $limit);
     }
 
     /**
      * 浏览静态收益
+     * @return Response
+     * @throws Throwable
      */
     public function staticIncome(): Response
     {
-        return raw_view('sol/staticIncome');
+        return raw_view('pledge/staticIncome');
     }
 
     /**
      * 查询静态收益
+     * @param Request $request
+     * @return Response
      */
     public function staticIncomes(Request $request)
     {
@@ -77,14 +110,18 @@ class SolController extends Crud
 
     /**
      * 浏览动态收益
+     * @return Response
+     * @throws Throwable
      */
     public function dynamicIncome(): Response
     {
-        return raw_view('sol/dynamicIncome');
+        return raw_view('pledge/dynamicIncome');
     }
 
     /**
      * 查询动态收益
+     * @param Request $request
+     * @return Response
      */
     public function dynamicIncomes(Request $request)
     {

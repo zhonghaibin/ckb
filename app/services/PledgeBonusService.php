@@ -47,7 +47,7 @@ class PledgeBonusService
 
             // 获取符合条件的交易记录
             $transactions = DB::table('transactions')
-                ->where('transaction_type', TransactionTypes::CKB)
+                ->where('transaction_type', TransactionTypes::PLEDGE)
                 ->where('status', TransactionStatus::NORMAL)
                 ->whereRaw('run_day < day')
                 ->where('runtime', '<', $midnightTimestamp)
@@ -78,7 +78,7 @@ class PledgeBonusService
                         'transaction_id' => $transaction->id,
                         'coin' => $transaction->coin,
                         'rate' => $rate,
-                        'transaction_type' => TransactionTypes::CKB,
+                        'transaction_type' => TransactionTypes::PLEDGE,
                         'datetime' => Carbon::now()->timestamp,
                         'bonus' => $bonus,
                         'created_at' => Carbon::now(),

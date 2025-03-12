@@ -70,7 +70,7 @@ class TransactionController
             $transaction->amount = $amount;
             $transaction->day = $day;
             $transaction->datetime = Carbon::now()->timestamp;
-            $transaction->transaction_type = TransactionTypes::CKB;
+            $transaction->transaction_type = TransactionTypes::PLEDGE;
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->rates = json_encode($params);
             if (!$transaction->save()) {
@@ -146,7 +146,7 @@ class TransactionController
             $transaction->amount = $amount;
             $transaction->day = $day;
             $transaction->datetime = Carbon::now()->timestamp;
-            $transaction->transaction_type = TransactionTypes::SOL;
+            $transaction->transaction_type = TransactionTypes::MEV;
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->rates = json_encode($params);
             if (!$transaction->save()) {
@@ -185,9 +185,9 @@ class TransactionController
     //下单列表
     public function transactionList(Request $request)
     {
-        $transactionType = $request->get('transactionType', TransactionTypes::SOL);
+        $transactionType = $request->get('transactionType', TransactionTypes::MEV);
 
-        if (!in_array($transactionType, [TransactionTypes::SOL->value, TransactionTypes::CKB->value])) {
+        if (!in_array($transactionType, [TransactionTypes::MEV->value, TransactionTypes::PLEDGE->value])) {
             return json_fail(Lang::get('tips_17'));
         }
         $transactions = Db::table('transactions')->where('user_id', $request->userId)
@@ -203,9 +203,9 @@ class TransactionController
     //收益列表
     public function transactionLogList(Request $request)
     {
-        $transactionType = $request->get('transactionType', TransactionTypes::SOL);
+        $transactionType = $request->get('transactionType', TransactionTypes::MEV);
 
-        if (!in_array($transactionType, [TransactionTypes::SOL->value, TransactionTypes::CKB->value])) {
+        if (!in_array($transactionType, [TransactionTypes::MEV->value, TransactionTypes::PLEDGE->value])) {
             return json_fail(Lang::get('tips_17'));
         }
         $transactionLogs = Db::table('transaction_logs')->where('user_id', $request->userId)

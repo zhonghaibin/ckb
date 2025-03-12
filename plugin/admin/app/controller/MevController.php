@@ -10,9 +10,8 @@ use app\model\Transaction;
 use app\model\TransactionLog;
 use support\Request;
 use support\Response;
-use Throwable;
 
-class CkbController extends Crud
+class MevController extends Crud
 {
 
     /**
@@ -31,8 +30,6 @@ class CkbController extends Crud
 
     /**
      * 查询
-     * @param Request $request
-     * @return Response
      */
     public function select(Request $request): Response
     {
@@ -45,59 +42,28 @@ class CkbController extends Crud
             });
         });
 
-        $query = $query->with('user')->where('transaction_type', TransactionTypes::CKB);
+        $query = $query->with('user')->where('transaction_type', TransactionTypes::MEV);
         return $this->doFormat($query, $format, $limit);
     }
 
     /**
      * 浏览
-     * @return Response
-     * @throws Throwable
      */
     public function index(): Response
     {
-        return raw_view('ckb/index');
-    }
-
-
-    /**
-     * 浏览收益
-     * @return Response
-     * @throws Throwable
-     */
-    public function show(): Response
-    {
-        return raw_view('ckb/show');
-    }
-
-    /**
-     * 查询收益
-     * @param Request $request
-     * @return Response
-     */
-    public function ckbLogs(Request $request)
-    {
-
-        $this->model = new TransactionLog;
-        [$where, $format, $limit, $field, $order] = $this->selectInput($request);
-        $query = $this->doSelect($where, $field, $order);
-        return $this->doFormat($query, $format, $limit);
+        return raw_view('mev/index');
     }
 
     /**
      * 浏览静态收益
-     * @return Response
-     * @throws Throwable
      */
     public function staticIncome(): Response
     {
-        return raw_view('ckb/staticIncome');
+        return raw_view('mev/staticIncome');
     }
 
     /**
      * 查询静态收益
-     * @param Request $request
-     * @return Response
      */
     public function staticIncomes(Request $request)
     {
@@ -110,18 +76,14 @@ class CkbController extends Crud
 
     /**
      * 浏览动态收益
-     * @return Response
-     * @throws Throwable
      */
     public function dynamicIncome(): Response
     {
-        return raw_view('ckb/dynamicIncome');
+        return raw_view('mev/dynamicIncome');
     }
 
     /**
      * 查询动态收益
-     * @param Request $request
-     * @return Response
      */
     public function dynamicIncomes(Request $request)
     {

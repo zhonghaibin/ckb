@@ -47,7 +47,7 @@ class MevBonusService
 
             // 获取符合条件的交易记录
             $transactions = DB::table('transactions')
-                ->where('transaction_type', TransactionTypes::SOL)
+                ->where('transaction_type', TransactionTypes::MEV)
                 ->where('status', TransactionStatus::NORMAL)
                 ->whereRaw('run_day < day')
                 ->where('runtime', '<', $midnightTimestamp)
@@ -87,7 +87,7 @@ class MevBonusService
                         'transaction_id' => $transaction->id,
                         'coin' => $transaction->coin,
                         'rate' => $rate,
-                        'transaction_type' => TransactionTypes::SOL,
+                        'transaction_type' => TransactionTypes::MEV,
                         'datetime' => Carbon::now()->timestamp,
                         'bonus' => $bonus,
                         'created_at' => Carbon::now(),

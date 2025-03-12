@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 12/03/2025 10:24:16
+ Date: 12/03/2025 18:00:59
 */
 
 SET NAMES utf8mb4;
@@ -77,11 +77,38 @@ CREATE TABLE `assets`  (
   UNIQUE INDEX `id`(`id`) USING BTREE,
   INDEX `inx_Fields`(`id`, `user_id`, `coin`, `amount`, `bonus`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家钱包' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家钱包' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of assets
 -- ----------------------------
+INSERT INTO `assets` VALUES (1, 1, 'USDT', 501.478226, 1.478226, '2025-03-12 13:31:20', '2025-03-12 13:39:46');
+INSERT INTO `assets` VALUES (2, 1, 'ONE', 1.290323, 1.290323, '2025-03-12 13:31:20', '2025-03-12 13:38:52');
+INSERT INTO `assets` VALUES (3, 1, 'CBK', 1.290323, 1.290323, '2025-03-12 13:31:20', '2025-03-12 13:39:01');
+INSERT INTO `assets` VALUES (4, 2, 'USDT', 1301.412903, 1.412903, '2025-03-12 13:31:32', '2025-03-12 13:42:45');
+INSERT INTO `assets` VALUES (5, 2, 'ONE', 100.000000, 0.000000, '2025-03-12 13:31:32', '2025-03-12 13:42:22');
+INSERT INTO `assets` VALUES (6, 2, 'CBK', 100.000000, 0.000000, '2025-03-12 13:31:32', '2025-03-12 13:42:29');
+INSERT INTO `assets` VALUES (7, 3, 'USDT', 401.348387, 1.348387, '2025-03-12 13:31:37', '2025-03-12 13:45:29');
+INSERT INTO `assets` VALUES (8, 3, 'ONE', 101.290323, 1.290323, '2025-03-12 13:31:37', '2025-03-12 13:45:18');
+INSERT INTO `assets` VALUES (9, 3, 'CBK', 1.290323, 1.290323, '2025-03-12 13:31:37', '2025-03-12 13:45:24');
+INSERT INTO `assets` VALUES (10, 4, 'USDT', 501.502419, 1.502419, '2025-03-12 13:31:42', '2025-03-12 13:46:30');
+INSERT INTO `assets` VALUES (11, 4, 'ONE', 1.290323, 1.290323, '2025-03-12 13:31:42', '2025-03-12 13:46:27');
+INSERT INTO `assets` VALUES (12, 4, 'CBK', 1.290323, 1.290323, '2025-03-12 13:31:42', '2025-03-12 13:46:12');
+INSERT INTO `assets` VALUES (13, 5, 'USDT', 0.000000, 0.000000, '2025-03-12 13:31:46', '2025-03-12 13:31:46');
+INSERT INTO `assets` VALUES (14, 5, 'ONE', 0.000000, 0.000000, '2025-03-12 13:31:46', '2025-03-12 13:31:46');
+INSERT INTO `assets` VALUES (15, 5, 'CBK', 0.000000, 0.000000, '2025-03-12 13:31:46', '2025-03-12 13:31:46');
+INSERT INTO `assets` VALUES (16, 6, 'USDT', 0.000000, 0.000000, '2025-03-12 13:31:50', '2025-03-12 13:31:50');
+INSERT INTO `assets` VALUES (17, 6, 'ONE', 0.000000, 0.000000, '2025-03-12 13:31:50', '2025-03-12 13:31:50');
+INSERT INTO `assets` VALUES (18, 6, 'CBK', 0.000000, 0.000000, '2025-03-12 13:31:50', '2025-03-12 13:31:50');
+INSERT INTO `assets` VALUES (19, 7, 'USDT', 0.000000, 0.000000, '2025-03-12 13:31:56', '2025-03-12 13:31:56');
+INSERT INTO `assets` VALUES (20, 7, 'ONE', 0.000000, 0.000000, '2025-03-12 13:31:56', '2025-03-12 13:31:56');
+INSERT INTO `assets` VALUES (21, 7, 'CBK', 0.000000, 0.000000, '2025-03-12 13:31:56', '2025-03-12 13:31:56');
+INSERT INTO `assets` VALUES (22, 8, 'USDT', 0.000000, 0.000000, '2025-03-12 13:32:01', '2025-03-12 13:32:01');
+INSERT INTO `assets` VALUES (23, 8, 'ONE', 0.000000, 0.000000, '2025-03-12 13:32:01', '2025-03-12 13:32:01');
+INSERT INTO `assets` VALUES (24, 8, 'CBK', 0.000000, 0.000000, '2025-03-12 13:32:01', '2025-03-12 13:32:01');
+INSERT INTO `assets` VALUES (25, 9, 'USDT', 0.000000, 0.000000, '2025-03-12 13:32:05', '2025-03-12 13:32:05');
+INSERT INTO `assets` VALUES (26, 9, 'ONE', 0.000000, 0.000000, '2025-03-12 13:32:05', '2025-03-12 13:32:05');
+INSERT INTO `assets` VALUES (27, 9, 'CBK', 0.000000, 0.000000, '2025-03-12 13:32:05', '2025-03-12 13:32:05');
 
 -- ----------------------------
 -- Table structure for assets_logs
@@ -106,11 +133,54 @@ CREATE TABLE `assets_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`id`, `user_id`, `coin`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of assets_logs
 -- ----------------------------
+INSERT INTO `assets_logs` VALUES (1, 1, 'USDT', 1000.000000, 1000.000000, 0.0000, 0, 0, 0, 1, 0, 1, '充值', 1741757871, '2025-03-12 13:37:51', '2025-03-12 13:37:51');
+INSERT INTO `assets_logs` VALUES (2, 1, 'USDT', -500.000000, 500.000000, 1.0000, 0, 0, 1, 0, 0, 3, '兑换', 1741757913, '2025-03-12 13:38:33', '2025-03-12 13:38:33');
+INSERT INTO `assets_logs` VALUES (3, 1, 'ONE', 500.000000, 500.000000, 1.0000, 0, 0, 1, 0, 0, 3, '兑换', 1741757913, '2025-03-12 13:38:33', '2025-03-12 13:38:33');
+INSERT INTO `assets_logs` VALUES (4, 1, 'USDT', -500.000000, 0.000000, 1.0000, 0, 0, 2, 0, 0, 3, '兑换', 1741757923, '2025-03-12 13:38:43', '2025-03-12 13:38:43');
+INSERT INTO `assets_logs` VALUES (5, 1, 'CBK', 500.000000, 500.000000, 1.0000, 0, 0, 2, 0, 0, 3, '兑换', 1741757923, '2025-03-12 13:38:43', '2025-03-12 13:38:43');
+INSERT INTO `assets_logs` VALUES (6, 1, 'ONE', -500.000000, 0.000000, 0.0000, 1, 0, 0, 0, 0, 4, '下单', 1741757932, '2025-03-12 13:38:52', '2025-03-12 13:38:52');
+INSERT INTO `assets_logs` VALUES (7, 1, 'CBK', -500.000000, 0.000000, 0.0000, 2, 0, 0, 0, 0, 4, '下单', 1741757941, '2025-03-12 13:39:01', '2025-03-12 13:39:01');
+INSERT INTO `assets_logs` VALUES (8, 1, 'USDT', 1000.000000, 1000.000000, 0.0000, 0, 0, 0, 2, 0, 1, '充值', 1741757982, '2025-03-12 13:39:42', '2025-03-12 13:39:42');
+INSERT INTO `assets_logs` VALUES (9, 1, 'USDT', -500.000000, 500.000000, 0.0000, 3, 0, 0, 0, 0, 4, '下单', 1741757986, '2025-03-12 13:39:46', '2025-03-12 13:39:46');
+INSERT INTO `assets_logs` VALUES (10, 2, 'USDT', 2000.000000, 2000.000000, 0.0000, 0, 0, 0, 3, 0, 1, '充值', 1741758125, '2025-03-12 13:42:05', '2025-03-12 13:42:05');
+INSERT INTO `assets_logs` VALUES (11, 2, 'USDT', -100.000000, 1900.000000, 1.0000, 0, 0, 3, 0, 0, 3, '兑换', 1741758142, '2025-03-12 13:42:22', '2025-03-12 13:42:22');
+INSERT INTO `assets_logs` VALUES (12, 2, 'ONE', 100.000000, 100.000000, 1.0000, 0, 0, 3, 0, 0, 3, '兑换', 1741758142, '2025-03-12 13:42:22', '2025-03-12 13:42:22');
+INSERT INTO `assets_logs` VALUES (13, 2, 'USDT', -100.000000, 1800.000000, 1.0000, 0, 0, 4, 0, 0, 3, '兑换', 1741758149, '2025-03-12 13:42:29', '2025-03-12 13:42:29');
+INSERT INTO `assets_logs` VALUES (14, 2, 'CBK', 100.000000, 100.000000, 1.0000, 0, 0, 4, 0, 0, 3, '兑换', 1741758149, '2025-03-12 13:42:29', '2025-03-12 13:42:29');
+INSERT INTO `assets_logs` VALUES (15, 2, 'USDT', -500.000000, 1300.000000, 0.0000, 4, 0, 0, 0, 0, 4, '下单', 1741758165, '2025-03-12 13:42:45', '2025-03-12 13:42:45');
+INSERT INTO `assets_logs` VALUES (16, 3, 'USDT', 2000.000000, 2000.000000, 0.0000, 0, 0, 0, 4, 0, 1, '充值', 1741758196, '2025-03-12 13:43:16', '2025-03-12 13:43:16');
+INSERT INTO `assets_logs` VALUES (17, 3, 'USDT', -100.000000, 1900.000000, 1.0000, 0, 0, 5, 0, 0, 3, '兑换', 1741758209, '2025-03-12 13:43:29', '2025-03-12 13:43:29');
+INSERT INTO `assets_logs` VALUES (18, 3, 'ONE', 100.000000, 100.000000, 1.0000, 0, 0, 5, 0, 0, 3, '兑换', 1741758209, '2025-03-12 13:43:29', '2025-03-12 13:43:29');
+INSERT INTO `assets_logs` VALUES (19, 3, 'USDT', -500.000000, 1400.000000, 1.0000, 0, 0, 6, 0, 0, 3, '兑换', 1741758299, '2025-03-12 13:44:59', '2025-03-12 13:44:59');
+INSERT INTO `assets_logs` VALUES (20, 3, 'CBK', 500.000000, 500.000000, 1.0000, 0, 0, 6, 0, 0, 3, '兑换', 1741758299, '2025-03-12 13:44:59', '2025-03-12 13:44:59');
+INSERT INTO `assets_logs` VALUES (21, 3, 'USDT', -500.000000, 900.000000, 1.0000, 0, 0, 7, 0, 0, 3, '兑换', 1741758309, '2025-03-12 13:45:09', '2025-03-12 13:45:09');
+INSERT INTO `assets_logs` VALUES (22, 3, 'ONE', 500.000000, 600.000000, 1.0000, 0, 0, 7, 0, 0, 3, '兑换', 1741758309, '2025-03-12 13:45:09', '2025-03-12 13:45:09');
+INSERT INTO `assets_logs` VALUES (23, 3, 'ONE', -500.000000, 100.000000, 0.0000, 5, 0, 0, 0, 0, 4, '下单', 1741758318, '2025-03-12 13:45:18', '2025-03-12 13:45:18');
+INSERT INTO `assets_logs` VALUES (24, 3, 'CBK', -500.000000, 0.000000, 0.0000, 6, 0, 0, 0, 0, 4, '下单', 1741758324, '2025-03-12 13:45:24', '2025-03-12 13:45:24');
+INSERT INTO `assets_logs` VALUES (25, 3, 'USDT', -500.000000, 400.000000, 0.0000, 7, 0, 0, 0, 0, 4, '下单', 1741758329, '2025-03-12 13:45:29', '2025-03-12 13:45:29');
+INSERT INTO `assets_logs` VALUES (26, 4, 'USDT', 2000.000000, 2000.000000, 0.0000, 0, 0, 0, 5, 0, 1, '充值', 1741758351, '2025-03-12 13:45:51', '2025-03-12 13:45:51');
+INSERT INTO `assets_logs` VALUES (27, 4, 'USDT', -500.000000, 1500.000000, 1.0000, 0, 0, 8, 0, 0, 3, '兑换', 1741758356, '2025-03-12 13:45:56', '2025-03-12 13:45:56');
+INSERT INTO `assets_logs` VALUES (28, 4, 'ONE', 500.000000, 500.000000, 1.0000, 0, 0, 8, 0, 0, 3, '兑换', 1741758356, '2025-03-12 13:45:56', '2025-03-12 13:45:56');
+INSERT INTO `assets_logs` VALUES (29, 4, 'USDT', -500.000000, 1000.000000, 1.0000, 0, 0, 9, 0, 0, 3, '兑换', 1741758366, '2025-03-12 13:46:06', '2025-03-12 13:46:06');
+INSERT INTO `assets_logs` VALUES (30, 4, 'CBK', 500.000000, 500.000000, 1.0000, 0, 0, 9, 0, 0, 3, '兑换', 1741758366, '2025-03-12 13:46:06', '2025-03-12 13:46:06');
+INSERT INTO `assets_logs` VALUES (31, 4, 'CBK', -500.000000, 0.000000, 0.0000, 8, 0, 0, 0, 0, 4, '下单', 1741758372, '2025-03-12 13:46:12', '2025-03-12 13:46:12');
+INSERT INTO `assets_logs` VALUES (32, 4, 'ONE', -500.000000, 0.000000, 0.0000, 9, 0, 0, 0, 0, 4, '下单', 1741758387, '2025-03-12 13:46:27', '2025-03-12 13:46:27');
+INSERT INTO `assets_logs` VALUES (33, 4, 'USDT', -500.000000, 500.000000, 0.0000, 10, 0, 0, 0, 0, 4, '下单', 1741758390, '2025-03-12 13:46:30', '2025-03-12 13:46:30');
+INSERT INTO `assets_logs` VALUES (34, 1, 'ONE', 1.290323, 1.290323, 0.0800, 1, 1, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (35, 1, 'CBK', 1.290323, 1.290323, 0.0800, 2, 2, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (36, 3, 'ONE', 1.290323, 101.290323, 0.0800, 5, 3, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (37, 3, 'CBK', 1.290323, 1.290323, 0.0800, 6, 4, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (38, 4, 'CBK', 1.290323, 1.290323, 0.0800, 8, 5, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (39, 4, 'ONE', 1.290323, 1.290323, 0.0800, 9, 6, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (40, 1, 'USDT', 1.478226, 501.478226, 0.0917, 3, 7, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (41, 2, 'USDT', 1.412903, 1301.412903, 0.0876, 4, 8, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (42, 3, 'USDT', 1.348387, 401.348387, 0.0836, 7, 9, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `assets_logs` VALUES (43, 4, 'USDT', 1.502419, 501.502419, 0.0932, 10, 10, 0, 0, 0, 6, '每日收益', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
 
 -- ----------------------------
 -- Table structure for banners
@@ -124,11 +194,12 @@ CREATE TABLE `banners`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of banners
 -- ----------------------------
+INSERT INTO `banners` VALUES (1, '测试图片', '/app/admin/upload/img/20250312/67d1264a794a.png', 0, '2025-03-12 14:13:54', '2025-03-12 14:14:35');
 
 -- ----------------------------
 -- Table structure for exchanges
@@ -149,11 +220,20 @@ CREATE TABLE `exchanges`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`id`, `user_id`, `from_coin`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '兑换' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '兑换' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of exchanges
 -- ----------------------------
+INSERT INTO `exchanges` VALUES (1, 1, 'USDT', 'ONE', 500.000000, 500.000000, 1.0000, 0.000000, 1, 1741757913, '2025-03-12 13:38:33', '2025-03-12 13:38:33');
+INSERT INTO `exchanges` VALUES (2, 1, 'USDT', 'CBK', 500.000000, 500.000000, 1.0000, 0.000000, 1, 1741757923, '2025-03-12 13:38:43', '2025-03-12 13:38:43');
+INSERT INTO `exchanges` VALUES (3, 2, 'USDT', 'ONE', 100.000000, 100.000000, 1.0000, 0.000000, 1, 1741758142, '2025-03-12 13:42:22', '2025-03-12 13:42:22');
+INSERT INTO `exchanges` VALUES (4, 2, 'USDT', 'CBK', 100.000000, 100.000000, 1.0000, 0.000000, 1, 1741758149, '2025-03-12 13:42:29', '2025-03-12 13:42:29');
+INSERT INTO `exchanges` VALUES (5, 3, 'USDT', 'ONE', 100.000000, 100.000000, 1.0000, 0.000000, 1, 1741758209, '2025-03-12 13:43:29', '2025-03-12 13:43:29');
+INSERT INTO `exchanges` VALUES (6, 3, 'USDT', 'CBK', 500.000000, 500.000000, 1.0000, 0.000000, 1, 1741758299, '2025-03-12 13:44:59', '2025-03-12 13:44:59');
+INSERT INTO `exchanges` VALUES (7, 3, 'USDT', 'ONE', 500.000000, 500.000000, 1.0000, 0.000000, 1, 1741758309, '2025-03-12 13:45:09', '2025-03-12 13:45:09');
+INSERT INTO `exchanges` VALUES (8, 4, 'USDT', 'ONE', 500.000000, 500.000000, 1.0000, 0.000000, 1, 1741758356, '2025-03-12 13:45:56', '2025-03-12 13:45:56');
+INSERT INTO `exchanges` VALUES (9, 4, 'USDT', 'CBK', 500.000000, 500.000000, 1.0000, 0.000000, 1, 1741758366, '2025-03-12 13:46:06', '2025-03-12 13:46:06');
 
 -- ----------------------------
 -- Table structure for login_logs
@@ -169,11 +249,53 @@ CREATE TABLE `login_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_logs
 -- ----------------------------
+INSERT INTO `login_logs` VALUES (1, 1, 'Apifox/1.0.0 (https://apifox.com)', '127.0.0.1', 1741757620, '2025-03-12 13:33:40', '2025-03-12 13:33:40');
+INSERT INTO `login_logs` VALUES (2, 2, 'Apifox/1.0.0 (https://apifox.com)', '127.0.0.1', 1741757715, '2025-03-12 13:35:15', '2025-03-12 13:35:15');
+INSERT INTO `login_logs` VALUES (3, 3, 'Apifox/1.0.0 (https://apifox.com)', '127.0.0.1', 1741757752, '2025-03-12 13:35:52', '2025-03-12 13:35:52');
+INSERT INTO `login_logs` VALUES (4, 1, 'Apifox/1.0.0 (https://apifox.com)', '127.0.0.1', 1741757806, '2025-03-12 13:36:46', '2025-03-12 13:36:46');
+INSERT INTO `login_logs` VALUES (5, 2, 'Apifox/1.0.0 (https://apifox.com)', '127.0.0.1', 1741758108, '2025-03-12 13:41:48', '2025-03-12 13:41:48');
+INSERT INTO `login_logs` VALUES (6, 3, 'Apifox/1.0.0 (https://apifox.com)', '127.0.0.1', 1741758189, '2025-03-12 13:43:09', '2025-03-12 13:43:09');
+INSERT INTO `login_logs` VALUES (7, 4, 'Apifox/1.0.0 (https://apifox.com)', '127.0.0.1', 1741758341, '2025-03-12 13:45:41', '2025-03-12 13:45:41');
+INSERT INTO `login_logs` VALUES (8, 4, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1741758737, '2025-03-12 13:52:17', '2025-03-12 13:52:17');
+INSERT INTO `login_logs` VALUES (9, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741760286, '2025-03-12 14:18:06', '2025-03-12 14:18:06');
+INSERT INTO `login_logs` VALUES (10, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741760341, '2025-03-12 14:19:01', '2025-03-12 14:19:01');
+INSERT INTO `login_logs` VALUES (11, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741760429, '2025-03-12 14:20:29', '2025-03-12 14:20:29');
+INSERT INTO `login_logs` VALUES (12, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741761652, '2025-03-12 14:40:52', '2025-03-12 14:40:52');
+INSERT INTO `login_logs` VALUES (13, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765263, '2025-03-12 15:41:03', '2025-03-12 15:41:03');
+INSERT INTO `login_logs` VALUES (14, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765311, '2025-03-12 15:41:51', '2025-03-12 15:41:51');
+INSERT INTO `login_logs` VALUES (15, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765315, '2025-03-12 15:41:55', '2025-03-12 15:41:55');
+INSERT INTO `login_logs` VALUES (16, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765361, '2025-03-12 15:42:41', '2025-03-12 15:42:41');
+INSERT INTO `login_logs` VALUES (17, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765437, '2025-03-12 15:43:57', '2025-03-12 15:43:57');
+INSERT INTO `login_logs` VALUES (18, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765443, '2025-03-12 15:44:03', '2025-03-12 15:44:03');
+INSERT INTO `login_logs` VALUES (19, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765460, '2025-03-12 15:44:20', '2025-03-12 15:44:20');
+INSERT INTO `login_logs` VALUES (20, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765464, '2025-03-12 15:44:24', '2025-03-12 15:44:24');
+INSERT INTO `login_logs` VALUES (21, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765630, '2025-03-12 15:47:10', '2025-03-12 15:47:10');
+INSERT INTO `login_logs` VALUES (22, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765641, '2025-03-12 15:47:21', '2025-03-12 15:47:21');
+INSERT INTO `login_logs` VALUES (23, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741765751, '2025-03-12 15:49:11', '2025-03-12 15:49:11');
+INSERT INTO `login_logs` VALUES (24, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741766183, '2025-03-12 15:56:23', '2025-03-12 15:56:23');
+INSERT INTO `login_logs` VALUES (25, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741766331, '2025-03-12 15:58:51', '2025-03-12 15:58:51');
+INSERT INTO `login_logs` VALUES (26, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.35', 1741767731, '2025-03-12 16:22:11', '2025-03-12 16:22:11');
+INSERT INTO `login_logs` VALUES (27, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741770853, '2025-03-12 17:14:13', '2025-03-12 17:14:13');
+INSERT INTO `login_logs` VALUES (28, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741770899, '2025-03-12 17:14:59', '2025-03-12 17:14:59');
+INSERT INTO `login_logs` VALUES (29, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741770975, '2025-03-12 17:16:15', '2025-03-12 17:16:15');
+INSERT INTO `login_logs` VALUES (30, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741771084, '2025-03-12 17:18:04', '2025-03-12 17:18:04');
+INSERT INTO `login_logs` VALUES (31, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741771129, '2025-03-12 17:18:49', '2025-03-12 17:18:49');
+INSERT INTO `login_logs` VALUES (32, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1741771179, '2025-03-12 17:19:39', '2025-03-12 17:19:39');
+INSERT INTO `login_logs` VALUES (33, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1741771184, '2025-03-12 17:19:44', '2025-03-12 17:19:44');
+INSERT INTO `login_logs` VALUES (34, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741771792, '2025-03-12 17:29:52', '2025-03-12 17:29:52');
+INSERT INTO `login_logs` VALUES (35, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741771802, '2025-03-12 17:30:02', '2025-03-12 17:30:02');
+INSERT INTO `login_logs` VALUES (36, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741771837, '2025-03-12 17:30:37', '2025-03-12 17:30:37');
+INSERT INTO `login_logs` VALUES (37, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741771981, '2025-03-12 17:33:01', '2025-03-12 17:33:01');
+INSERT INTO `login_logs` VALUES (38, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741771995, '2025-03-12 17:33:15', '2025-03-12 17:33:15');
+INSERT INTO `login_logs` VALUES (39, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741772023, '2025-03-12 17:33:43', '2025-03-12 17:33:43');
+INSERT INTO `login_logs` VALUES (40, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741772049, '2025-03-12 17:34:09', '2025-03-12 17:34:09');
+INSERT INTO `login_logs` VALUES (41, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741772061, '2025-03-12 17:34:21', '2025-03-12 17:34:21');
+INSERT INTO `login_logs` VALUES (42, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741772103, '2025-03-12 17:35:03', '2025-03-12 17:35:03');
 
 -- ----------------------------
 -- Table structure for notices
@@ -187,11 +309,12 @@ CREATE TABLE `notices`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notices
 -- ----------------------------
+INSERT INTO `notices` VALUES (1, '测试公告', '<p>测试内容啊</p>', 0, '2025-03-12 14:12:18', '2025-03-12 14:12:18');
 
 -- ----------------------------
 -- Table structure for options
@@ -204,7 +327,7 @@ CREATE TABLE `options`  (
   `created_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 118 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 132 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of options
@@ -227,7 +350,7 @@ INSERT INTO `options` VALUES (21, 'dict_exchange_status', '[{\"value\":\"0\",\"n
 INSERT INTO `options` VALUES (22, 'dict_recharge_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"成功\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
 INSERT INTO `options` VALUES (114, 'dict_withdraw_status', '[{\"value\":\"0\",\"name\":\"待审核\"},{\"value\":\"1\",\"name\":\"成功\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2025-03-11 14:58:48', '2025-03-11 14:59:06');
 INSERT INTO `options` VALUES (115, 'dict_user_level', '[{\"value\":\"0\",\"name\":\"Vip0\"},{\"value\":\"1\",\"name\":\"Vip1\"},{\"value\":\"2\",\"name\":\"Vip2\"},{\"value\":\"3\",\"name\":\"Vip3\"},{\"value\":\"4\",\"name\":\"Vip4\"},{\"value\":\"5\",\"name\":\"Vip5\"},{\"value\":\"6\",\"name\":\"Vip6\"},{\"value\":\"7\",\"name\":\"Vip7\"},{\"value\":\"8\",\"name\":\"Vip8\"},{\"value\":\"9\",\"name\":\"Vip9\"}]', '2025-03-11 15:06:39', '2025-03-11 15:06:39');
-INSERT INTO `options` VALUES (117, 'config', '{\"base_info\":{\"maintenance_mode\":false,\"maintenance_message\":\"\\u7cfb\\u7edf\\u6b63\\u5728\\u7ef4\\u62a4\\uff0c\\u8bf7\\u7a0d\\u540e\\u518d\\u8bd5\\u3002\",\"web_url\":\"http:\\/\\/test.dev\",\"share_url\":\"http:\\/\\/test.dev\\/code=\",\"wallet_address\":\"111111\",\"ckb_min_number\":\"500\",\"sol_min_number\":\"500\",\"exchange_min_number\":\"1\",\"withdraw_min_number\":\"100\",\"withdraw_fee_rate\":\"0\"},\"ckb\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"},\"sol\":{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}}', '2025-03-11 15:21:05', '2025-03-11 16:29:55');
+INSERT INTO `options` VALUES (131, 'config', '{\"base_info\":{\"maintenance_mode\":false,\"maintenance_message\":\"\\u7cfb\\u7edf\\u6b63\\u5728\\u7ef4\\u62a4\\uff0c\\u8bf7\\u7a0d\\u540e\\u518d\\u8bd5\\u3002\",\"web_url\":\"http:\\/\\/test.dev\",\"share_url\":\"http:\\/\\/test.dev\\/code=\",\"wallet_address\":\"\",\"pledge_min_number\":\"5000\",\"mev_min_number\":\"5000\",\"exchange_min_number\":\"1\",\"withdraw_min_number\":\"100\",\"withdraw_fee_rate\":\"0\"},\"pledge\":{\"ckb\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"},\"one\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}},\"mev\":{\"usdt\":{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}}}', '2025-03-12 17:39:25', '2025-03-12 17:39:35');
 
 -- ----------------------------
 -- Table structure for recharges
@@ -245,11 +368,16 @@ CREATE TABLE `recharges`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家充值记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家充值记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of recharges
 -- ----------------------------
+INSERT INTO `recharges` VALUES (1, 1, 'USDT', 1000.000000, '', 1, 0.000000, 1741757871, '2025-03-12 13:37:51', '2025-03-12 13:37:51');
+INSERT INTO `recharges` VALUES (2, 1, 'USDT', 1000.000000, '', 1, 0.000000, 1741757982, '2025-03-12 13:39:42', '2025-03-12 13:39:42');
+INSERT INTO `recharges` VALUES (3, 2, 'USDT', 2000.000000, '', 1, 0.000000, 1741758125, '2025-03-12 13:42:05', '2025-03-12 13:42:05');
+INSERT INTO `recharges` VALUES (4, 3, 'USDT', 2000.000000, '', 1, 0.000000, 1741758196, '2025-03-12 13:43:16', '2025-03-12 13:43:16');
+INSERT INTO `recharges` VALUES (5, 4, 'USDT', 2000.000000, '', 1, 0.000000, 1741758351, '2025-03-12 13:45:51', '2025-03-12 13:45:51');
 
 -- ----------------------------
 -- Table structure for roles
@@ -419,30 +547,30 @@ INSERT INTO `rules` VALUES (124, '查询', NULL, 'plugin\\admin\\app\\controller
 INSERT INTO `rules` VALUES (125, '删除', NULL, 'plugin\\admin\\app\\controller\\NoticeController@delete', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (126, '更改', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController@update', 120, '2025-03-07 18:00:02', '2025-03-07 18:00:02', NULL, 2, 0);
 INSERT INTO `rules` VALUES (127, '财务管理', 'layui-icon-rmb', 'finance', NULL, '2025-03-07 14:39:52', '2025-03-10 20:11:17', '', 0, 0);
-INSERT INTO `rules` VALUES (128, '质押', '', 'plugin\\admin\\app\\controller\\CkbController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/ckb/index', 1, 0);
-INSERT INTO `rules` VALUES (129, '查询', NULL, 'plugin\\admin\\app\\controller\\CkbController@select', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (130, '套利', '', 'plugin\\admin\\app\\controller\\SolController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/sol/index', 1, 0);
-INSERT INTO `rules` VALUES (131, '查询', NULL, 'plugin\\admin\\app\\controller\\SolController@select', 130, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (132, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncome', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (133, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@staticIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (137, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (138, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@staticIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (128, '质押', '', 'plugin\\admin\\app\\controller\\PledgeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/pledge/index', 1, 0);
+INSERT INTO `rules` VALUES (129, '查询', NULL, 'plugin\\admin\\app\\controller\\PledgeController@select', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (130, '套利', '', 'plugin\\admin\\app\\controller\\MevController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/mev/index', 1, 0);
+INSERT INTO `rules` VALUES (131, '查询', NULL, 'plugin\\admin\\app\\controller\\MevController@select', 130, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (132, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@staticIncome', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (133, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@staticIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (137, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@staticIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (138, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@staticIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (142, '兑换', '', 'plugin\\admin\\app\\controller\\ExchangeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/exchange/index', 1, 0);
 INSERT INTO `rules` VALUES (143, '充值', '', 'plugin\\admin\\app\\controller\\RechargeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/recharge/index', 1, 0);
 INSERT INTO `rules` VALUES (144, '提现', '', 'plugin\\admin\\app\\controller\\WithdrawController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/withdraw/index', 1, 0);
 INSERT INTO `rules` VALUES (145, '流水', '', 'plugin\\admin\\app\\controller\\AssetsLogController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/assetsLog/index', 1, 0);
-INSERT INTO `rules` VALUES (146, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncome', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (147, '查询动态收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@dynamicIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (148, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (149, '查询动态收益', NULL, 'plugin\\admin\\app\\controller\\SolController@dynamicIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (151, '浏览收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@show', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (152, '查询收益', NULL, 'plugin\\admin\\app\\controller\\CkbController@ckbLogs', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (153, '添加', NULL, 'plugin\\admin\\app\\controller\\CkbController@insert', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (154, '更新', NULL, 'plugin\\admin\\app\\controller\\CkbController@update', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (155, '删除', NULL, 'plugin\\admin\\app\\controller\\CkbController@delete', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (156, '添加', NULL, 'plugin\\admin\\app\\controller\\SolController@insert', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (157, '更新', NULL, 'plugin\\admin\\app\\controller\\SolController@update', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
-INSERT INTO `rules` VALUES (158, '删除', NULL, 'plugin\\admin\\app\\controller\\SolController@delete', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (146, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@dynamicIncome', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (147, '查询动态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@dynamicIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (148, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@dynamicIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (149, '查询动态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@dynamicIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (151, '浏览收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@show', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (152, '查询收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@ckbLogs', 128, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (153, '添加', NULL, 'plugin\\admin\\app\\controller\\PledgeController@insert', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (154, '更新', NULL, 'plugin\\admin\\app\\controller\\PledgeController@update', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (155, '删除', NULL, 'plugin\\admin\\app\\controller\\PledgeController@delete', 128, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (156, '添加', NULL, 'plugin\\admin\\app\\controller\\MevController@insert', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (157, '更新', NULL, 'plugin\\admin\\app\\controller\\MevController@update', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
+INSERT INTO `rules` VALUES (158, '删除', NULL, 'plugin\\admin\\app\\controller\\MevController@delete', 130, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (159, '查询', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@select', 142, '2025-03-10 20:10:27', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (160, '添加', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@insert', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
 INSERT INTO `rules` VALUES (161, '更新', NULL, 'plugin\\admin\\app\\controller\\ExchangeController@update', 142, '2025-03-10 20:10:27', '2025-03-10 20:10:27', NULL, 2, 0);
@@ -481,11 +609,21 @@ CREATE TABLE `transaction_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of transaction_logs
 -- ----------------------------
+INSERT INTO `transaction_logs` VALUES (1, 1, 1, 'ONE', 1.290323, 0.0800, 'CKB', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (2, 1, 2, 'CBK', 1.290323, 0.0800, 'CKB', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (3, 3, 5, 'ONE', 1.290323, 0.0800, 'CKB', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (4, 3, 6, 'CBK', 1.290323, 0.0800, 'CKB', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (5, 4, 8, 'CBK', 1.290323, 0.0800, 'CKB', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (6, 4, 9, 'ONE', 1.290323, 0.0800, 'CKB', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (7, 1, 3, 'USDT', 1.478226, 0.0917, 'SOL', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (8, 2, 4, 'USDT', 1.412903, 0.0876, 'SOL', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (9, 3, 7, 'USDT', 1.348387, 0.0836, 'SOL', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
+INSERT INTO `transaction_logs` VALUES (10, 4, 10, 'USDT', 1.502419, 0.0932, 'SOL', 1741758508, '2025-03-12 13:48:28', '2025-03-12 13:48:28');
 
 -- ----------------------------
 -- Table structure for transactions
@@ -507,11 +645,21 @@ CREATE TABLE `transactions`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of transactions
 -- ----------------------------
+INSERT INTO `transactions` VALUES (1, 1, 'ONE', 500.000000, 1.290323, 15, 1, '{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}', 1741757932, 1741708800, 1, 'CKB', '2025-03-12 13:38:52', '2025-03-12 13:38:52');
+INSERT INTO `transactions` VALUES (2, 1, 'CBK', 500.000000, 1.290323, 15, 1, '{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}', 1741757941, 1741708800, 1, 'CKB', '2025-03-12 13:39:01', '2025-03-12 13:39:01');
+INSERT INTO `transactions` VALUES (3, 1, 'USDT', 500.000000, 1.478226, 15, 1, '{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}', 1741757986, 1741708800, 1, 'SOL', '2025-03-12 13:39:46', '2025-03-12 13:39:46');
+INSERT INTO `transactions` VALUES (4, 2, 'USDT', 500.000000, 1.412903, 15, 1, '{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}', 1741758165, 1741708800, 1, 'SOL', '2025-03-12 13:42:45', '2025-03-12 13:42:45');
+INSERT INTO `transactions` VALUES (5, 3, 'ONE', 500.000000, 1.290323, 15, 1, '{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}', 1741758318, 1741708800, 1, 'CKB', '2025-03-12 13:45:18', '2025-03-12 13:45:18');
+INSERT INTO `transactions` VALUES (6, 3, 'CBK', 500.000000, 1.290323, 15, 1, '{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}', 1741758324, 1741708800, 1, 'CKB', '2025-03-12 13:45:24', '2025-03-12 13:45:24');
+INSERT INTO `transactions` VALUES (7, 3, 'USDT', 500.000000, 1.348387, 15, 1, '{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}', 1741758329, 1741708800, 1, 'SOL', '2025-03-12 13:45:29', '2025-03-12 13:45:29');
+INSERT INTO `transactions` VALUES (8, 4, 'CBK', 500.000000, 1.290323, 15, 1, '{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}', 1741758372, 1741708800, 1, 'CKB', '2025-03-12 13:46:12', '2025-03-12 13:46:12');
+INSERT INTO `transactions` VALUES (9, 4, 'ONE', 500.000000, 1.290323, 15, 1, '{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}', 1741758387, 1741708800, 1, 'CKB', '2025-03-12 13:46:27', '2025-03-12 13:46:27');
+INSERT INTO `transactions` VALUES (10, 4, 'USDT', 500.000000, 1.502419, 15, 1, '{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}', 1741758390, 1741708800, 1, 'SOL', '2025-03-12 13:46:30', '2025-03-12 13:46:30');
 
 -- ----------------------------
 -- Table structure for uploads
@@ -536,7 +684,7 @@ CREATE TABLE `uploads`  (
   INDEX `admin_id`(`admin_id`) USING BTREE,
   INDEX `name`(`name`) USING BTREE,
   INDEX `ext`(`ext`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '附件' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '附件' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of uploads
@@ -566,11 +714,20 @@ CREATE TABLE `users`  (
   UNIQUE INDEX `id`(`id`) USING BTREE,
   UNIQUE INDEX `identity`(`identity`) USING BTREE,
   INDEX `inx_fields`(`id`, `pid`, `identity`, `status`, `level`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
+INSERT INTO `users` VALUES (1, '1', 0, 0, 0, 0, '/images/avatars/avatar.png', '', 3, 8, 'zh_CN', '192.168.3.35', '2025-03-12 17:35:03', '2025-03-12 13:31:20', '2025-03-12 17:35:03');
+INSERT INTO `users` VALUES (2, '2', 1, 0, 0, 0, '/images/avatars/avatar.png', '', 3, 3, 'zh_CN', '127.0.0.1', '2025-03-12 13:41:48', '2025-03-12 13:31:32', '2025-03-12 13:41:48');
+INSERT INTO `users` VALUES (3, '3', 1, 0, 0, 0, '/images/avatars/avatar.png', '', 2, 2, 'zh_CN', '127.0.0.1', '2025-03-12 13:43:09', '2025-03-12 13:31:37', '2025-03-12 13:43:09');
+INSERT INTO `users` VALUES (4, '4', 1, 0, 0, 0, '/images/avatars/avatar.png', '', 0, 0, 'zh_CN', '192.168.3.10', '2025-03-12 13:52:17', '2025-03-12 13:31:42', '2025-03-12 13:52:17');
+INSERT INTO `users` VALUES (5, '5', 2, 0, 0, 0, '/images/avatars/avatar.png', '', 0, 0, 'zh_CN', NULL, NULL, '2025-03-12 13:31:46', '2025-03-12 13:31:46');
+INSERT INTO `users` VALUES (6, '6', 2, 0, 0, 0, '/images/avatars/avatar.png', '', 0, 0, 'zh_CN', NULL, NULL, '2025-03-12 13:31:50', '2025-03-12 13:31:50');
+INSERT INTO `users` VALUES (7, '7', 2, 0, 0, 0, '/images/avatars/avatar.png', '', 0, 0, 'zh_CN', NULL, NULL, '2025-03-12 13:31:56', '2025-03-12 13:31:56');
+INSERT INTO `users` VALUES (8, '8', 3, 0, 0, 0, '/images/avatars/avatar.png', '', 0, 0, 'zh_CN', NULL, NULL, '2025-03-12 13:32:01', '2025-03-12 13:32:01');
+INSERT INTO `users` VALUES (9, '9', 3, 0, 0, 0, '/images/avatars/avatar.png', '', 0, 0, 'zh_CN', NULL, NULL, '2025-03-12 13:32:05', '2025-03-12 13:32:05');
 
 -- ----------------------------
 -- Table structure for withdraws

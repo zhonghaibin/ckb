@@ -51,13 +51,11 @@ class UserController
             'direct_count' => $direct_count, // 直推人数
             'direct_bonus' => $direct_bonus, // 直推收益
             'assets' => $assets, // 用户资产
-            'share_link'=>$user->share_link,
-            'share_code'=>AesUtil::encrypt($userId)
+            'share_link' => $user->share_link,
+            'share_code' => AesUtil::encrypt($userId)
         ];
         return json_success($data);
     }
-
-
 
 
     public function referralList(Request $request)

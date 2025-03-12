@@ -4,15 +4,15 @@ namespace app\enums;
 
 enum TransactionTypes: string
 {
-    case SOL = 'SOL';
-    case CKB = 'CKB';
+    case MEV = 'MEV';
+    case PLEDGE = 'PLEDGE';
 
     // 你可以添加自定义方法
     public function label(): string
     {
-        return match($this) {
-            self::SOL => 'SOL',
-            self::CKB => 'CKB',
+        return match ($this) {
+            self::MEV => '套利',
+            self::PLEDGE => '质押',
         };
     }
 
