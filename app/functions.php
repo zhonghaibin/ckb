@@ -148,3 +148,36 @@ if (!function_exists('get_system_config')) {
         return json_decode($config, true);
     }
 }
+if (!function_exists('get_transaction_by_signature')) {
+    function get_transaction_by_signature($signature)
+    {
+        $url = "https://api.mainnet-beta.solana.com";
+
+        $data = [
+            "jsonrpc" => "2.0",
+            "id" => 1,
+            "method" => "getTransaction",
+            "params" => [
+                $signature,  // 传入交易签名
+                ["encoding" => "jsonParsed"]        // 返回格式为 JSON
+            ]
+        ];
+
+        $options = [
+            "http" => [
+                "header" => "Content-Type: application/json",
+                "method" => "POST",
+                "content" => json_encode($data)
+            ]
+        ];
+
+        // 创建请求上下文
+        $context = stream_context_create($options);
+
+        // 发送请求并获取响应
+        $response = file_get_contents($url, false, $context);
+
+        // 返回解析后的交易信息
+        return json_decode($response, true);
+    }
+}

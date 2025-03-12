@@ -6,6 +6,7 @@ namespace app\controller\v1;
 use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\ExchangeStatus;
+use app\enums\UserJob;
 use app\enums\WithdrawStatus;
 use app\model\Assets;
 use app\model\AssetsLog;
@@ -17,6 +18,7 @@ use Carbon\Carbon;
 use support\Db;
 use support\Log;
 use support\Request;
+use Webman\RedisQueue\Redis;
 
 
 class AssetsController
@@ -25,33 +27,12 @@ class AssetsController
     //充值
     public function recharge(Request $request)
     {
-        $param = [
-            "amount" => 0.1,
-            "contract" => "0x1161725d019690a3e0de50f6be67b07a86a9fae1",
-            "decimal" => 18,
-            "desc" => "",
-            "from" => "0x12F4900A1fB41f751b8F616832643224606B75B4",
-            "memo" => "0xe595a6",
-            "precision" => 0,
-            "symbol" => "SPT",
-            "to" => "0x34018569ee4d68a275909cc2538ff67a742f41c8",
-            "action" => "transfer",
-            "actionId" => "web-db4c5466-1a03-438c-90c9-2172e8becea5",
-            "blockchains" => [
-                [
-                    "chainId" => "1",
-                    "network" => "ethereum"
-                ]
-            ],
-            "dappIcon" => "https://eosknights.io/img/icon.png",
-            "dappName" => "Test demo",
-            "protocol" => "TokenPocket",
-            "callbackUrl" => "http://115.205.0.178:9011/taaBizApi/taaInitData",
-            "version" => "2.0"
+        $data=[
+            'user_wallet'=>$request->post('user_wallet','CaGTvRyDdohCZp2teEVws9Mu1NqVUeAwSrrsZ8ZGWoiC'),
+            'signature'=>$request->post('signature','4Xt9m7gLNMHAc4GzEgRq9URa6hW2NxhWW8f5f6SCearHow86yuRkhCGbPkRFP1jNXtiwA6B8tnbADVpJEdj87mtf')
         ];
-        $encodedParam = urlencode(json_encode($param));
-        $url = "<a href='tpoutside://pull.activity?param=$encodedParam'>Open TokenPocket to transfer</a>";
-        return response($url);
+        Redis::send(UserJob::USER_UPGRADE->value, $data);
+        return json_success();
     }
 
     public function rechargeList(Request $request)
@@ -136,7 +117,7 @@ class AssetsController
     {
         $recharges = Db::table('withdraws')->where('user_id', $request->userId)
             ->select(['amount', 'created_at'])
-            ->where('status', WithdrawStatus::SUCCESS)
+//            ->where('status', WithdrawStatus::SUCCESS)
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
