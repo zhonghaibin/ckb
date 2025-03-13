@@ -26,10 +26,7 @@ Route::group('/v1', function () {
 
     Route::any('/auth/login', [app\controller\v1\AuthController::class, 'login']);
     Route::any('/auth/register', [app\controller\v1\AuthController::class, 'register']);
-    Route::any('/auth/openTokenPocketUrl', [app\controller\v1\AuthController::class, 'openTokenPocketUrl']);
-    Route::any('/notify/register', [app\controller\v1\NotifyController::class, 'register']);
     Route::any('/notify/recharge', [app\controller\v1\NotifyController::class, 'recharge']);
-    Route::any('/notify/withdraw', [app\controller\v1\NotifyController::class, 'withdraw']);
 });
 
 
