@@ -97,6 +97,7 @@ class AssetsController
             $withdraw->fee = $fee;
             $withdraw->fee_rate = $withdraw_fee_rate;
             $withdraw->datetime = Carbon::now()->timestamp;
+            $withdraw->user_wallet = $user->identity;
             if (!$withdraw->save()) {
                 throw new \Exception(Lang::get('tips_19'));
             }

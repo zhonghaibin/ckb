@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 12/03/2025 20:48:11
+ Date: 13/03/2025 15:43:59
 */
 
 SET NAMES utf8mb4;
@@ -58,7 +58,7 @@ CREATE TABLE `admins`  (
 -- ----------------------------
 -- Records of admins
 -- ----------------------------
-INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-11 18:13:12', '2025-03-11 18:13:12', NULL);
+INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-13 11:26:56', '2025-03-13 11:26:56', NULL);
 INSERT INTO `admins` VALUES (2, 'admin', 'admin', '$2y$10$lyohfF1VwjhKMHXf0zzUPuNC1UUwaoN1UBN2GyNcWjG4jj7107rea', '/app/admin/avatar.png', '', '', '2025-03-06 16:24:29', '2025-03-11 15:23:26', '2025-03-11 15:23:26', NULL);
 
 -- ----------------------------
@@ -82,7 +82,7 @@ CREATE TABLE `assets`  (
 -- ----------------------------
 -- Records of assets
 -- ----------------------------
-INSERT INTO `assets` VALUES (1, 1, 'USDT', 300.478226, 1.478226, '2025-03-12 13:31:20', '2025-03-12 20:37:46');
+INSERT INTO `assets` VALUES (1, 1, 'USDT', 2800.479226, 1.478226, '2025-03-12 13:31:20', '2025-03-13 15:10:08');
 INSERT INTO `assets` VALUES (2, 1, 'ONE', 1.290323, 1.290323, '2025-03-12 13:31:20', '2025-03-12 13:38:52');
 INSERT INTO `assets` VALUES (3, 1, 'CBK', 1.290323, 1.290323, '2025-03-12 13:31:20', '2025-03-12 13:39:01');
 INSERT INTO `assets` VALUES (4, 2, 'USDT', 1301.412903, 1.412903, '2025-03-12 13:31:32', '2025-03-12 13:42:45');
@@ -133,7 +133,7 @@ CREATE TABLE `assets_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`id`, `user_id`, `coin`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '钱包变动记录表(账户发生变化时产生)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of assets_logs
@@ -192,6 +192,13 @@ INSERT INTO `assets_logs` VALUES (51, 1, 'USDT', -100.000000, 600.478226, 0.0000
 INSERT INTO `assets_logs` VALUES (52, 1, 'USDT', -100.000000, 500.478226, 0.0000, 0, 0, 0, 0, 8, 2, '提现', 1741782633, '2025-03-12 20:30:33', '2025-03-12 20:30:33');
 INSERT INTO `assets_logs` VALUES (53, 1, 'USDT', -100.000000, 400.478226, 0.0000, 0, 0, 0, 0, 9, 2, '提现', 1741782668, '2025-03-12 20:31:08', '2025-03-12 20:31:08');
 INSERT INTO `assets_logs` VALUES (54, 1, 'USDT', -100.000000, 300.478226, 0.0000, 0, 0, 0, 0, 10, 2, '提现', 1741783066, '2025-03-12 20:37:46', '2025-03-12 20:37:46');
+INSERT INTO `assets_logs` VALUES (55, 1, 'USDT', 1000.000000, 1300.478226, 0.0000, 0, 0, 0, 7, 0, 1, '充值', 1741832585, '2025-03-13 10:23:05', '2025-03-13 10:23:05');
+INSERT INTO `assets_logs` VALUES (56, 1, 'USDT', 0.001000, 1300.479226, 0.0000, 0, 0, 0, 8, 0, 1, '充值', 1741832895, '2025-03-13 10:28:15', '2025-03-13 10:28:15');
+INSERT INTO `assets_logs` VALUES (57, 1, 'USDT', 1000.000000, 2300.479226, 0.0000, 0, 0, 0, 9, 0, 1, '充值', 1741834295, '2025-03-13 10:51:35', '2025-03-13 10:51:35');
+INSERT INTO `assets_logs` VALUES (58, 1, 'USDT', 100.000000, 2400.479226, 0.0000, 0, 0, 0, 10, 0, 1, '充值', 1741834443, '2025-03-13 10:54:03', '2025-03-13 10:54:03');
+INSERT INTO `assets_logs` VALUES (59, 1, 'USDT', 100.000000, 2500.479226, 0.0000, 0, 0, 0, 11, 0, 1, '充值', 1741834728, '2025-03-13 10:58:48', '2025-03-13 10:58:48');
+INSERT INTO `assets_logs` VALUES (60, 1, 'USDT', 200.000000, 2700.479226, 0.0000, 0, 0, 0, 0, 3, 2, '提现审核失败', 1741848940, '2025-03-13 14:55:40', '2025-03-13 14:55:40');
+INSERT INTO `assets_logs` VALUES (61, 1, 'USDT', 100.000000, 2800.479226, 0.0000, 0, 0, 0, 0, 5, 2, '提现审核失败', 1741849808, '2025-03-13 15:10:08', '2025-03-13 15:10:08');
 
 -- ----------------------------
 -- Table structure for banners
@@ -205,7 +212,7 @@ CREATE TABLE `banners`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '轮播图' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of banners
@@ -261,7 +268,7 @@ CREATE TABLE `login_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_logs
@@ -318,6 +325,15 @@ INSERT INTO `login_logs` VALUES (49, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6
 INSERT INTO `login_logs` VALUES (50, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741782411, '2025-03-12 20:26:51', '2025-03-12 20:26:51');
 INSERT INTO `login_logs` VALUES (51, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741782518, '2025-03-12 20:28:38', '2025-03-12 20:28:38');
 INSERT INTO `login_logs` VALUES (52, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741782613, '2025-03-12 20:30:13', '2025-03-12 20:30:13');
+INSERT INTO `login_logs` VALUES (53, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1741832850, '2025-03-13 10:27:30', '2025-03-13 10:27:30');
+INSERT INTO `login_logs` VALUES (54, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741834007, '2025-03-13 10:46:47', '2025-03-13 10:46:47');
+INSERT INTO `login_logs` VALUES (55, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741834146, '2025-03-13 10:49:06', '2025-03-13 10:49:06');
+INSERT INTO `login_logs` VALUES (56, 1, 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36', '192.168.3.10', 1741834613, '2025-03-13 10:56:53', '2025-03-13 10:56:53');
+INSERT INTO `login_logs` VALUES (57, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741838038, '2025-03-13 11:53:58', '2025-03-13 11:53:58');
+INSERT INTO `login_logs` VALUES (58, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741838080, '2025-03-13 11:54:40', '2025-03-13 11:54:40');
+INSERT INTO `login_logs` VALUES (59, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741838338, '2025-03-13 11:58:58', '2025-03-13 11:58:58');
+INSERT INTO `login_logs` VALUES (60, 1, 'Mozilla/5.0 (Linux; Android 13; PFJM10 Build/TP1A.220905.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/128.0.6613.146 Mobile Safari/537.36 TokenPocket_Android', '192.168.3.40', 1741844834, '2025-03-13 13:47:14', '2025-03-13 13:47:14');
+INSERT INTO `login_logs` VALUES (61, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1', '192.168.3.35', 1741851580, '2025-03-13 15:39:40', '2025-03-13 15:39:40');
 
 -- ----------------------------
 -- Table structure for notices
@@ -325,18 +341,20 @@ INSERT INTO `login_logs` VALUES (52, 1, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6
 DROP TABLE IF EXISTS `notices`;
 CREATE TABLE `notices`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `lang` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '语言',
   `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '通告内容' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公告内容' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notices
 -- ----------------------------
-INSERT INTO `notices` VALUES (1, '测试公告', '<p>测试内容啊</p>', 1, '2025-03-12 14:12:18', '2025-03-12 19:11:52');
+INSERT INTO `notices` VALUES (1, 'zh_CN', '测试公告', '<p>测试内容啊</p>', 1, '2025-03-12 14:12:18', '2025-03-12 19:11:52');
+INSERT INTO `notices` VALUES (2, 'en', '34', '<p>34234</p>', 1, '2025-03-13 13:55:47', '2025-03-13 13:57:31');
 
 -- ----------------------------
 -- Table structure for options
@@ -349,7 +367,7 @@ CREATE TABLE `options`  (
   `created_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT '2022-08-15 00:00:00' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 132 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 134 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '选项表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of options
@@ -369,10 +387,12 @@ INSERT INTO `options` VALUES (17, 'table_form_schema_wa_admin_roles', '{\"id\":{
 INSERT INTO `options` VALUES (18, 'dict_dict_name', '[{\"value\":\"dict_name\",\"name\":\"字典名称\"},{\"value\":\"status\",\"name\":\"启禁用状态\"},{\"value\":\"sex\",\"name\":\"性别\"},{\"value\":\"upload\",\"name\":\"附件分类\"}]', '2022-08-15 00:00:00', '2022-12-20 19:42:51');
 INSERT INTO `options` VALUES (20, 'dict_transaction_status', '[{\"value\":\"1\",\"name\":\"进行中\"},{\"value\":\"2\",\"name\":\"已完成\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
 INSERT INTO `options` VALUES (21, 'dict_exchange_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"已完成\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
-INSERT INTO `options` VALUES (22, 'dict_recharge_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"成功\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
-INSERT INTO `options` VALUES (114, 'dict_withdraw_status', '[{\"value\":\"0\",\"name\":\"待审核\"},{\"value\":\"1\",\"name\":\"成功\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2025-03-11 14:58:48', '2025-03-11 14:59:06');
+INSERT INTO `options` VALUES (22, 'dict_recharge_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"已完成\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
+INSERT INTO `options` VALUES (114, 'dict_withdraw_status', '[{\"value\":\"0\",\"name\":\"待审核\"},{\"value\":\"1\",\"name\":\"已完成\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2025-03-11 14:58:48', '2025-03-11 14:59:06');
 INSERT INTO `options` VALUES (115, 'dict_user_level', '[{\"value\":\"0\",\"name\":\"Vip0\"},{\"value\":\"1\",\"name\":\"Vip1\"},{\"value\":\"2\",\"name\":\"Vip2\"},{\"value\":\"3\",\"name\":\"Vip3\"},{\"value\":\"4\",\"name\":\"Vip4\"},{\"value\":\"5\",\"name\":\"Vip5\"},{\"value\":\"6\",\"name\":\"Vip6\"},{\"value\":\"7\",\"name\":\"Vip7\"},{\"value\":\"8\",\"name\":\"Vip8\"},{\"value\":\"9\",\"name\":\"Vip9\"}]', '2025-03-11 15:06:39', '2025-03-11 15:06:39');
 INSERT INTO `options` VALUES (131, 'config', '{\"base_info\":{\"maintenance_mode\":false,\"maintenance_message\":\"\\u7cfb\\u7edf\\u6b63\\u5728\\u7ef4\\u62a4\\uff0c\\u8bf7\\u7a0d\\u540e\\u518d\\u8bd5\\u3002\",\"web_url\":\"http:\\/\\/www.baidu.com\",\"share_url\":\"http:\\/\\/test.dev\\/code=\",\"wallet_address\":\"9kv674FLHaJKUhPFoNu2ohp39btxNPZLKLdMan7PU2zg\",\"pledge_min_number\":\"5000\",\"mev_min_number\":\"5000\",\"exchange_min_number\":\"1\",\"withdraw_min_number\":\"100\",\"withdraw_fee_rate\":\"0\"},\"pledge\":{\"ckb\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"},\"one\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}},\"mev\":{\"usdt\":{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}}}', '2025-03-12 17:39:25', '2025-03-12 20:37:38');
+INSERT INTO `options` VALUES (132, 'dict_coin', '[{\"value\":\"USDT\",\"name\":\"USDT\"},{\"value\":\"ONE\",\"name\":\"ONE\"},{\"value\":\"CBK\",\"name\":\"CBK\"}]', '2025-03-13 11:36:56', '2025-03-13 11:36:56');
+INSERT INTO `options` VALUES (133, 'dict_lang', '[{\"value\":\"en\",\"name\":\"英文\"},{\"value\":\"zh_CN\",\"name\":\"中文\"}]', '2025-03-13 13:46:46', '2025-03-13 13:46:46');
 
 -- ----------------------------
 -- Table structure for recharges
@@ -385,22 +405,28 @@ CREATE TABLE `recharges`  (
   `amount` decimal(10, 6) NULL DEFAULT NULL,
   `remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 0,
-  `fee` decimal(10, 6) NULL DEFAULT 0.000000 COMMENT '手续费',
+  `signature` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '交易签名',
+  `user_wallet` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '付款账户',
   `datetime` int(11) NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家充值记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '玩家充值记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of recharges
 -- ----------------------------
-INSERT INTO `recharges` VALUES (1, 1, 'USDT', 1000.000000, '', 1, 0.000000, 1741757871, '2025-03-12 13:37:51', '2025-03-12 13:37:51');
-INSERT INTO `recharges` VALUES (2, 1, 'USDT', 1000.000000, '', 1, 0.000000, 1741757982, '2025-03-12 13:39:42', '2025-03-12 13:39:42');
-INSERT INTO `recharges` VALUES (3, 2, 'USDT', 2000.000000, '', 1, 0.000000, 1741758125, '2025-03-12 13:42:05', '2025-03-12 13:42:05');
-INSERT INTO `recharges` VALUES (4, 3, 'USDT', 2000.000000, '', 1, 0.000000, 1741758196, '2025-03-12 13:43:16', '2025-03-12 13:43:16');
-INSERT INTO `recharges` VALUES (5, 4, 'USDT', 2000.000000, '', 1, 0.000000, 1741758351, '2025-03-12 13:45:51', '2025-03-12 13:45:51');
-INSERT INTO `recharges` VALUES (6, 1, 'USDT', 1000.000000, '', 1, 0.000000, 1741780994, '2025-03-12 20:03:14', '2025-03-12 20:03:14');
+INSERT INTO `recharges` VALUES (1, 1, 'USDT', 1000.000000, '', 1, NULL, NULL, 1741757871, '2025-03-12 13:37:51', '2025-03-12 13:37:51');
+INSERT INTO `recharges` VALUES (2, 1, 'USDT', 1000.000000, '', 1, NULL, NULL, 1741757982, '2025-03-12 13:39:42', '2025-03-12 13:39:42');
+INSERT INTO `recharges` VALUES (3, 2, 'USDT', 2000.000000, '', 1, NULL, NULL, 1741758125, '2025-03-12 13:42:05', '2025-03-12 13:42:05');
+INSERT INTO `recharges` VALUES (4, 3, 'USDT', 2000.000000, '', 1, NULL, NULL, 1741758196, '2025-03-12 13:43:16', '2025-03-12 13:43:16');
+INSERT INTO `recharges` VALUES (5, 4, 'USDT', 2000.000000, '', 1, NULL, NULL, 1741758351, '2025-03-12 13:45:51', '2025-03-12 13:45:51');
+INSERT INTO `recharges` VALUES (6, 1, 'USDT', 1000.000000, '', 1, NULL, NULL, 1741780994, '2025-03-12 20:03:14', '2025-03-12 20:03:14');
+INSERT INTO `recharges` VALUES (7, 1, 'USDT', 1000.000000, '', 1, '', '', 1741832585, '2025-03-13 10:23:05', '2025-03-13 10:23:05');
+INSERT INTO `recharges` VALUES (8, 1, 'USDT', 0.001000, '', 0, '4Xt9m7gLNMHAc4GzEgRq9URa6hW2NxhWW8f5f6SCearHow86yuRkhCGbPkRFP1jNXtiwA6B8tnbADVpJEdj87mtf', 'CaGTvRyDdohCZp2teEVws9Mu1NqVUeAwSrrsZ8ZGWoiC', 1741832865, '2025-03-13 10:27:45', '2025-03-13 10:27:45');
+INSERT INTO `recharges` VALUES (9, 1, 'USDT', 1000.000000, '', 1, '', '', 1741834295, '2025-03-13 10:51:35', '2025-03-13 10:51:35');
+INSERT INTO `recharges` VALUES (10, 1, 'USDT', 100.000000, '', 1, '', '', 1741834443, '2025-03-13 10:54:03', '2025-03-13 10:54:03');
+INSERT INTO `recharges` VALUES (11, 1, 'USDT', 100.000000, '', 1, '', '', 1741834728, '2025-03-13 10:58:48', '2025-03-13 10:58:48');
 
 -- ----------------------------
 -- Table structure for roles
@@ -557,31 +583,31 @@ INSERT INTO `rules` VALUES (111, '登录官网', NULL, 'plugin\\admin\\app\\cont
 INSERT INTO `rules` VALUES (112, '获取已安装的插件列表', NULL, 'plugin\\admin\\app\\controller\\PluginController@getInstalledPlugins', 15, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (113, '表单构建', NULL, 'plugin\\admin\\app\\controller\\DevController@formBuild', 17, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (114, '系统管理', 'layui-icon-release', 'systems', 0, '2025-03-07 14:39:52', '2025-03-07 14:46:59', '', 0, 0);
-INSERT INTO `rules` VALUES (115, '轮播图', '', 'plugin\\admin\\app\\controller\\BannerController', 114, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/banner/index', 1, 0);
+INSERT INTO `rules` VALUES (115, '首页动图', '', 'plugin\\admin\\app\\controller\\BannerController', 114, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/banner/index', 1, 0);
 INSERT INTO `rules` VALUES (116, '插入', NULL, 'plugin\\admin\\app\\controller\\BannerController@insert', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (117, '更新', NULL, 'plugin\\admin\\app\\controller\\BannerController@update', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (118, '查询', NULL, 'plugin\\admin\\app\\controller\\BannerController@select', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (119, '删除', NULL, 'plugin\\admin\\app\\controller\\BannerController@delete', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
-INSERT INTO `rules` VALUES (120, '配置', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController', 114, '2025-03-05 09:49:00', '2025-03-05 09:49:00', '/app/admin/systemConfig/index', 1, 0);
-INSERT INTO `rules` VALUES (121, '公告', '', 'plugin\\admin\\app\\controller\\NoticeController', 114, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/notice/index', 1, 0);
+INSERT INTO `rules` VALUES (120, '参数配置', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController', 114, '2025-03-05 09:49:00', '2025-03-05 09:49:00', '/app/admin/systemConfig/index', 1, 0);
+INSERT INTO `rules` VALUES (121, '公告管理', '', 'plugin\\admin\\app\\controller\\NoticeController', 114, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/notice/index', 1, 0);
 INSERT INTO `rules` VALUES (122, '插入', NULL, 'plugin\\admin\\app\\controller\\NoticeController@insert', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (123, '更新', NULL, 'plugin\\admin\\app\\controller\\NoticeController@update', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (124, '查询', NULL, 'plugin\\admin\\app\\controller\\NoticeController@select', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (125, '删除', NULL, 'plugin\\admin\\app\\controller\\NoticeController@delete', 115, '2025-03-05 09:51:00', '2025-03-05 09:51:00', NULL, 2, 0);
 INSERT INTO `rules` VALUES (126, '更改', NULL, 'plugin\\admin\\app\\controller\\SystemConfigController@update', 120, '2025-03-07 18:00:02', '2025-03-07 18:00:02', NULL, 2, 0);
 INSERT INTO `rules` VALUES (127, '财务管理', 'layui-icon-rmb', 'finance', NULL, '2025-03-07 14:39:52', '2025-03-10 20:11:17', '', 0, 0);
-INSERT INTO `rules` VALUES (128, '质押', '', 'plugin\\admin\\app\\controller\\PledgeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/pledge/index', 1, 0);
+INSERT INTO `rules` VALUES (128, '质押记录', '', 'plugin\\admin\\app\\controller\\PledgeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/pledge/index', 1, 0);
 INSERT INTO `rules` VALUES (129, '查询', NULL, 'plugin\\admin\\app\\controller\\PledgeController@select', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (130, '套利', '', 'plugin\\admin\\app\\controller\\MevController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/mev/index', 1, 0);
+INSERT INTO `rules` VALUES (130, '套利记录', '', 'plugin\\admin\\app\\controller\\MevController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/mev/index', 1, 0);
 INSERT INTO `rules` VALUES (131, '查询', NULL, 'plugin\\admin\\app\\controller\\MevController@select', 130, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (132, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@staticIncome', 128, '2025-03-05 09:51:00', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (133, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@staticIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (137, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@staticIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (138, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@staticIncomes', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
-INSERT INTO `rules` VALUES (142, '兑换', '', 'plugin\\admin\\app\\controller\\ExchangeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/exchange/index', 1, 0);
-INSERT INTO `rules` VALUES (143, '充值', '', 'plugin\\admin\\app\\controller\\RechargeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/recharge/index', 1, 0);
-INSERT INTO `rules` VALUES (144, '提现', '', 'plugin\\admin\\app\\controller\\WithdrawController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/withdraw/index', 1, 0);
-INSERT INTO `rules` VALUES (145, '流水', '', 'plugin\\admin\\app\\controller\\AssetsLogController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/assetsLog/index', 1, 0);
+INSERT INTO `rules` VALUES (142, '兑换记录', '', 'plugin\\admin\\app\\controller\\ExchangeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/exchange/index', 1, 0);
+INSERT INTO `rules` VALUES (143, '充值记录', '', 'plugin\\admin\\app\\controller\\RechargeController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/recharge/index', 1, 0);
+INSERT INTO `rules` VALUES (144, '提现记录', '', 'plugin\\admin\\app\\controller\\WithdrawController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/withdraw/index', 1, 0);
+INSERT INTO `rules` VALUES (145, '资金明细', '', 'plugin\\admin\\app\\controller\\AssetsLogController', 127, '2025-03-07 14:42:32', '2025-03-07 15:07:35', '/app/admin/assetsLog/index', 1, 0);
 INSERT INTO `rules` VALUES (146, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@dynamicIncome', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (147, '查询动态收益', NULL, 'plugin\\admin\\app\\controller\\PledgeController@dynamicIncomes', 128, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (148, '浏览动态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@dynamicIncome', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
@@ -632,7 +658,7 @@ CREATE TABLE `transaction_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '交易收益' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of transaction_logs
@@ -668,7 +694,7 @@ CREATE TABLE `transactions`  (
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '质押记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '交易记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of transactions
@@ -742,7 +768,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, '1', 0, 0, 0, 0, '/images/avatars/avatar.png', '', 3, 8, 'zh_CN', '192.168.3.35', '2025-03-12 20:30:13', '2025-03-12 13:31:20', '2025-03-12 20:30:13');
+INSERT INTO `users` VALUES (1, '1', 0, 1, 0, 0, '/images/avatars/avatar.png', '', 3, 8, 'zh_CN', '192.168.3.35', '2025-03-13 15:39:40', '2025-03-12 13:31:20', '2025-03-13 15:39:40');
 INSERT INTO `users` VALUES (2, '2', 1, 0, 0, 0, '/images/avatars/avatar.png', '', 3, 3, 'zh_CN', '127.0.0.1', '2025-03-12 13:41:48', '2025-03-12 13:31:32', '2025-03-12 13:41:48');
 INSERT INTO `users` VALUES (3, '3', 1, 0, 0, 0, '/images/avatars/avatar.png', '', 2, 2, 'zh_CN', '127.0.0.1', '2025-03-12 13:43:09', '2025-03-12 13:31:37', '2025-03-12 13:43:09');
 INSERT INTO `users` VALUES (4, '4', 1, 0, 0, 0, '/images/avatars/avatar.png', '', 0, 0, 'zh_CN', '192.168.3.10', '2025-03-12 13:52:17', '2025-03-12 13:31:42', '2025-03-12 13:52:17');
@@ -763,8 +789,11 @@ CREATE TABLE `withdraws`  (
   `amount` decimal(15, 6) UNSIGNED NULL DEFAULT NULL,
   `fee` decimal(10, 6) NULL DEFAULT 0.000000 COMMENT '手续费',
   `fee_rate` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '费率',
-  `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
+  `user_wallet` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '付款账户',
+  `signature` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '交易签名',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `status` tinyint(4) NULL DEFAULT 0,
+  `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
@@ -773,15 +802,15 @@ CREATE TABLE `withdraws`  (
 -- ----------------------------
 -- Records of withdraws
 -- ----------------------------
-INSERT INTO `withdraws` VALUES (1, 1, 'USDT', 100.000000, 0.000000, 0.00, 1741779130, 0, '2025-03-12 19:32:10', '2025-03-12 19:32:10');
-INSERT INTO `withdraws` VALUES (2, 1, 'USDT', 200.000000, 0.000000, 0.00, 1741782374, 0, '2025-03-12 20:26:14', '2025-03-12 20:26:14');
-INSERT INTO `withdraws` VALUES (3, 1, 'USDT', 200.000000, 0.000000, 0.00, 1741782430, 0, '2025-03-12 20:27:10', '2025-03-12 20:27:10');
-INSERT INTO `withdraws` VALUES (4, 1, 'USDT', 101.000000, 0.000000, 0.00, 1741782534, 0, '2025-03-12 20:28:54', '2025-03-12 20:28:54');
-INSERT INTO `withdraws` VALUES (5, 1, 'USDT', 100.000000, 0.000000, 0.00, 1741782562, 0, '2025-03-12 20:29:22', '2025-03-12 20:29:22');
-INSERT INTO `withdraws` VALUES (6, 1, 'USDT', 100.000000, 0.000000, 0.00, 1741782628, 0, '2025-03-12 20:30:28', '2025-03-12 20:30:28');
-INSERT INTO `withdraws` VALUES (7, 1, 'USDT', 100.000000, 0.000000, 0.00, 1741782631, 0, '2025-03-12 20:30:31', '2025-03-12 20:30:31');
-INSERT INTO `withdraws` VALUES (8, 1, 'USDT', 100.000000, 0.000000, 0.00, 1741782633, 0, '2025-03-12 20:30:33', '2025-03-12 20:30:33');
-INSERT INTO `withdraws` VALUES (9, 1, 'USDT', 100.000000, 0.000000, 0.00, 1741782668, 0, '2025-03-12 20:31:08', '2025-03-12 20:31:08');
-INSERT INTO `withdraws` VALUES (10, 1, 'USDT', 100.000000, 0.000000, 0.00, 1741783066, 0, '2025-03-12 20:37:46', '2025-03-12 20:37:46');
+INSERT INTO `withdraws` VALUES (1, 1, 'USDT', 100.000000, 0.000000, 0.00, NULL, '7776575', '6667567', 1, 1741779130, '2025-03-12 19:32:10', '2025-03-13 14:34:22');
+INSERT INTO `withdraws` VALUES (2, 1, 'USDT', 200.000000, 0.000000, 0.00, NULL, '', '', 1, 1741782374, '2025-03-12 20:26:14', '2025-03-13 14:55:28');
+INSERT INTO `withdraws` VALUES (3, 1, 'USDT', 200.000000, 0.000000, 0.00, NULL, '', '', 2, 1741782430, '2025-03-12 20:27:10', '2025-03-13 14:55:40');
+INSERT INTO `withdraws` VALUES (4, 1, 'USDT', 101.000000, 0.000000, 0.00, NULL, '6', '6', 1, 1741782534, '2025-03-12 20:28:54', '2025-03-13 14:57:52');
+INSERT INTO `withdraws` VALUES (5, 1, 'USDT', 100.000000, 0.000000, 0.00, NULL, '', '', 2, 1741782562, '2025-03-12 20:29:22', '2025-03-13 15:10:08');
+INSERT INTO `withdraws` VALUES (6, 1, 'USDT', 100.000000, 0.000000, 0.00, NULL, NULL, NULL, 0, 1741782628, '2025-03-12 20:30:28', '2025-03-12 20:30:28');
+INSERT INTO `withdraws` VALUES (7, 1, 'USDT', 100.000000, 0.000000, 0.00, NULL, NULL, NULL, 0, 1741782631, '2025-03-12 20:30:31', '2025-03-12 20:30:31');
+INSERT INTO `withdraws` VALUES (8, 1, 'USDT', 100.000000, 0.000000, 0.00, NULL, NULL, NULL, 0, 1741782633, '2025-03-12 20:30:33', '2025-03-12 20:30:33');
+INSERT INTO `withdraws` VALUES (9, 1, 'USDT', 100.000000, 0.000000, 0.00, NULL, NULL, NULL, 0, 1741782668, '2025-03-12 20:31:08', '2025-03-12 20:31:08');
+INSERT INTO `withdraws` VALUES (10, 1, 'USDT', 100.000000, 0.000000, 0.00, NULL, NULL, NULL, 0, 1741783066, '2025-03-12 20:37:46', '2025-03-12 20:37:46');
 
 SET FOREIGN_KEY_CHECKS = 1;
