@@ -47,7 +47,7 @@ class AssetsController
     public function rechargeList(Request $request)
     {
         $recharges = Db::table('recharges')->where('user_id', $request->userId)
-            ->select(['amount', 'created_at'])
+            ->select(['amount','signature','status', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
             ->paginate(10)
@@ -80,7 +80,7 @@ class AssetsController
         $coin = CoinTypes::USDT;
         $user = User::query()->find($request->userId);
         $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-        $new_balance = $assets->amount - $amount;
+        $new_balance = bcsub($assets->amount, $amount, 6);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
@@ -125,7 +125,7 @@ class AssetsController
     public function withdrawList(Request $request)
     {
         $recharges = Db::table('withdraws')->where('user_id', $request->userId)
-            ->select(['amount', 'created_at'])
+            ->select(['amount','signature','status','created_at'])
 //            ->where('status', WithdrawStatus::SUCCESS)
             ->orderBy('id', 'desc')
             ->paginate(10)
