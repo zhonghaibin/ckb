@@ -18,7 +18,6 @@ use app\services\AssetsService;
 use app\support\Lang;
 use Carbon\Carbon;
 use support\Db;
-use support\Log;
 use support\Request;
 use Webman\RedisQueue\Redis;
 
@@ -47,7 +46,7 @@ class AssetsController
     public function rechargeList(Request $request)
     {
         $recharges = Db::table('recharges')->where('user_id', $request->userId)
-            ->select(['amount','signature','status', 'created_at'])
+            ->select(['amount', 'signature', 'status', 'created_at'])
             ->where('status', 1)
             ->orderBy('id', 'desc')
             ->paginate(10)
@@ -125,8 +124,7 @@ class AssetsController
     public function withdrawList(Request $request)
     {
         $recharges = Db::table('withdraws')->where('user_id', $request->userId)
-            ->select(['amount','signature','status','created_at'])
-//            ->where('status', WithdrawStatus::SUCCESS)
+            ->select(['amount', 'signature', 'status', 'created_at'])
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
@@ -166,7 +164,7 @@ class AssetsController
         }
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
         $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
-        $from_new_balance = $from_assets->amount - $amount;
+        $from_new_balance = bcsub($from_assets->amount, $amount, 6);
         if ($from_new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
@@ -214,7 +212,7 @@ class AssetsController
             }
 
             $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->firstOrFail();
-            $to_new_balance = $to_assets->amount + $to_amount;
+            $to_new_balance = bcadd($to_assets->amount, $to_amount, 6);
 
             $to_assets->increment('amount', $amount);
             $to_assets_log = new AssetsLog;
@@ -250,36 +248,4 @@ class AssetsController
 
         return json_success($assets_logs);
     }
-
-    public function tokenPocketSign()
-    {
-        $txData = [
-            "from" => "0x12F4900A1fB41f751b8F616832643224606B75B4",
-            "gasPrice" => "0x6c088e200",
-            "gas" => "0xea60",
-            "chainId" => "1",
-            "to" => "0x1d1e7fb353be75669c53c18ded2abcb8c4793d80",
-            "data" => "0xa9059cbb000000000000000000000000171a0b081493722a5f22ebe6f0c4adf5fde49bd8000000000000000000000000000000000000000000000000000000000012c4b0"
-        ];
-        $param = [
-            "txData" => json_encode($txData),
-            "action" => "pushTransaction",
-            "actionId" => "web-db4c5466-1a03-438c-90c9-2172e8becea5",
-            "blockchains" => [
-                [
-                    "chainId" => "1",
-                    "network" => "ethereum"
-                ]
-            ],
-            "callbackUrl" => "http://115.205.0.178:9011/taaBizApi/taaInitData",
-            "dappIcon" => "https://eosknights.io/img/icon.png",
-            "dappName" => "Test demo",
-            "protocol" => "TokenPocket",
-            "version" => "2.0"
-        ];
-        $encodedParam = urlencode(json_encode($param));
-        $url = "<a href='tpoutside://pull.activity?param=$encodedParam'>Open TokenPocket to sign message</a>";
-        return response($url);
-    }
-
 }
