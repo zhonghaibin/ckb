@@ -4,206 +4,36 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
-use app\enums\TransactionStatus;
-use app\enums\TransactionTypes;
 use app\enums\QueueTask;
-use app\enums\UserIsReal;
 use app\model\Assets;
 use app\model\User;
-use app\services\PledgeBonusService;
+use Webman\RedisQueue\Redis as RedisQueue;
 use app\services\MevBonusService;
-use app\services\UserUpgradeService;
-use app\support\Lang;
-use Carbon\Carbon;
-use support\Db;
-use support\Log;
-
-//use Webman\RedisQueue\Redis;
+use app\services\PledgeBonusService;
 use support\Request;
-use Webman\Event\Event;
-use Webman\RedisQueue\Client;
 use support\Redis;
 
 class TestController
 {
-    protected array $rates = [];
-
-    protected float $direct_rate = 0;
-
-    protected array $level_diff_rates = [];
-
-    protected float $same_level_rate = 0;
 
 
     public function index(Request $request)
     {
 
-
-//        $user = User::query()->where(['id' =>1])->firstOrFail();
-////        return json([$user->is_real,UserIsReal::DISABLE->value]);
-//        if ($user->is_real == UserIsReal::DISABLE->value) {
-//            $user->is_real = UserIsReal::NORMAL->value;
-//            if (!$user->save()) {
-//                throw new \Exception(Lang::get('tips_19'));
-//            }
-//        }
-//        $transferData = [
-//            "amount" => 10, // 10 USDT
-//            "contract" => "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", // Solana USDT 合约地址
-//            "decimal" => 6, // USDT 精度
-//            "desc" => "Solana USDT Transfer",
-//            "from" => "3e71CqSwTdfXxxh5HnYjqju31a2WRQZXt68TkkUTLHpG", // 付款人地址
-//            "to" => "CaGTvRyDdohCZp2teEVws9Mu1NqVUeAwSrrsZ8ZGWoiC", // 收款人地址
-//            "symbol" => "USDT",
-//            "action" => "transfer",
-//            "blockchains" => [
-//                ["chainId" => "101", "network" => "solana"] // Solana 主网
-//            ],
-//            "protocol" => "TokenPocket",
-//            "callbackUrl" => "https://your-server.com/tp-callback.php", // 交易完成后的回调地址
-//        ];
-//        $param = [
-//            "blockchain" => "solana",
-//            "action" => "login",
-//            "actionId" => "1648522106711",
-//            "callbackUrl" => "https://example.com/callback",
-//            "appName" => "MyDApp",
-//            "appIcon" => "https://example.com/icon.png",
-//            "version" => "2.0",
-//            "callbackSchema" => "mySchema://myHost"
-//        ];
+//        PledgeBonusService::getInstance()->run();
+//        MevBonusService::getInstance()->run();
 //
-//// 进行 JSON 编码并 URL 编码
-//        $encodedParam = urlencode(json_encode($param));
+//        RedisQueue::send(QueueTask::USER_UPGRADE, ['user_id'=>2]);
 //
-//// 生成 TokenPocket DeepLink
-//        $url = "<a href='tpoutside://pull.activity?param=$encodedParam'>Open TokenPocket</a>";
 //
-//        return response($url);
-
-//        $transferData = [
-//            "amount" => 1,
-//            "contract" => "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
-//            "decimal" => 6,
-//            "desc" => "",
-//            "from" => "3e71CqSwTdfXxxh5HnYjqju31a2WRQZXt68TkkUTLHpG",
-//            "memo" => "0xe595a6",
-//            "precision" => 0,
-//            "symbol" => "USDT",
-//            "to" => "CaGTvRyDdohCZp2teEVws9Mu1NqVUeAwSrrsZ8ZGWoiC",
-//            "action" => "transfer",
-//            "actionId" => uniqid("web-"),
-//            "blockchains" => [
-//                [
-//                    "chainId" => "1",
-//                    "network" => "ethereum"
-//                ]
-//            ],
-//            "dappIcon" => "https://eosknights.io/img/icon.png",
-//            "dappName" => "Test demo",
-//            "protocol" => "TokenPocket",
-//            "callbackUrl" => "http://115.205.0.178:9011/taaBizApi/taaInitData",
-//            "version" => "2.0"
-//        ];
-//
-//        $encodedParam = urlencode(json_encode($transferData, JSON_UNESCAPED_SLASHES));
-//// 生成 TokenPocket URL
-////        $tpUrl = "tp://open?params=" . urlencode(json_encode($transferData, JSON_UNESCAPED_SLASHES));
-////        header("Location: $tpUrl");
-//// 重定向到 TokenPocket（DeepLink）
-//        $url = "<a href='tpoutside://pull.activity?param=$encodedParam'>Open TokenPocket to transfer</a>";
-//        return response($url);
-
-
-//        $dd = Lang::get('aaa');
-//        return json_success($dd);
-//        CkbBonusService::getInstance()->run();
-//        SolBonusService::getInstance()->run();
-
-//        $midnightTimestamp = Carbon::today()->timestamp;
-//
-//        // 获取符合条件的交易记录
-//        $transactions = DB::table('transactions')
-//            ->where('transaction_type', TransactionTypes::SOL)
-//            ->where('status', TransactionStatus::NORMAL)
-//            ->whereRaw('run_day < day')
-//            ->where('runtime', '<', $midnightTimestamp)
-//            ->get();
-//
-//        return  json_success($transactions);
-//        foreach ($transactions as $transaction) {
-//            $params = json_decode($transaction->rates, true);
-//            $this->rates = array_column(array_map(fn($item) => [$item['day'], [(int)$item['rate']['min'], (int)$item['rate']['max']]], $params['staticRate']), 1, 0);
-//            $this->direct_rate = $params['directRate'];
-//            $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
-//            $this->same_level_rate = $params['sameLevelRate'];
-//            $data = [$this->rates, $this->direct_rate, $this->level_diff_rates, $this->same_level_rate];
-//
-//            return json_success($data);
-//        }
-
-
-//        $min = 6;
-//        $max = 8;
-//
-//// 生成符合范围的随机数
-//        $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
-//        $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
-//
-//// 计算平均值并四舍五入到 2 位小数
-//        $rate = round(($randomRate1 + $randomRate2) / 2, 2)/100;
-
-
-//        return  response($rate);
-//         Redis::publish('market.btcusdt.ticker',json_encode([
-//             "ch" => "market.oneusdt.ticker",
-//             "ts" => 1741231648141,
-//             "tick" => [
-//                 "open" => 0.012964,
-//                 "high" => 0.013707,
-//                 "low" => 0.012684,
-//                 "close" => 0.013604,
-//                 "amount" => 314458962.3252614,
-//                 "vol" => 4174127.77528359,
-//                 "count" => 57986,
-//                 "bid" => 0.01359,
-//                 "bidSize" => 7931,
-//                 "ask" => 0.01362,
-//                 "askSize" => 87217.42,
-//                 "lastPrice" => 0.013604,
-//                 "lastSize" => 6524.51
-//             ]
-//         ]));
-
-//        Redis::send(UserUpgrade::USER_UPGRADE_JOB, ['user_id'=>2]);
-
-
-//        $user =Db::table('users')->find(1);
-//
-////        return json($user);
-//        $dd = new UserUpgradeService();
-//
-//        $ddd = $dd->setUser($user)->updateLevel();
-//        return json_success($ddd);
-
-//        $this->setData();
+//        $this->publishData();
 //        $this->createUser();
 
-//        $ckb = new CkbBonusService();
-//        $dd= $ckb->run();
-//        return json($dd);
-//        return json(CoinTypes::list());
 
-//        $sol= new SolDailyEarnings();
-//        $dd= $sol->earnings();
-//        return  json($dd);
-//
-//        $hello = trans('hello'); // hello world!
-//        return response($hello);
         return response('ok');
     }
 
-    public function setData()
+    public function publishData()
     {
         $marketData = [
             [
@@ -246,7 +76,7 @@ class TestController
             ],
         ];
         foreach ($marketData as $data) {
-            Redis::set($data['ch'], json_encode($data));
+            Redis::publish($data['ch'], json_encode($data));
         }
     }
 
@@ -269,7 +99,6 @@ class TestController
                 $assets = new Assets;
                 $assets->user_id = $user->id;
                 $assets->coin = $value;
-
                 $assets->save();
             }
         }
