@@ -90,7 +90,7 @@ class TransactionController
                 throw new \Exception(Lang::get('tips_19'));
             }
 
-            if (!$user->is_real == UserIsReal::DISABLE->value) {
+            if ($user->is_real == UserIsReal::DISABLE->value) {
                 $user->is_real = UserIsReal::NORMAL->value;
                 if (!$user->save()) {
                     throw new \Exception(Lang::get('tips_19'));
@@ -166,7 +166,7 @@ class TransactionController
                 throw new \Exception(Lang::get('tips_19'));
             }
 
-            if (!$user->is_real == UserIsReal::DISABLE->value) {
+            if ($user->is_real == UserIsReal::DISABLE->value) {
                 $user->is_real = UserIsReal::NORMAL->value;
                 if (!$user->save()) {
                     throw new \Exception(Lang::get('tips_19'));
