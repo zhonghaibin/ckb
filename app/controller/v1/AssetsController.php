@@ -6,13 +6,15 @@ namespace app\controller\v1;
 use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\ExchangeStatus;
-use app\enums\UserJob;
+use app\enums\QueueTask;
+use app\enums\RechargeStatus;
 use app\enums\WithdrawStatus;
 use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\Exchange;
 use app\model\User;
 use app\model\Withdraw;
+use app\services\AssetsService;
 use app\support\Lang;
 use Carbon\Carbon;
 use support\Db;
@@ -27,11 +29,18 @@ class AssetsController
     //充值
     public function recharge(Request $request)
     {
-        $data=[
-            'user_wallet'=>$request->post('user_wallet','CaGTvRyDdohCZp2teEVws9Mu1NqVUeAwSrrsZ8ZGWoiC'),
-            'signature'=>$request->post('signature','4Xt9m7gLNMHAc4GzEgRq9URa6hW2NxhWW8f5f6SCearHow86yuRkhCGbPkRFP1jNXtiwA6B8tnbADVpJEdj87mtf')
-        ];
-        Redis::send(UserJob::USER_UPGRADE->value, $data);
+
+        $user_wallet = $request->post('user_wallet', '');
+        $signature = $request->post('signature', '');
+        $amount = $request->post('amount', '');
+        $service = new AssetsService();
+        $recharge_id = $service->recharge($request->userId, $amount, CoinTypes::USDT, RechargeStatus::PENDING, $signature, $user_wallet);
+        if ($recharge_id) {
+            Redis::send(QueueTask::RECHARGE->value, [
+                'recharge_id' => $recharge_id
+            ], 30);
+        }
+
         return json_success();
     }
 

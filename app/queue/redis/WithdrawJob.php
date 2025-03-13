@@ -10,7 +10,7 @@ use support\Db;
 use support\Log;
 use Webman\RedisQueue\Consumer;
 
-class RechargeJob implements Consumer
+class WithdrawJob implements Consumer
 {
 
     /**

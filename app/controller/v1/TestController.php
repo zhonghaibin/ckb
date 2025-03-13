@@ -6,7 +6,7 @@ use app\enums\CoinTypes;
 use app\enums\LangTypes;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
-use app\enums\UserJob;
+use app\enums\QueueTask;
 use app\model\Assets;
 use app\model\User;
 use app\services\PledgeBonusService;

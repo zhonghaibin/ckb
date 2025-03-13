@@ -7,7 +7,7 @@ use app\enums\CoinTypes;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
 use app\enums\UserIsReal;
-use app\enums\UserJob;
+use app\enums\QueueTask;
 use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\User;
@@ -97,7 +97,7 @@ class TransactionController
                 }
             }
             DB::commit();
-            Redis::send(UserJob::USER_UPGRADE->value, ['user_id' => $user->id]);
+            Redis::send(QueueTask::USER_UPGRADE->value, ['user_id' => $user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());
@@ -173,7 +173,7 @@ class TransactionController
                 }
             }
             DB::commit();
-            Redis::send(UserJob::USER_UPGRADE->value, ['user_id' => $user->id]);
+            Redis::send(QueueTask::USER_UPGRADE->value, ['user_id' => $user->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             return json_fail($e->getMessage());

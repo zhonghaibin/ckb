@@ -3,7 +3,7 @@
 namespace app\queue\redis;
 
 
-use app\enums\UserJob;
+use app\enums\QueueTask;
 use support\Db;
 use Webman\RedisQueue\Consumer;
 
@@ -16,7 +16,7 @@ class UpdateInviteCountJob implements Consumer
      * php start.php queue:restart
      * @var string
      */
-    public $queue = UserJob::UPDATE_INVITE_COUNT->value;
+    public $queue = QueueTask::UPDATE_INVITE_COUNT->value;
 
     public function consume($data)
     {

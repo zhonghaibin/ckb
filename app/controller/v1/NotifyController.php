@@ -11,7 +11,7 @@ use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\Recharge;
 use app\model\User;
-use app\services\TransactionService;
+use app\services\AssetsService;
 use app\support\Lang;
 use Carbon\Carbon;
 use support\Request;
@@ -65,7 +65,7 @@ class NotifyController
     {
         $amount = $request->post('amount');
         $identity = $request->post('identity');
-        $transactionService = new TransactionService();
+        $transactionService = new AssetsService();
         $transactionService->recharge($identity, $amount);
         return json_success();
 

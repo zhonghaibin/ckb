@@ -2,11 +2,9 @@
 
 namespace app\queue\redis;
 
-use app\enums\UserJob;
-use app\model\User;
+use app\enums\QueueTask;
 use app\services\UserUpgradeService;
 use support\Db;
-use support\Log;
 use Webman\RedisQueue\Consumer;
 
 class UserUpgradeJob implements Consumer
@@ -18,7 +16,7 @@ class UserUpgradeJob implements Consumer
      * php start.php queue:restart
      * @var string
      */
-    public $queue = UserJob::USER_UPGRADE->value;
+    public $queue = QueueTask::USER_UPGRADE->value;
 
     public function consume($data)
     {

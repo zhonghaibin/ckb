@@ -4,7 +4,7 @@ namespace app\controller\v1;
 
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
-use app\enums\UserJob;
+use app\enums\QueueTask;
 use app\enums\UserStatus;
 use app\model\Assets;
 use app\model\LoginLog;
@@ -139,7 +139,7 @@ class AuthController
 
             DB::commit();
             if ($pid) {
-                Redis::send(UserJob::UPDATE_INVITE_COUNT->value, ['user_id' => $pid]);
+                Redis::send(QueueTask::UPDATE_INVITE_COUNT->value, ['user_id' => $pid]);
             }
         } catch (\Throwable $e) {
             DB::rollBack();
