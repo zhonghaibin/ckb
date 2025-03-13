@@ -13,7 +13,7 @@ enum WithdrawStatus: int
     {
         return match ($this) {
             self::PENDING => '待处理',
-            self::SUCCESS => '成功',
+            self::SUCCESS => '已完成',
             self::FAILED => '失败',
         };
     }

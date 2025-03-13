@@ -49,8 +49,8 @@ class TransactionController
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
-        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-        $new_balance = $assets->amount - $amount;
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
+        $new_balance = bcsub($assets->amount, $amount, 6);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
@@ -127,8 +127,8 @@ class TransactionController
         }
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
-        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-        $new_balance = $assets->amount - $amount;
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
+        $new_balance = bcsub($assets->amount, $amount, 6);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }

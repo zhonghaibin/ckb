@@ -98,7 +98,7 @@ class MevBonusService
                         ->where('user_id', $transaction->user_id)
                         ->where('coin', $transaction->coin)
                         ->first();
-                    $new_balance = $assets->amount + $bonus;
+                    $new_balance = bcadd($assets->amount, $bonus, 6);
                     //更新每日收益
                     DB::table('assets')
                         ->where('user_id', $transaction->user_id)
@@ -131,7 +131,7 @@ class MevBonusService
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
                             ->first();
-                        $new_balance = $assets->amount + $bonus;
+                        $new_balance = bcadd($assets->amount, $bonus, 6);
                         DB::table('assets')
                             ->where('user_id', $transaction->user_id)
                             ->where('coin', $transaction->coin)
@@ -189,7 +189,7 @@ class MevBonusService
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
                 ->first();
-            $new_balance = $assets->amount + $parent_bonus;
+            $new_balance = bcadd($assets->amount, $parent_bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
@@ -226,7 +226,7 @@ class MevBonusService
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
                 ->first();
-            $new_balance = $assets->amount + $parent_bonus;
+            $new_balance = bcadd($assets->amount, $parent_bonus, 6);
             DB::table('assets')
                 ->where('user_id', $parent->id)
                 ->where('coin', $transaction->coin)
@@ -289,7 +289,7 @@ class MevBonusService
                     ->where('user_id', $user_id)
                     ->where('coin', $transaction->coin)
                     ->first();
-                $new_balance = $assets->amount + $parent_bonus;
+                $new_balance = bcadd($assets->amount, $parent_bonus, 6);
                 DB::table('assets')
                     ->where('user_id', $user_id)
                     ->where('coin', $transaction->coin)

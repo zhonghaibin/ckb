@@ -78,7 +78,7 @@ class AssetsController
 
         $coin = CoinTypes::USDT;
         $user = User::query()->find($request->userId);
-        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
         $new_balance = bcsub($assets->amount, $amount, 6);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
@@ -163,7 +163,7 @@ class AssetsController
             return json_fail(Lang::get('tips_8'));
         }
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
-        $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->firstOrFail();
+        $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->lockForUpdate()->firstOrFail();
         $from_new_balance = bcsub($from_assets->amount, $amount, 6);
         if ($from_new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
@@ -211,7 +211,7 @@ class AssetsController
                 throw new \Exception(Lang::get('tips_19'));
             }
 
-            $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->firstOrFail();
+            $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->lockForUpdate()->firstOrFail();
             $to_new_balance = bcadd($to_assets->amount, $to_amount, 6);
 
             $to_assets->increment('amount', $amount);

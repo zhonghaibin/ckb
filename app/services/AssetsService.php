@@ -72,7 +72,33 @@ class AssetsService
         });
     }
 
+    public function refund($withdraw_id, $coin = CoinTypes::USDT->value, $remark = '提现审核失败')
+    {
 
+        $withdraw = Withdraw::query()->find($withdraw_id);
+        if ($withdraw->status != WithdrawStatus::PENDING->value) {
+            return false;
+        }
+
+        $assets = Assets::query()->where('user_id', $withdraw->user_id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
+        $new_balance = bcadd($assets->amount, $withdraw->amount, 6);
+
+        if (!$assets->increment('amount', $withdraw->amount)) {
+            throw new \Exception(Lang::get('tips_19'));
+        }
+        $assets_log = new AssetsLog;
+        $assets_log->user_id = $withdraw->user_id;
+        $assets_log->coin = $coin;
+        $assets_log->amount = $withdraw->amount;
+        $assets_log->balance = $new_balance;
+        $assets_log->type = AssetsLogTypes::WITHDRAW;
+        $assets_log->remark = $remark;
+        $assets_log->datetime = Carbon::now()->timestamp;
+        $assets_log->withdraw_id = $withdraw->id;
+        if (!$assets_log->save()) {
+            throw new \Exception(Lang::get('tips_19'));
+        }
+    }
 
 
 }

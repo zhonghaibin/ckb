@@ -58,7 +58,10 @@
         <table id="data-table" lay-filter="data-table"></table>
     </div>
 </div>
-
+<!-- 表格行工具栏 -->
+<script type="text/html" id="table-bar">
+    <button class="pear-btn pear-btn-xs tool-btn" lay-event="edit" permission="app.admin.user.update">审核</button>
+</script>
 
 
 <script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
@@ -70,7 +73,7 @@
     // 相关常量
     const PRIMARY_KEY = "id";
     const SELECT_API = "/app/admin/withdraw/select";
-
+    const UPDATE_URL = "/app/admin/withdraw/update";
 
 
     layui.use(["jquery", "xmSelect", "popup"], function() {
@@ -154,7 +157,13 @@
             },{
                 title: "创建时间",
                 field: "created_at",
-            },
+            },{
+                title: "操作",
+                toolbar: "#table-bar",
+                align: "center",
+                fixed: "right",
+                width: 130,
+            }
         ];
 
         // 渲染表格
@@ -221,8 +230,8 @@
         table.on("tool(data-table)", function(obj) {
             if (obj.event === "remove") {
                 remove(obj);
-            } else if (obj.event === "show") {
-                show(obj);
+            } else if (obj.event === "edit") {
+                edit(obj);
             }
         });
 
@@ -266,7 +275,17 @@
         });
 
 
-
+        // 表格编辑数据
+        let edit = function(obj) {
+            let value = obj.data[PRIMARY_KEY];
+            layer.open({
+                type: 2,
+                title: "审核",
+                shade: 0.1,
+                area: [common.isModile()?"100%":"400px", common.isModile()?"100%":"400px"],
+                content: UPDATE_URL + "?" + PRIMARY_KEY + "=" + value
+            });
+        }
 
         // 刷新表格数据
         window.refreshTable = function() {
