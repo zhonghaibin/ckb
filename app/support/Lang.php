@@ -1,4 +1,5 @@
 <?php
+
 namespace app\support;
 
 use support\Log;
@@ -29,5 +30,10 @@ class Lang
         }
 
         return $message;
+    }
+
+    public static function getLang(): string
+    {
+        return static::$lang;
     }
 }

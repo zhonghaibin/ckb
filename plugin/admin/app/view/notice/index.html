@@ -20,6 +20,14 @@
                             <input type="number" name="id" value="" class="layui-input">
                         </div>
                     </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">语言</label>
+                        <div class="layui-input-block">
+                            <div name="lang" id="lang" value="" ></div>
+                        </div>
+                    </div>
+
                     <div class="layui-form-item">
                         <label class="layui-form-label">标题</label>
                         <div class="layui-input-block">
@@ -81,7 +89,28 @@
             const INSERT_URL = "/app/admin/notice/insert";
             const UPDATE_URL = "/app/admin/notice/update";
 
-            
+            layui.use(["jquery", "xmSelect", "popup"], function() {
+                layui.$.ajax({
+                    url: "/app/admin/dict/get/lang",
+                    dataType: "json",
+                    success: function (res) {
+                        let value = layui.$("#lang").attr("value");
+                        let initValue = value ? value.split(",") : [];
+                        layui.xmSelect.render({
+                            el: "#lang",
+                            name: "lang",
+                            initValue: initValue,
+                            data: res.data,
+                            model: {"icon":"hidden","label":{"type":"text"}},
+                            clickClose: true,
+                            radio: true,
+                        });
+                        if (res.code) {
+                            layui.popup.failure(res.msg);
+                        }
+                    }
+                });
+            });
             // 字段 注册时间 created_at
             layui.use(["laydate"], function() {
                 layui.laydate.render({
@@ -108,6 +137,18 @@
 						field: "id",
 						sort: true,
 					},{
+                        title: "语言",
+                        field: "lang",
+                        templet: function (d) {
+                            let field = "lang";
+                            if (typeof d[field] == "undefined") return "";
+                            let items = [];
+                            layui.each((d[field] + "").split(","), function (k , v) {
+                                items.push(apiResults[field][v] || v);
+                            });
+                            return util.escape(items.join(","));
+                        }
+                    },{
 						title: "标题",
 						field: "title",
 					},{
@@ -176,9 +217,9 @@
 				
 				// 获取表格中下拉或树形组件数据
 				let apis = [];
-				apis.push(["sex", "/app/admin/dict/get/sex"]);
+				apis.push(["lang", "/app/admin/dict/get/lang"]);
 				let apiResults = {};
-				apiResults["sex"] = [];
+				apiResults["lang"] = [];
 				let count = apis.length;
 				layui.each(apis, function (k, item) {
 				    let [field, url] = item;

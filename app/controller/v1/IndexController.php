@@ -2,6 +2,7 @@
 
 namespace app\controller\v1;
 
+use app\support\Lang;
 use support\Db;
 
 
@@ -24,6 +25,7 @@ class IndexController
     {
         $notice = Db::table('notices')
             ->where('status', 1)
+            ->where('lang', Lang::getLang())
             ->orderBy('id', 'desc')
             ->first();
         return json_success($notice);

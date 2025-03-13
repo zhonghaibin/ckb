@@ -12,7 +12,12 @@
 
             <div class="mainBox">
                 <div class="main-container mr-5">
-                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">语言</label>
+                        <div class="layui-input-block">
+                            <div name="lang" id="lang" value="" ></div>
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label required">标题</label>
                         <div class="layui-input-block">
@@ -101,6 +106,30 @@
                                 obj.attr("value", value);
                             }
                         });
+
+                        layui.use(["jquery", "xmSelect", "popup"], function() {
+                            layui.$.ajax({
+                                url: "/app/admin/dict/get/lang",
+                                dataType: "json",
+                                success: function (res) {
+                                    let value = layui.$("#lang").attr("value");
+                                    let initValue = value ? value.split(",") : [];
+                                    layui.xmSelect.render({
+                                        el: "#lang",
+                                        name: "lang",
+                                        initValue: initValue,
+                                        data: res.data,
+                                        model: {"icon":"hidden","label":{"type":"text"}},
+                                        clickClose: true,
+                                        radio: true,
+                                    });
+                                    if (res.code) {
+                                        layui.popup.failure(res.msg);
+                                    }
+                                }
+                            });
+                        });
+
 
                         // 字段 禁用 status
                         layui.use(["form"], function() {
