@@ -7,6 +7,7 @@ use app\enums\LangTypes;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
 use app\enums\QueueTask;
+use app\enums\UserIsReal;
 use app\model\Assets;
 use app\model\User;
 use app\services\PledgeBonusService;
@@ -34,13 +35,18 @@ class TestController
     protected float $same_level_rate = 0;
 
 
-
     public function index(Request $request)
     {
 
 
-
-
+//        $user = User::query()->where(['id' =>1])->firstOrFail();
+////        return json([$user->is_real,UserIsReal::DISABLE->value]);
+//        if ($user->is_real == UserIsReal::DISABLE->value) {
+//            $user->is_real = UserIsReal::NORMAL->value;
+//            if (!$user->save()) {
+//                throw new \Exception(Lang::get('tips_19'));
+//            }
+//        }
 //        $transferData = [
 //            "amount" => 10, // 10 USDT
 //            "contract" => "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", // Solana USDT 合约地址
@@ -194,7 +200,7 @@ class TestController
 //
 //        $hello = trans('hello'); // hello world!
 //        return response($hello);
-//        return response('ok');
+        return response('ok');
     }
 
     public function setData()
