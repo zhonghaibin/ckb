@@ -23,21 +23,23 @@ class PledgeBonusService
 
     private static $instance = null; // 存储唯一实例
 
-    private function __construct() {
+    private function __construct()
+    {
         // 私有构造函数，防止外部实例化
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }
         return self::$instance;
     }
 
-    private function __clone() {
+    private function __clone()
+    {
         // 禁止克隆
     }
-
 
 
     public function run()
@@ -104,7 +106,7 @@ class PledgeBonusService
                         'user_id' => $transaction->user_id,
                         'coin' => $transaction->coin,
                         'amount' => $bonus,
-                        'balance'=> $new_balance,
+                        'balance' => $new_balance,
                         'rate' => $rate,
                         'transaction_id' => $transaction->id,
                         'transaction_log_id' => $transactionLogId,
@@ -132,7 +134,7 @@ class PledgeBonusService
                             'user_id' => $transaction->user_id,
                             'coin' => $transaction->coin,
                             'amount' => $transaction->amount,
-                            'balance'=> $new_balance,
+                            'balance' => $new_balance,
                             'rate' => 0,
                             'transaction_id' => $transaction->id,
                             'transaction_log_id' => $transactionLogId,
@@ -174,7 +176,7 @@ class PledgeBonusService
     private function shareBonus($parent, $bonus, $transaction, $transactionLogId)
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $rate = round( $this->direct_rate / 100,4);
+            $rate = round($this->direct_rate / 100, 4);
             $parent_bonus = round($rate * $bonus, 6);
             $assets = DB::table('assets')
                 ->where('user_id', $parent->id)
@@ -192,7 +194,7 @@ class PledgeBonusService
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
                 'amount' => $parent_bonus,
-                'balance'=> $new_balance,
+                'balance' => $new_balance,
                 'rate' => $rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -229,7 +231,7 @@ class PledgeBonusService
                 'user_id' => $parent->id,
                 'coin' => $transaction->coin,
                 'amount' => $parent_bonus,
-                'balance'=> $new_balance,
+                'balance' => $new_balance,
                 'rate' => $level_diff_rate,
                 'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
@@ -290,7 +292,7 @@ class PledgeBonusService
                     'user_id' => $user_id,
                     'coin' => $transaction->coin,
                     'amount' => $parent_bonus,
-                    'balance'=> $new_balance,
+                    'balance' => $new_balance,
                     'rate' => $rate,
                     'transaction_id' => $transaction->id,
                     'transaction_log_id' => $transactionLogId,

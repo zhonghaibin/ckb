@@ -12,6 +12,7 @@ use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\User;
 use app\model\Transaction;
+use app\services\TransactionService;
 use app\support\Lang;
 use Webman\RedisQueue\Redis;
 use support\Request;
@@ -22,7 +23,7 @@ class TransactionController
 {
 
 
-    //CKB质押
+    //质押
     public function pledge(Request $request)
     {
         $coin = $request->post('coin', CoinTypes::ONE->value);
@@ -49,64 +50,21 @@ class TransactionController
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
-        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
         $new_balance = bcsub($assets->amount, $amount, 6);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
-
-        Db::beginTransaction();
-
         try {
-
-            if (!$assets->decrement('amount', $amount)) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-
-
-            $transaction = new Transaction();
-            $transaction->user_id = $user->id;
-            $transaction->coin = $coin;
-            $transaction->amount = $amount;
-            $transaction->day = $day;
-            $transaction->datetime = Carbon::now()->timestamp;
-            $transaction->transaction_type = TransactionTypes::PLEDGE;
-            $transaction->status = TransactionStatus::NORMAL;
-            $transaction->rates = json_encode($params);
-            if (!$transaction->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-
-            $assets_log = new AssetsLog;
-            $assets_log->user_id = $transaction->user_id;
-            $assets_log->coin = $transaction->coin;
-            $assets_log->amount = -$amount;
-            $assets_log->balance = $new_balance;
-            $assets_log->transaction_id = $transaction->id;
-            $assets_log->type = AssetsLogTypes::EXPENSE;
-            $assets_log->remark = AssetsLogTypes::EXPENSE->label();
-            $assets_log->datetime = Carbon::now()->timestamp;
-            if (!$assets_log->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-
-            if ($user->is_real == UserIsReal::DISABLE->value) {
-                $user->is_real = UserIsReal::NORMAL->value;
-                if (!$user->save()) {
-                    throw new \Exception(Lang::get('tips_19'));
-                }
-            }
-            DB::commit();
-            Redis::send(QueueTask::USER_UPGRADE->value, ['user_id' => $user->id]);
+            $transactionService = new TransactionService();
+            $transactionService->create($user, TransactionTypes::PLEDGE, $coin, $amount, $day, $params, $new_balance);
+            return json_success();
         } catch (\Throwable $e) {
-            DB::rollBack();
             return json_fail($e->getMessage());
         }
-        return json_success();
-
     }
 
-    //SOL套利
+    //套利
     public function mev(Request $request)
     {
         $coin = CoinTypes::USDT->value;
@@ -127,58 +85,19 @@ class TransactionController
         }
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
-        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
+        $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
         $new_balance = bcsub($assets->amount, $amount, 6);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
-        Db::beginTransaction();
-
         try {
-
-            if (!$assets->decrement('amount', $amount)) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-
-            $transaction = new Transaction();
-            $transaction->user_id = $user->id;
-            $transaction->coin = $coin;
-            $transaction->amount = $amount;
-            $transaction->day = $day;
-            $transaction->datetime = Carbon::now()->timestamp;
-            $transaction->transaction_type = TransactionTypes::MEV;
-            $transaction->status = TransactionStatus::NORMAL;
-            $transaction->rates = json_encode($params);
-            if (!$transaction->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-
-            $assets_log = new AssetsLog;
-            $assets_log->user_id = $transaction->user_id;
-            $assets_log->coin = $transaction->coin;
-            $assets_log->amount = -$amount;
-            $assets_log->balance = $new_balance;
-            $assets_log->transaction_id = $transaction->id;
-            $assets_log->type = AssetsLogTypes::EXPENSE;
-            $assets_log->remark = AssetsLogTypes::EXPENSE->label();
-            $assets_log->datetime = Carbon::now()->timestamp;
-            if (!$assets_log->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-
-            if ($user->is_real == UserIsReal::DISABLE->value) {
-                $user->is_real = UserIsReal::NORMAL->value;
-                if (!$user->save()) {
-                    throw new \Exception(Lang::get('tips_19'));
-                }
-            }
-            DB::commit();
-            Redis::send(QueueTask::USER_UPGRADE->value, ['user_id' => $user->id]);
+            $transactionService = new TransactionService();
+            $transactionService->create($user, TransactionTypes::MEV, $coin, $amount, $day, $params, $new_balance);
+            return json_success();
         } catch (\Throwable $e) {
-            DB::rollBack();
             return json_fail($e->getMessage());
         }
-        return json_success();
+
 
     }
 
