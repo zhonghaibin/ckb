@@ -6,7 +6,6 @@ namespace app\services;
 use app\enums\AssetsLogTypes;
 use app\enums\QueueTask;
 use app\enums\TransactionStatus;
-use app\enums\TransactionTypes;
 use app\enums\UserIsReal;
 use app\model\Assets;
 use app\model\AssetsLog;

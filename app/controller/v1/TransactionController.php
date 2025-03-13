@@ -30,7 +30,7 @@ class TransactionController
         $amount = $request->post('amount', 500);
         $day = $request->post('day', 15);
 
-        if (!in_array($coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
+        if (!in_array($coin, [CoinTypes::ONE->value, CoinTypes::CKB->value])) {
             return json_fail(Lang::get('tips_15'));
         }
 

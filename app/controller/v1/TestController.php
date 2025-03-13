@@ -6,7 +6,9 @@ use app\enums\CoinTypes;
 use app\enums\LangTypes;
 use app\enums\QueueTask;
 use app\model\Assets;
+use app\model\Transaction;
 use app\model\User;
+use app\services\BonusService;
 use Webman\RedisQueue\Redis as RedisQueue;
 use app\services\MevBonusService;
 use app\services\PledgeBonusService;
@@ -28,8 +30,15 @@ class TestController
 //
 //        $this->publishData();
 //        $this->createUser();
+//        $transaction=Transaction::find(1);
+//        $params = json_decode($transaction->rates, true);
+//        $level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
+//        return json($level_diff_rates);
+//       $dd=  BonusService::getInstance()->run();
+//        PledgeBonusService::getInstance()->run();
+//        MevBonusService::getInstance()->run();
 
-
+//        return json($dd);
         return response('ok');
     }
 
@@ -99,6 +108,7 @@ class TestController
                 $assets = new Assets;
                 $assets->user_id = $user->id;
                 $assets->coin = $value;
+                $assets->amount=10000;
                 $assets->save();
             }
         }

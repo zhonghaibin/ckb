@@ -35,26 +35,26 @@ class BonusService
     {
         try {
             $midnightTimestamp = Carbon::today()->timestamp;
-            // 分批处理事务，每批次取 1000 条
-            Db::table('transactions')
+            $transactions = Db::table('transactions')
                 ->where('status', TransactionStatus::NORMAL->value)
                 ->whereRaw('run_day < day')
                 ->where('runtime', '<', $midnightTimestamp)
-                ->chunk(1000, function ($transactions) use ($midnightTimestamp) {
-                    foreach ($transactions as $transaction) {
-                        $params = json_decode($transaction->rates, true);
-                        $this->initializeRates($params, $transaction);
-                        Db::beginTransaction();
-                        try {
-                            $this->processTransaction($transaction, $midnightTimestamp);
-                            Db::commit();
-                        } catch (\Throwable $e) {
-                            Db::rollBack();
-                            Log::error("Error processing transaction ID: {$transaction->id}", ['exception' => $e->getMessage()]);
-                        }
-                    }
-                });
+                ->get();
 
+            foreach ($transactions as $transaction) {
+                $params = json_decode($transaction->rates, true);
+                $this->initializeRates($params, $transaction);
+
+
+                Db::beginTransaction();
+                try {
+                    $this->processTransaction($transaction, $midnightTimestamp);
+                    Db::commit();
+                } catch (\Throwable $e) {
+                    Db::rollBack();
+                    Log::error("Error processing transaction ID: {$transaction->id}", ['exception' => $e->getMessage()]);
+                }
+            }
             return true;
         } catch (\Throwable $e) {
             Log::error('Error during daily earnings processing', ['exception' => $e->getMessage()]);
@@ -153,12 +153,12 @@ class BonusService
 
     private function processParentBonuses($transaction, float $bonus, int $transactionLogId): void
     {
-        $parent = Db::table('users')->where('id', $transaction->user_id)->value('pid');
-        if ($parent) {
-            $parentUser = Db::table('users')->where('id', $parent)->first();
+        $user = Db::table('users')->where('id', $transaction->user_id)->first();
+        if ($user->pid) {
+            $parentUser = Db::table('users')->where('id', $user->pid)->first();
             if ($parentUser) {
                 $this->shareBonus($parentUser, $bonus, $transaction, $transactionLogId);
-                $this->levelDiffBonus($parentUser, $bonus, $transaction, $transactionLogId, $transaction->user_id);
+                $this->levelDiffBonus($parentUser, $bonus, $transaction, $transactionLogId, $user->level);
             }
             $this->sameLevelBonus($transaction->user_id, $bonus, $transaction, $transactionLogId);
         }
@@ -181,9 +181,9 @@ class BonusService
     private function levelDiffBonus($parent, float $bonus, $transaction, int $transactionLogId, int $user_level): void
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $user_level_diff_rate = round(($this->level_diff_rates[$user_level] ?? 0) / 100, 4);
-            $parent_level_diff_rate = round(($this->level_diff_rates[$parent->level] ?? 0) / 100, 4);
-            $level_diff_rate = max(0, round($parent_level_diff_rate - $user_level_diff_rate, 4));
+            $user_level_diff_rate = $this->level_diff_rates['Vip' . $user_level] ?? '';
+            $parent_level_diff_rate = $this->level_diff_rates['Vip' . $parent->level];
+            $level_diff_rate = round(($parent_level_diff_rate - $user_level_diff_rate)/100, 4);
             $parent_bonus = round($level_diff_rate * $bonus, 6);
             $this->updateAssets($parent->id, $transaction->coin, $parent_bonus, $level_diff_rate, $transaction->id, $transactionLogId, AssetsLogTypes::LEVELDIFFBONUS->value, AssetsLogTypes::LEVELDIFFBONUS->label());
         }

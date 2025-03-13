@@ -6,7 +6,7 @@ enum CoinTypes: string
 {
     case USDT = 'USDT';
     case ONE = 'ONE';
-    case CBK = 'CBK';
+    case CKB = 'CKB';
 
     // 你可以添加自定义方法
     public function label(): string
@@ -14,7 +14,7 @@ enum CoinTypes: string
         return match($this) {
             self::USDT => 'USDT',
             self::ONE => 'ONE',
-            self::CBK => 'CBK',
+            self::CKB => 'CKB',
         };
     }
 
@@ -24,7 +24,7 @@ enum CoinTypes: string
         return [
             self::USDT->value => self::USDT->label(),
             self::ONE->value => self::ONE->label(),
-            self::CBK->value => self::CBK->label(),
+            self::CKB->value => self::CKB->label(),
         ];
     }
 }

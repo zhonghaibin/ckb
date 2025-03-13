@@ -148,15 +148,15 @@ class AssetsController
             return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
         }
 
-        if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value, CoinTypes::USDT->value])) {
+        if (!in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CKB->value, CoinTypes::USDT->value])) {
             return json_fail(Lang::get('tips_5'));
         }
 
-        if (!in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value, CoinTypes::USDT->value])) {
+        if (!in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CKB->value, CoinTypes::USDT->value])) {
             return json_fail(Lang::get('tips_6'));
         }
 
-        if (in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value]) && in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CBK->value])) {
+        if (in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CKB->value]) && in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CKB->value])) {
             return json_fail(Lang::get('tips_7'));
         }
 
