@@ -72,7 +72,7 @@ class BonusService
         if ($transaction->transaction_type == TransactionTypes::PLEDGE->value) {
             //质押
             $rates = array_column($params['staticRate'], 'rate', 'day');
-            $this->rate = round(($rates[$transaction->day] ?? 0) / 100, 4);
+            $this->rate = bcdiv(($rates[$transaction->day] ?? 0), 100, 8);
         } elseif ($transaction->transaction_type == TransactionTypes::MEV->value) {
             //套利
             $rates = array_column(array_map(fn($item) => [$item['day'], [(int)$item['rate']['min'], (int)$item['rate']['max']]], $params['staticRate']), 1, 0);
@@ -81,7 +81,9 @@ class BonusService
             $max = $rateRange[1];
             $randomRate1 = mt_rand($min * 100, $max * 100) / 100;
             $randomRate2 = mt_rand($min * 100, $max * 100) / 100;
-            $this->rate = round(($randomRate1 + $randomRate2) / 2, 4) / 100;
+            $this->rate = bcdiv(bcadd($randomRate1, $randomRate2, 8), 2, 8);
+            $this->rate = bcdiv($this->rate, 100, 8);
+
         }
         $this->direct_rate = $params['directRate'] ?? 0;
         $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
@@ -133,7 +135,7 @@ class BonusService
             return;
         }
         $assets = DB::table('assets')->where('user_id', $user_id)->where('coin', $coin)->first();
-        $new_balance = bcadd($assets->amount, $amount, 6);
+        $new_balance = bcadd($assets->amount, $amount, 8);
         // 更新用户资产
         DB::table('assets')->where('user_id', $user_id)->where('coin', $coin)->update(['amount' => DB::raw('amount + ' . $amount), 'bonus' => DB::raw('bonus + ' . $amount)]);
 
@@ -172,8 +174,9 @@ class BonusService
     private function shareBonus($parent, float $bonus, $transaction, int $transactionLogId): void
     {
         if ($parent->is_real == UserIsReal::NORMAL->value) {
-            $rate = round($this->direct_rate / 100, 4);
-            $parent_bonus = round($bonus * $rate, 6);
+            $rate = bcdiv($this->direct_rate, 100, 8);
+            $parent_bonus = bcmul($bonus, $rate, 8);
+
 
             if ($parent_bonus > 0) {
                 $this->updateAssets($parent->id, $transaction->coin, $parent_bonus, $rate, $transaction->id, $transactionLogId, AssetsLogTypes::DIRECTBONUS->value, AssetsLogTypes::DIRECTBONUS->label());
@@ -187,8 +190,9 @@ class BonusService
         if ($parent->is_real == UserIsReal::NORMAL->value) {
             $user_level_diff_rate = $this->level_diff_rates['Vip' . $user_level] ?? '';
             $parent_level_diff_rate = $this->level_diff_rates['Vip' . $parent->level];
-            $level_diff_rate = round(($parent_level_diff_rate - $user_level_diff_rate)/100, 4);
-            $parent_bonus = round($level_diff_rate * $bonus, 6);
+            $level_diff_rate = bcdiv(bcsub($parent_level_diff_rate, $user_level_diff_rate, 8), 100, 8);
+            $parent_bonus = bcmul($level_diff_rate, $bonus, 8);
+
             $this->updateAssets($parent->id, $transaction->coin, $parent_bonus, $level_diff_rate, $transaction->id, $transactionLogId, AssetsLogTypes::LEVELDIFFBONUS->value, AssetsLogTypes::LEVELDIFFBONUS->label());
         }
         if ($parent->pid > 0) {
@@ -249,8 +253,9 @@ class BonusService
         }
 
         // 计算奖励
-        $rate = round($this->same_level_rate / 100, 4);
-        $parent_bonus = round($bonus * $rate, 6);
+        $rate = bcdiv($this->same_level_rate, 100, 8);
+        $parent_bonus = bcmul($bonus, $rate, 8);
+
 
         foreach ($sameLevelUsers as $uid) {
             $this->updateAssets($uid, $transaction->coin, $parent_bonus, $rate, $transaction->id, $transactionLogId, AssetsLogTypes::SAMELEVELBONUS->value, AssetsLogTypes::SAMELEVELBONUS->label());

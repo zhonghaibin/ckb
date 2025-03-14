@@ -3,42 +3,49 @@
 namespace app\services;
 
 
+use app\enums\CoinTypes;
 use app\enums\HtxMarket;
 use Webman\RedisQueue\Redis;
 
 class CoinRateService
 {
     const KEY = '344343434';
-    const LOCK_SECOND = 200;
+    const LOCK_SECOND = 20;
 
     public function getRealTimeRate($from, $to)
     {
-        // 从 Redis 获取实时价格数据
-        $data = Redis::get(HtxMarket::ONEUSDT_TICKER->value);
+        // 定义市场映射
+        $marketMapping = [
+            CoinTypes::USDT->value . '_' . CoinTypes::ONE->value => HtxMarket::ONEUSDT_TICKER->value,
+            CoinTypes::USDT->value . '_' . CoinTypes::CKB->value => HtxMarket::CKBUSDT_TICKER->value,
+            CoinTypes::ONE->value . '_' . CoinTypes::USDT->value => HtxMarket::ONEUSDT_TICKER->value,
+            CoinTypes::CKB->value . '_' . CoinTypes::USDT->value => HtxMarket::CKBUSDT_TICKER->value,
+        ];
 
-        // 如果 Redis 中有缓存数据
-        if ($data) {
-            $data = json_decode($data, true);
+        $pairKey = $from . '_' . $to;
 
-            // 获取买卖价格，暂时不使用，可以根据需要添加
-            $bid = $data['tick']['bid'] ?? 0; // 用户卖出价格（默认 0）
-            $ask = $data['tick']['ask'] ?? 0; // 用户买入价格（默认 0）
-
-            // 计算兑换率，这里用一个固定值，实际情况可以根据 bid 或 ask 来调整
-            $rate = 0.003;
-
-            // 锁定期时间
-            $lockUntil = time() + self::LOCK_SECOND;
-
-            // 生成签名
-            $signature = $this->generateSignature($from, $to, $rate, $lockUntil);
-
-            // 返回数据
-            return $this->prepareResponse($rate, $lockUntil, $signature);
+        if (!isset($marketMapping[$pairKey])) {
+            return $this->prepareResponse(0, 0, ''); // 无效交易对
         }
 
-        // 如果没有缓存数据，返回默认值
-        return $this->prepareResponse(0, 0, '');
+        // 获取数据
+        $data = Redis::get($marketMapping[$pairKey]);
+        if (!$data) {
+            return $this->prepareResponse(0, 0, ''); // 无数据
+        }
+
+        $data = json_decode($data, true);
+        $bid = $data['tick']['bid'] ?? 0; // 用户卖出价格（默认 0）
+
+        // 计算汇率
+        $rate = ($from === CoinTypes::USDT->value) ? bcdiv(1, $bid, 8) : $bid;
+
+        $lockUntil = time() + self::LOCK_SECOND;
+
+        // 生成签名
+        $signature = $this->generateSignature($from, $to, $rate, $lockUntil);
+
+        return $this->prepareResponse($rate, $lockUntil, $signature);
     }
 
     // 生成签名的私有方法

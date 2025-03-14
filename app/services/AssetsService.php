@@ -50,7 +50,7 @@ class AssetsService
         return Db::transaction(function () use ($recharge_id, $user_id, $coin, $amount) {
             $assets = Assets::query()->where('user_id', $user_id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
 
-            $new_balance = bcadd($assets->amount, $amount, 6); // 避免浮点精度问题
+            $new_balance = bcadd($assets->amount, $amount, 8); // 避免浮点精度问题
 
             if (!$assets->increment('amount', $amount)) {
                 throw new \Exception(Lang::get('tips_19'));
@@ -81,7 +81,7 @@ class AssetsService
         }
 
         $assets = Assets::query()->where('user_id', $withdraw->user_id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
-        $new_balance = bcadd($assets->amount, $withdraw->amount, 6);
+        $new_balance = bcadd($assets->amount, $withdraw->amount, 8);
 
         if (!$assets->increment('amount', $withdraw->amount)) {
             throw new \Exception(Lang::get('tips_19'));

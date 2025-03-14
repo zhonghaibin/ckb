@@ -24,7 +24,7 @@ class TransactionController
 
 
     //质押
-    public function pledge(Request $request,TransactionService $transactionService)
+    public function pledge(Request $request, TransactionService $transactionService)
     {
         $coin = $request->post('coin', CoinTypes::ONE->value);
         $amount = $request->post('amount', 500);
@@ -51,7 +51,7 @@ class TransactionController
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
 
         $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-        $new_balance = bcsub($assets->amount, $amount, 6);
+        $new_balance = bcsub($assets->amount, $amount, 8);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
@@ -64,7 +64,7 @@ class TransactionController
     }
 
     //套利
-    public function mev(Request $request,TransactionService $transactionService)
+    public function mev(Request $request, TransactionService $transactionService)
     {
         $coin = CoinTypes::USDT->value;
         $amount = $request->post('amount', 500);
@@ -85,7 +85,7 @@ class TransactionController
 
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
         $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->firstOrFail();
-        $new_balance = bcsub($assets->amount, $amount, 6);
+        $new_balance = bcsub($assets->amount, $amount, 8);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }

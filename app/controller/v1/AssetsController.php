@@ -6,7 +6,6 @@ namespace app\controller\v1;
 use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\ExchangeStatus;
-use app\enums\HtxMarket;
 use app\enums\QueueTask;
 use app\enums\RechargeStatus;
 use app\enums\WithdrawStatus;
@@ -28,7 +27,7 @@ class AssetsController
 {
 
     //充值
-    public function recharge(Request $request,AssetsService $assetsService)
+    public function recharge(Request $request, AssetsService $assetsService)
     {
 
         $user_wallet = $request->post('user_wallet', '');
@@ -48,7 +47,6 @@ class AssetsController
     {
         $recharges = Db::table('recharges')->where('user_id', $request->userId)
             ->select(['amount', 'signature', 'status', 'created_at'])
-            ->where('status', 1)
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
@@ -72,7 +70,7 @@ class AssetsController
         }
 
         $withdraw_fee_rate = ($config['base_info']['withdraw_fee_rate'] ?? 0) / 100;
-        $withdraw_fee = round($withdraw_fee_rate * $amount, 6);
+        $withdraw_fee = bcmul($withdraw_fee_rate, $amount, 8);
         if ($withdraw_fee != $fee) {
             return json_fail(Lang::get('tips_3'));
         }
@@ -80,11 +78,11 @@ class AssetsController
         $coin = CoinTypes::USDT;
         $user = User::query()->find($request->userId);
         $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
-        $new_balance = bcsub($assets->amount, $amount, 6);
+        $new_balance = bcsub($assets->amount, $amount, 8);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
-        $new_amount = $amount + $withdraw_fee;
+        $new_amount = bcadd($amount, $withdraw_fee, 8);
 
         Db::beginTransaction();
         try {
@@ -179,7 +177,7 @@ class AssetsController
         }
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
         $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->lockForUpdate()->firstOrFail();
-        $from_new_balance = bcsub($from_assets->amount, $amount, 6);
+        $from_new_balance = bcsub($from_assets->amount, $amount, 8);
         if ($from_new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
@@ -190,7 +188,7 @@ class AssetsController
 
             $to_amount = $amount;
             if ($rate != 0) {
-                $to_amount = round($amount * $rate, 6);
+                $to_amount = bcmul($amount, $rate, 8);
             }
 
             $exchange = new Exchange;
@@ -227,7 +225,7 @@ class AssetsController
             }
 
             $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->lockForUpdate()->firstOrFail();
-            $to_new_balance = bcadd($to_assets->amount, $to_amount, 6);
+            $to_new_balance = bcadd($to_assets->amount, $to_amount, 8);
 
             $to_assets->increment('amount', $to_amount);
             $to_assets_log = new AssetsLog;
