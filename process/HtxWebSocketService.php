@@ -63,7 +63,7 @@ class HtxWebSocketService
     protected function subscribeRedis(Worker $worker)
     {
         $this->redis->subscribe([HtxMarket::BTCUSDT_TICKER->value, HtxMarket::ONEUSDT_TICKER->value], function ($channel, $message) use ($worker) {
-            Log::info("Received Redis message on channel {$channel}: {$message}");
+//            Log::info("Received Redis message on channel {$channel}: {$message}");
 
             foreach ($worker->connections as $connection) {
                 if (isset($connection->subscribedChannels[$channel])) {

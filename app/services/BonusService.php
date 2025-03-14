@@ -35,32 +35,36 @@ class BonusService
     {
         try {
             $midnightTimestamp = Carbon::today()->timestamp;
-            $transactions = Db::table('transactions')
+
+            // 分批处理事务，每批次取 500 条
+            Db::table('transactions')
+                ->orderBy('id')
                 ->where('status', TransactionStatus::NORMAL->value)
                 ->whereRaw('run_day < day')
                 ->where('runtime', '<', $midnightTimestamp)
-                ->get();
+                ->chunk(500, function ($transactions) use ($midnightTimestamp) {
+                    foreach ($transactions as $transaction) {
+                        $params = json_decode($transaction->rates, true);
+                        $this->initializeRates($params, $transaction);
 
-            foreach ($transactions as $transaction) {
-                $params = json_decode($transaction->rates, true);
-                $this->initializeRates($params, $transaction);
+                        Db::beginTransaction();
+                        try {
+                            $this->processTransaction($transaction, $midnightTimestamp);
+                            Db::commit();
+                        } catch (\Throwable $e) {
+                            Db::rollBack();
+                            Log::error("Error processing transaction ID: {$transaction->id}", ['exception' => $e->getMessage()]);
+                        }
+                    }
+                });
 
-
-                Db::beginTransaction();
-                try {
-                    $this->processTransaction($transaction, $midnightTimestamp);
-                    Db::commit();
-                } catch (\Throwable $e) {
-                    Db::rollBack();
-                    Log::error("Error processing transaction ID: {$transaction->id}", ['exception' => $e->getMessage()]);
-                }
-            }
             return true;
         } catch (\Throwable $e) {
             Log::error('Error during daily earnings processing', ['exception' => $e->getMessage()]);
             return false;
         }
     }
+
 
     //设置参数
     private function initializeRates(array $params, $transaction): void

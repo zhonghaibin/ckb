@@ -3,7 +3,10 @@
 namespace app\controller\v1;
 
 
+use app\services\BonusService;
 use support\Request;
+use support\Db;
+use support\Log;
 
 class TestController
 {
@@ -13,6 +16,7 @@ class TestController
     {
 
 
+//        BonusService::getInstance()->run();
         return response('ok');
     }
 
