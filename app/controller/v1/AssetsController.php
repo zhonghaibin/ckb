@@ -36,8 +36,8 @@ class AssetsController
         $recharge_id = $assetsService->recharge($request->userId, $amount, CoinTypes::USDT, RechargeStatus::PENDING, $signature, $user_wallet);
         if ($recharge_id) {
             Redis::send(QueueTask::RECHARGE->value, [
-                'recharge_id' => $recharge_id
-            ], 30);
+                'recharge_id' => $recharge_id,
+            ], 10);
         }
 
         return json_success();
