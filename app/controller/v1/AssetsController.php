@@ -143,10 +143,9 @@ class AssetsController
         $amount = $request->post('amount');
         $rate = $request->post('rate', 0);
         $fee = $request->post('fee', 0);
-        $lockUntil = $request->input('lock_until');
-        $signature = $request->input('signature');
+        $lockUntil = $request->post('lock_until');
+        $signature = $request->post('signature');
 
-        return json([$signature]);
         // 校验是否过期
         if (time() > $lockUntil) {
             return json_fail(Lang::get('tips_20'));
@@ -155,8 +154,6 @@ class AssetsController
         if (!$coinRateService->validate($from_coin, $to_coin, $rate, $lockUntil, $signature)) {
             return json_fail(Lang::get('tips_21'));
         }
-
-        return json_success($rate);
 
         $config = get_system_config();
         $min_number = $config['base_info']['exchange_min_number'] ?? 0;
@@ -257,8 +254,8 @@ class AssetsController
 
     public function getRate(Request $request, CoinRateService $coinRateService)
     {
-        $from_coin = $request->post('from_coin');
-        $to_coin = $request->post('to_coin');
+        $from_coin = $request->get('from_coin');
+        $to_coin = $request->get('to_coin');
         $data = $coinRateService->getRealTimeRate($from_coin, $to_coin);
         return json_success($data);
     }
