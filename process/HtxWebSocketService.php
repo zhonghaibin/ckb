@@ -36,7 +36,7 @@ class HtxWebSocketService
             if (isset($data['sub'])) {
                 $channel = $data['sub'];
 
-                if ($channel === HtxMarket::BTCUSDT_TICKER->value || $channel === HtxMarket::ONEUSDT_TICKER->value) {
+                if ($channel === HtxMarket::CKBUSDT_TICKER->value || $channel === HtxMarket::ONEUSDT_TICKER->value) {
                     $connection->subscribedChannels[$channel] = true;
                     $connection->send(json_encode(['status' => 'subscribed', 'channel' => $channel]));
                 } else {
@@ -62,7 +62,7 @@ class HtxWebSocketService
 
     protected function subscribeRedis(Worker $worker)
     {
-        $this->redis->subscribe([HtxMarket::BTCUSDT_TICKER->value, HtxMarket::ONEUSDT_TICKER->value], function ($channel, $message) use ($worker) {
+        $this->redis->subscribe([HtxMarket::CKBUSDT_TICKER->value, HtxMarket::ONEUSDT_TICKER->value], function ($channel, $message) use ($worker) {
 //            Log::info("Received Redis message on channel {$channel}: {$message}");
 
             foreach ($worker->connections as $connection) {

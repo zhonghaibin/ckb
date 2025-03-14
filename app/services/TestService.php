@@ -33,7 +33,7 @@ class TestService
                 ]
             ],
             [
-                "ch" => "market.btcusdt.ticker",
+                "ch" => "market.ckbusdt.ticker",
                 "ts" => 1741231649640,
                 "tick" => [
                     "open" => 87729.22,

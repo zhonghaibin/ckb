@@ -51,16 +51,23 @@ class HtxWebSocketClient
                 Log::info("Connected to Huobi WebSocket API");
 
                 // 订阅 BTC/USDT 的实时行情
-                $subscribeBtcMessage = [
-                    'sub' => HtxMarket::BTCUSDT_TICKER->value,
-                    'id' => 'btcusdt_ticker_' . time(),
-                ];
-                $conn->send(json_encode($subscribeBtcMessage));
+//                $subscribeBtcMessage = [
+//                    'sub' => HtxMarket::BTCUSDT_TICKER->value,
+//                    'id' => 'btcusdt_ticker_' . time(),
+//                ];
+//                $conn->send(json_encode($subscribeBtcMessage));
 
                 // 订阅 ONE/USDT 的实时行情
                 $subscribeOneMessage = [
                     'sub' => HtxMarket::ONEUSDT_TICKER->value,
                     'id' => 'oneusdt_ticker_' . time(),
+                ];
+                $conn->send(json_encode($subscribeOneMessage));
+
+                    // CKB/USDT 的实时行情
+                $subscribeOneMessage = [
+                    'sub' => HtxMarket::CKBUSDT_TICKER->value,
+                    'id' => 'ckbusdt_ticker_' . time(),
                 ];
                 $conn->send(json_encode($subscribeOneMessage));
 
