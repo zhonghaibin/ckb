@@ -64,7 +64,7 @@ class HtxWebSocketClient
                 ];
                 $conn->send(json_encode($subscribeOneMessage));
 
-                    // CKB/USDT 的实时行情
+                // CKB/USDT 的实时行情
                 $subscribeOneMessage = [
                     'sub' => HtxMarket::CKBUSDT_TICKER->value,
                     'id' => 'ckbusdt_ticker_' . time(),
@@ -87,6 +87,7 @@ class HtxWebSocketClient
                     } elseif (isset($data['ch'])) {
                         // 存入 Redis
                         Redis::publish($data['ch'], json_encode($data));
+                        Redis::set($data['ch'], json_encode($data));
 //                        Log::info("Saved data to Redis: " . json_encode($data));
                     } else {
                         // 其他消息

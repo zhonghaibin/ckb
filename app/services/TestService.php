@@ -54,6 +54,7 @@ class TestService
         ];
         foreach ($marketData as $data) {
             Redis::publish($data['ch'], json_encode($data));
+            Redis::set($data['ch'], json_encode($data));
         }
     }
 

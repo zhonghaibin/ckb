@@ -24,7 +24,7 @@ class TransactionController
 
 
     //质押
-    public function pledge(Request $request)
+    public function pledge(Request $request,TransactionService $transactionService)
     {
         $coin = $request->post('coin', CoinTypes::ONE->value);
         $amount = $request->post('amount', 500);
@@ -56,7 +56,6 @@ class TransactionController
             return json_fail(Lang::get('tips_4'));
         }
         try {
-            $transactionService = new TransactionService();
             $transactionService->create($user, TransactionTypes::PLEDGE, $coin, $amount, $day, $params, $new_balance);
             return json_success();
         } catch (\Throwable $e) {
@@ -65,7 +64,7 @@ class TransactionController
     }
 
     //套利
-    public function mev(Request $request)
+    public function mev(Request $request,TransactionService $transactionService)
     {
         $coin = CoinTypes::USDT->value;
         $amount = $request->post('amount', 500);
@@ -91,7 +90,6 @@ class TransactionController
             return json_fail(Lang::get('tips_4'));
         }
         try {
-            $transactionService = new TransactionService();
             $transactionService->create($user, TransactionTypes::MEV, $coin, $amount, $day, $params, $new_balance);
             return json_success();
         } catch (\Throwable $e) {

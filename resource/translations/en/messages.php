@@ -24,4 +24,7 @@ return [
     'tips_17' => 'Invalid parameters',
     'tips_18' => 'User does not exist',
     'tips_19' => 'Data save operation failed',
+    'tips_20' => 'The exchange has expired. Please retrieve the price again.',
+    'tips_21' => 'The price data is invalid.',
+
 ];

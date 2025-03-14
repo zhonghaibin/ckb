@@ -21,109 +21,119 @@ class AuthController
 {
 
 
-
     public function login(Request $request)
     {
         $identity = $request->post('identity', '');
+        $code = $request->post('code', '');
+
+        // 验证输入
         if (empty($identity)) {
             return json_fail(Lang::get('tips_9'));
         }
+
+        // 查找用户
         $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
 
-        if (empty($user)) {
-            return json_fail(Lang::get('tips_10'));
-        }
-
-        Db::beginTransaction();
+        DB::beginTransaction();
 
         try {
-            //登录日志
-            $login_logs = new LoginLog;
-            $login_logs->user_id = $user->id;
-            $login_logs->ip = $request->getRealIp();
-            $login_logs->user_agent = $request->header('User-Agent');
-            $login_logs->datetime = Carbon::now()->timestamp;
-            if (!$login_logs->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-            $user->last_login_ip = $request->getRealIp();
-            $user->last_login_at = Carbon::now();
-            $user->save();
-            if (!$user->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-            DB::commit();
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return json_fail($e->getMessage());
-        }
-        $token = JwtUtil::generateToken($user->id);
+            // 如果用户不存在，进行注册
+            if (empty($user)) {
+                $user = new User;
+                $user->identity = $identity;
+                $user->remark = '';
+                $user->avatar = '/images/avatars/avatar.png';
+                $user->lang = LangTypes::ZH_CN;
 
-        return json_success([
-            'token' => $token,
-        ], Lang::get('tips_11'));
-
-    }
-
-
-    public function register(Request $request)
-    {
-
-
-        $identity = $request->post('identity', '');
-        $code = $request->post('code', '');
-        if (empty($identity)) {
-            return json_fail(Lang::get('tips_12'));
-        }
-        $user = User::query()->where(['identity' => $identity])->exists();
-        if ($user) {
-            return json_fail(Lang::get('tips_13'));
-        }
-
-
-        Db::beginTransaction();
-        try {
-            $user = new User;
-            $user->identity = $identity;
-            $user->remark = '';
-            $user->avatar = '/images/avatars/avatar.png';
-            $user->save();
-            $user->lang = LangTypes::ZH_CN;
-            $pid = 0;
-            if (!empty($code)) {
-                try {
-                    $pid = AesUtil::decrypt($code);
+                // 解析邀请码
+                if (!empty($code)) {
+                    $pid = $this->decryptInviteCode($code);
                     if (is_numeric($pid)) {
                         $user->pid = $pid;
                     }
-                } catch (\Throwable $e) {
-                    throw new \Exception(Lang::get('invite_code'));
                 }
-            }
-            if (!$user->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
 
-            $assetsList = CoinTypes::list();
-            foreach ($assetsList as $value) {
-                $assets = new Assets;
-                $assets->user_id = $user->id;
-                $assets->coin = $value;
-                if (!$assets->save()) {
+                if (!$user->save()) {
                     throw new \Exception(Lang::get('tips_19'));
                 }
+
+                // 初始化用户资产
+                $this->initializeUserAssets($user);
+
+                // 更新邀请码邀请人数
+                if ($user->pid) {
+                    Redis::send(QueueTask::UPDATE_INVITE_COUNT->value, ['user_id' => $user->pid]);
+                }
             }
 
+            // 登录日志
+            $this->createLoginLog($user->id, $request);
+
+            // 更新用户最后登录信息
+            $this->updateLastLogin($user, $request);
+
+            // 提交事务
             DB::commit();
-            if ($pid) {
-                Redis::send(QueueTask::UPDATE_INVITE_COUNT->value, ['user_id' => $pid]);
-            }
+
+            // 生成并返回token
+            $token = JwtUtil::generateToken($user->id);
+            return json_success([
+                'token' => $token,
+            ], Lang::get('tips_11'));
+
         } catch (\Throwable $e) {
+            // 事务回滚
             DB::rollBack();
             return json_fail($e->getMessage());
         }
-        return json_success();
+    }
 
+    // 解密邀请码
+    private function decryptInviteCode($code)
+    {
+        try {
+            return AesUtil::decrypt($code);
+        } catch (\Throwable $e) {
+            throw new \Exception(Lang::get('invite_code'));
+        }
+    }
+
+    // 初始化用户资产
+    private function initializeUserAssets($user)
+    {
+        $assetsList = CoinTypes::list();
+        foreach ($assetsList as $value) {
+            $assets = new Assets;
+            $assets->user_id = $user->id;
+            $assets->coin = $value;
+            if (!$assets->save()) {
+                throw new \Exception(Lang::get('tips_19'));
+            }
+        }
+    }
+
+    // 创建登录日志
+    private function createLoginLog($userId, $request)
+    {
+        $login_logs = new LoginLog;
+        $login_logs->user_id = $userId;
+        $login_logs->ip = $request->getRealIp();
+        $login_logs->user_agent = $request->header('User-Agent');
+        $login_logs->datetime = Carbon::now()->timestamp;
+
+        if (!$login_logs->save()) {
+            throw new \Exception(Lang::get('tips_19'));
+        }
+    }
+
+    // 更新用户最后登录信息
+    private function updateLastLogin($user, $request)
+    {
+        $user->last_login_ip = $request->getRealIp();
+        $user->last_login_at = Carbon::now();
+        if (!$user->save()) {
+            throw new \Exception(Lang::get('tips_19'));
+        }
     }
 
 

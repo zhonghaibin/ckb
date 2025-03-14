@@ -6,6 +6,7 @@ namespace app\controller\v1;
 use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
 use app\enums\ExchangeStatus;
+use app\enums\HtxMarket;
 use app\enums\QueueTask;
 use app\enums\RechargeStatus;
 use app\enums\WithdrawStatus;
@@ -15,6 +16,7 @@ use app\model\Exchange;
 use app\model\User;
 use app\model\Withdraw;
 use app\services\AssetsService;
+use app\services\CoinRateService;
 use app\support\Lang;
 use Carbon\Carbon;
 use support\Db;
@@ -26,14 +28,13 @@ class AssetsController
 {
 
     //充值
-    public function recharge(Request $request)
+    public function recharge(Request $request,AssetsService $assetsService)
     {
 
         $user_wallet = $request->post('user_wallet', '');
         $signature = $request->post('signature', '');
         $amount = $request->post('amount', '');
-        $service = new AssetsService();
-        $recharge_id = $service->recharge($request->userId, $amount, CoinTypes::USDT, RechargeStatus::PENDING, $signature, $user_wallet);
+        $recharge_id = $assetsService->recharge($request->userId, $amount, CoinTypes::USDT, RechargeStatus::PENDING, $signature, $user_wallet);
         if ($recharge_id) {
             Redis::send(QueueTask::RECHARGE->value, [
                 'recharge_id' => $recharge_id
@@ -71,7 +72,7 @@ class AssetsController
         }
 
         $withdraw_fee_rate = ($config['base_info']['withdraw_fee_rate'] ?? 0) / 100;
-        $withdraw_fee = $withdraw_fee_rate * $amount;
+        $withdraw_fee = round($withdraw_fee_rate * $amount, 6);
         if ($withdraw_fee != $fee) {
             return json_fail(Lang::get('tips_3'));
         }
@@ -83,17 +84,18 @@ class AssetsController
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
+        $new_amount = $amount + $withdraw_fee;
 
         Db::beginTransaction();
         try {
-            if (!$assets->decrement('amount', $amount)) {
+            if (!$assets->decrement('amount', $new_amount)) {
                 throw new \Exception(Lang::get('tips_19'));
             }
             $withdraw = new Withdraw();
             $withdraw->user_id = $user->id;
             $withdraw->coin = $coin;
             $withdraw->amount = $amount;
-            $withdraw->status = WithdrawStatus::PENDING;
+            $withdraw->status = WithdrawStatus::PENDING->value;
             $withdraw->fee = $fee;
             $withdraw->fee_rate = $withdraw_fee_rate;
             $withdraw->datetime = Carbon::now()->timestamp;
@@ -105,9 +107,9 @@ class AssetsController
             $assets_log = new AssetsLog;
             $assets_log->user_id = $user->id;
             $assets_log->coin = $coin;
-            $assets_log->amount = -$amount;
+            $assets_log->amount = -$new_amount;
             $assets_log->balance = $new_balance;
-            $assets_log->type = AssetsLogTypes::WITHDRAW;
+            $assets_log->type = AssetsLogTypes::WITHDRAW->value;
             $assets_log->remark = AssetsLogTypes::WITHDRAW->label();
             $assets_log->datetime = Carbon::now()->timestamp;
             $assets_log->withdraw_id = $withdraw->id;
@@ -134,13 +136,27 @@ class AssetsController
     }
 
     //兑换
-    public function exchange(Request $request)
+    public function exchange(Request $request, CoinRateService $coinRateService)
     {
         $from_coin = $request->post('from_coin');
         $to_coin = $request->post('to_coin');
         $amount = $request->post('amount');
         $rate = $request->post('rate', 0);
         $fee = $request->post('fee', 0);
+        $lockUntil = $request->input('lock_until');
+        $signature = $request->input('signature');
+
+        return json([$signature]);
+        // 校验是否过期
+        if (time() > $lockUntil) {
+            return json_fail(Lang::get('tips_20'));
+        }
+
+        if (!$coinRateService->validate($from_coin, $to_coin, $rate, $lockUntil, $signature)) {
+            return json_fail(Lang::get('tips_21'));
+        }
+
+        return json_success($rate);
 
         $config = get_system_config();
         $min_number = $config['base_info']['exchange_min_number'] ?? 0;
@@ -156,6 +172,7 @@ class AssetsController
             return json_fail(Lang::get('tips_6'));
         }
 
+        // one 和 ckb 相互不可以兑换
         if (in_array($from_coin, [CoinTypes::ONE->value, CoinTypes::CKB->value]) && in_array($to_coin, [CoinTypes::ONE->value, CoinTypes::CKB->value])) {
             return json_fail(Lang::get('tips_7'));
         }
@@ -215,7 +232,7 @@ class AssetsController
             $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->lockForUpdate()->firstOrFail();
             $to_new_balance = bcadd($to_assets->amount, $to_amount, 6);
 
-            $to_assets->increment('amount', $amount);
+            $to_assets->increment('amount', $to_amount);
             $to_assets_log = new AssetsLog;
             $to_assets_log->user_id = $user->id;
             $to_assets_log->coin = $to_coin;
@@ -236,6 +253,14 @@ class AssetsController
         }
         return json_success();
 
+    }
+
+    public function getRate(Request $request, CoinRateService $coinRateService)
+    {
+        $from_coin = $request->post('from_coin');
+        $to_coin = $request->post('to_coin');
+        $data = $coinRateService->getRealTimeRate($from_coin, $to_coin);
+        return json_success($data);
     }
 
     //资金明细

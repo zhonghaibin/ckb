@@ -25,7 +25,6 @@ Route::group('/v1', function () {
     Route::any('/index/noticeList', [app\controller\v1\IndexController::class, 'noticeList']);
 
     Route::any('/auth/login', [app\controller\v1\AuthController::class, 'login']);
-    Route::any('/auth/register', [app\controller\v1\AuthController::class, 'register']);
     Route::any('/notify/recharge', [app\controller\v1\NotifyController::class, 'recharge']);
 });
 
@@ -41,6 +40,7 @@ Route::group('/v1', function () {
     Route::any('/assets/withdraw', [app\controller\v1\AssetsController::class, 'withdraw']);
     Route::any('/assets/withdrawList', [app\controller\v1\AssetsController::class, 'withdrawList']);
     Route::any('/assets/exchange', [app\controller\v1\AssetsController::class, 'exchange']);
+    Route::any('/assets/getRate', [app\controller\v1\AssetsController::class, 'getRate']);
     Route::any('/assets/assetsList', [app\controller\v1\AssetsController::class, 'assetsList']);
 
     Route::any('/transaction/pledge', [app\controller\v1\TransactionController::class, 'pledge']);
