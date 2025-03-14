@@ -3,6 +3,7 @@
 namespace process;
 
 use app\services\BonusService;
+use app\services\TestService;
 use Workerman\Crontab\Crontab;
 
 class TimersTask
@@ -12,9 +13,11 @@ class TimersTask
 
 
         // 每秒钟执行一次
-//        new Crontab('*/1 * * * * *', function(){
+        new Crontab('*/1 * * * * *', function () {
+            $testService = new TestService();
+            $testService->publishData();
 //            echo date('Y-m-d H:i:s')."\n";
-//        });
+        });
 
         // 每5秒执行一次
 //        new Crontab('*/5 * * * * *', function () {
