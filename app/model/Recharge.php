@@ -3,7 +3,7 @@
 namespace app\model;
 
 use \app\model\Base;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 class Recharge extends Base
 {
     /**
@@ -31,5 +31,12 @@ class Recharge extends Base
 
         return $this->belongsTo(User::class,'user_id','id');
 
+    }
+
+    protected function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
     }
 }

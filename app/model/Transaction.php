@@ -3,6 +3,7 @@
 namespace app\model;
 
 use \app\model\Base;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Transaction extends Base
 {
@@ -27,9 +28,24 @@ class Transaction extends Base
      */
     public $timestamps = true;
 
-    public function user(){
+    public function user()
+    {
 
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
 
+    }
+
+    protected function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
+    }
+
+    protected function bonus(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
     }
 }

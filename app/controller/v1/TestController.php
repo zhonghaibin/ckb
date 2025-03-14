@@ -25,6 +25,9 @@ class TestController
 //        ]);
 
 //        BonusService::getInstance()->run();
+        Log::info('This is a test log');
+        Log::error('Something went wrong!');
+        Log::debug('Something went wrong!');
         return response('ok');
     }
 

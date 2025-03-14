@@ -3,6 +3,7 @@
 namespace app\model;
 
 use \app\model\Base;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Assets extends Base
 {
@@ -26,4 +27,19 @@ class Assets extends Base
      * @var bool
      */
     public $timestamps = true;
+
+    protected function amount(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
+    }
+
+    protected function bonus(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
+    }
+
 }

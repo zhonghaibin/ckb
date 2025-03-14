@@ -3,6 +3,7 @@
 namespace app\model;
 
 use \app\model\Base;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class TransactionLog extends Base
 {
@@ -26,4 +27,11 @@ class TransactionLog extends Base
      * @var bool
      */
     public $timestamps = true;
+
+    protected function bonus(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
+    }
 }
