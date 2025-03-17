@@ -50,7 +50,7 @@ class TransactionController
             return json_fail(Lang::get('tips_4'));
         }
         try {
-            $transactionService->create($user, TransactionTypes::PLEDGE, $coin, $amount, $day, $params, $new_balance);
+            $transactionService->create($user, TransactionTypes::PLEDGE->value, $coin, $amount, $day, $params, $new_balance);
             return json_success();
         } catch (\Throwable $e) {
             return json_fail($e->getMessage());
@@ -84,7 +84,7 @@ class TransactionController
             return json_fail(Lang::get('tips_4'));
         }
         try {
-            $transactionService->create($user, TransactionTypes::MEV, $coin, $amount, $day, $params, $new_balance);
+            $transactionService->create($user, TransactionTypes::MEV->value, $coin, $amount, $day, $params, $new_balance);
             return json_success();
         } catch (\Throwable $e) {
             return json_fail($e->getMessage());
