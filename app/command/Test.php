@@ -1,15 +1,35 @@
 <?php
 
-namespace app\services;
+namespace app\command;
 
-use app\enums\CoinTypes;
-use app\enums\LangTypes;
-use app\model\Assets;
-use app\model\User;
+
 use support\Redis;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class TestService
+
+class Test extends Command
 {
+    protected static $defaultName = 'test';
+    protected static $defaultDescription = '推送数据';
+
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        // 每秒钟执行一次
+        while (true) {
+            $this->publishData();
+            sleep(1);
+        }
+
+    }
+
     public function publishData(): void
     {
         $marketData = [
@@ -56,31 +76,5 @@ class TestService
             Redis::publish($data['ch'], json_encode($data));
             Redis::set($data['ch'], json_encode($data));
         }
-    }
-
-    public function createUser(): void
-    {
-
-        for ($i = 1; $i <= 10; $i++) {
-            $user = new User;
-            $user->identity = $i;
-            $user->remark = '';
-            $user->avatar = '/images/avatars/avatar.png';
-            $user->save();
-            $user->lang = LangTypes::ZH_CN;
-            $user->pid = $i - 1;
-            $user->is_real = 1;
-            $user->save();
-            $assetsList = CoinTypes::list();
-            foreach ($assetsList as $value) {
-                $assets = new Assets;
-                $assets->user_id = $user->id;
-                $assets->coin = $value;
-                $assets->amount = 1000;
-                $assets->save();
-            }
-        }
-
-
     }
 }
