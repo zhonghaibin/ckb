@@ -106,7 +106,7 @@ class HtxWebSocketClient
         } elseif (isset($data['ch'])) {
             // 存入 Redis
             Redis::publish($data['ch'], json_encode($data));
-            Redis::set($data['ch'], json_encode($data));
+            Redis::setex($data['ch'], 60, json_encode($data)); // 设置 60 秒后过期
 //            Log::info("Saved data to Redis: " . json_encode($data));
         } else {
             // 其他消息

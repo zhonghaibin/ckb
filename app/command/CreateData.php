@@ -19,7 +19,7 @@ class CreateData extends Command
 
     protected function configure()
     {
-        $this->addArgument('exec', InputArgument::OPTIONAL, 'Name description');
+        $this->addArgument('run', InputArgument::OPTIONAL, '是否执行');
     }
 
     /**
@@ -29,11 +29,13 @@ class CreateData extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $exec = $input->getArgument('exec');
-        if (!$exec) {
+        $run = $input->getArgument('run');
+        if (!$run) {
+            $output->writeln('<error>操作失败</error>');
             return self::FAILURE;
         }
         $this->createUser();
+        $output->writeln('<info>操作成功</info>');
         return self::SUCCESS;
     }
 
