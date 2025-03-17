@@ -16,6 +16,8 @@ use support\Db;
 use app\utils\JwtUtil;
 use app\utils\AesUtil;
 use Webman\RedisQueue\Redis;
+use Tuupola\Base58;
+use ParagonIE_Sodium_Compat as Sodium;
 
 class AuthController
 {
@@ -30,6 +32,20 @@ class AuthController
         if (empty($identity)) {
             return json_fail(Lang::get('tips_9'));
         }
+
+//        $publicKey = $request->post("publicKey") ?? "";
+//        $signature = $request->post("signature") ?? "";
+//        $nonce = $request->post("nonce") ?? "";
+//        if (!$publicKey || !$signature || !$nonce) {
+//            echo json_encode(["success" => false, "message" => "参数缺失"]);
+//            exit;
+//        }
+
+//        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
+//            echo json_encode(["success" => true, "message" => "验证成功"]);
+//            return json_fail(Lang::get('tips_23'));
+//        }
+
 
         // 查找用户
         $user = User::query()->where(['identity' => $identity])->first();
@@ -88,6 +104,32 @@ class AuthController
             // 事务回滚
             DB::rollBack();
             return json_fail($e->getMessage());
+        }
+    }
+
+    // 验证 TokenPocket 签名
+    private function verifySignature($publicKeyBase58, $signatureBase58, $message)
+    {
+        $base58 = new Base58();
+
+        // 解码公钥和签名
+        try {
+            $publicKey = $base58->decode($publicKeyBase58);
+            $signature = $base58->decode($signatureBase58);
+        } catch (\Exception $e) {
+            // 如果 Base58 解码失败，捕获异常并返回错误
+            return false;
+        }
+
+        // 计算消息哈希
+        $messageBytes = mb_convert_encoding($message, 'UTF-8', 'auto');
+
+        // 使用 Sodium 进行验证
+        try {
+            return Sodium::crypto_sign_verify_detached($signature, $messageBytes, $publicKey);
+        } catch (\Exception $e) {
+            // 验证失败时捕获异常
+            return false;
         }
     }
 
