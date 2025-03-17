@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8">
     <title>浏览页面</title>
-    <link rel="stylesheet" href="/app/admin/component/pear/css/pear.css" />
-    <link rel="stylesheet" href="/app/admin/admin/css/reset.css" />
+    <link rel="stylesheet" href="/app/admin/component/pear/css/pear.css"/>
+    <link rel="stylesheet" href="/app/admin/admin/css/reset.css"/>
 </head>
 <body class="pear-container">
 
@@ -31,7 +30,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">货币</label>
                 <div class="layui-input-block">
-                    <div name="coin" id="coin" value="" ></div>
+                    <div name="coin" id="coin" value=""></div>
                 </div>
             </div>
 
@@ -59,7 +58,9 @@
     </div>
 </div>
 
-
+<script type="text/html" id="table-bar">
+    <button class="pear-btn pear-btn-xs tool-btn" lay-event="show">来源</button>
+</script>
 
 <script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
 <script src="/app/admin/component/pear/pear.js"></script>
@@ -71,7 +72,7 @@
     const PRIMARY_KEY = "id";
     const SELECT_API = "/app/admin/assetsLog/select";
 
-    layui.use(["jquery", "xmSelect", "popup"], function() {
+    layui.use(["jquery", "xmSelect", "popup"], function () {
         layui.$.ajax({
             url: "/app/admin/dict/get/coin",
             dataType: "json",
@@ -83,7 +84,7 @@
                     name: "coin",
                     initValue: initValue,
                     data: res.data,
-                    model: {"icon":"hidden","label":{"type":"text"}},
+                    model: {"icon": "hidden", "label": {"type": "text"}},
                     clickClose: true,
                     radio: true,
                 });
@@ -95,7 +96,7 @@
     });
 
     // 字段 注册时间 created_at
-    layui.use(["laydate"], function() {
+    layui.use(["laydate"], function () {
         layui.laydate.render({
             elem: "#created_at",
             range: ["#created_at-date-start", "#created_at-date-end"],
@@ -104,7 +105,7 @@
     })
 
     // 表格渲染
-    layui.use(["table", "form", "common", "popup", "util"], function() {
+    layui.use(["table", "form", "common", "popup", "util"], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.$;
@@ -117,32 +118,38 @@
                 title: "主键",
                 field: "id",
                 sort: true,
-            },{
+            }, {
                 title: '账户',
-                templet: function(d) {
+                templet: function (d) {
                     return d.user.identity;
                 }
-            },{
+            }, {
                 title: "货币",
                 field: "coin",
-            },{
+            }, {
                 title: "数量",
                 field: "amount",
-            },{
+            }, {
                 title: "剩余数量",
                 field: "balance",
-            },{
+            }, {
                 title: "备注",
                 field: "remark",
-            },{
+            }, {
                 title: "创建时间",
                 field: "created_at",
             },
+            {
+                title: "操作",
+                toolbar: "#table-bar",
+                align: "center",
+                fixed: "right",
+                width: 200,
+            }
         ];
 
         // 渲染表格
-        function render()
-        {
+        function render() {
             table.render({
                 elem: "#data-table",
                 url: SELECT_API,
@@ -177,6 +184,7 @@
                     if (res.code) {
                         return layui.popup.failure(res.msg);
                     }
+
                     function travel(items) {
                         for (let k in items) {
                             let item = items[k];
@@ -186,6 +194,7 @@
                             }
                         }
                     }
+
                     travel(res.data);
                 },
                 complete: function () {
@@ -200,7 +209,7 @@
         }
 
         // 编辑或删除行事件
-        table.on("tool(data-table)", function(obj) {
+        table.on("tool(data-table)", function (obj) {
             if (obj.event === "remove") {
                 remove(obj);
             } else if (obj.event === "show") {
@@ -209,8 +218,8 @@
         });
 
         // 表格顶部工具栏事件
-        table.on("toolbar(data-table)", function(obj) {
-             if (obj.event === "refresh") {
+        table.on("toolbar(data-table)", function (obj) {
+            if (obj.event === "refresh") {
                 refreshTable();
             } else if (obj.event === "batchRemove") {
                 batchRemove(obj);
@@ -218,7 +227,7 @@
         });
 
         // 表格顶部搜索事件
-        form.on("submit(table-query)", function(data) {
+        form.on("submit(table-query)", function (data) {
             table.reload("data-table", {
                 page: {
                     curr: 1
@@ -229,14 +238,14 @@
         });
 
         // 表格顶部搜索重置事件
-        form.on("submit(table-reset)", function(data) {
+        form.on("submit(table-reset)", function (data) {
             table.reload("data-table", {
                 where: []
             })
         });
 
         // 表格排序事件
-        table.on("sort(data-table)", function(obj){
+        table.on("sort(data-table)", function (obj) {
             table.reload("data-table", {
                 initSort: obj,
                 scrollPos: "fixed",
@@ -248,10 +257,45 @@
         });
 
 
+        let show = function (obj) {
+            let URL = '';
+            let value = '';
+            let title = '';
+            if (obj.data['transaction_id'] > 0) {
+                if (obj.data['coin'] === "USDT") {
+                    title = '套利';
+                } else {
+                    title = '质押';
+                }
 
+                URL = "/app/admin/pledge/index";
+                value = obj.data['transaction_id'];
+            } else if (obj.data['exchange_id'] > 0) {
+                title = '兑换';
+                URL = "/app/admin/exchange/index";
+                value = obj.data['exchange_id'];
+            } else if (obj.data['recharge_id'] > 0) {
+                title = '充值';
+                URL = "/app/admin/recharge/index";
+                value = obj.data['recharge_id'];
+            } else if (obj.data['withdraw_id'] > 0) {
+                title = '提现';
+                URL = "/app/admin/withdraw/index";
+                value = obj.data['withdraw_id'];
+            }
+
+
+            layer.open({
+                type: 2,
+                title: title,
+                shade: 0.1,
+                area: [common.isModile() ? "100%" : "80%", common.isModile() ? "100%" : "80%"],
+                content: URL + "?" + 'id' + "=" + value + "&showDiv=hidden"
+            });
+        }
 
         // 刷新表格数据
-        window.refreshTable = function() {
+        window.refreshTable = function () {
             table.reloadData("data-table", {
                 scrollPos: "fixed",
                 done: function (res, curr) {

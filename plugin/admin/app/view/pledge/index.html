@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8">
     <title>浏览页面</title>
-    <link rel="stylesheet" href="/app/admin/component/pear/css/pear.css" />
-    <link rel="stylesheet" href="/app/admin/admin/css/reset.css" />
+    <link rel="stylesheet" href="/app/admin/component/pear/css/pear.css"/>
+    <link rel="stylesheet" href="/app/admin/admin/css/reset.css"/>
 </head>
 <body class="pear-container">
 
@@ -31,7 +30,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    <div name="status" id="status" value="" ></div>
+                    <div name="status" id="status" value=""></div>
                 </div>
             </div>
 
@@ -62,8 +61,8 @@
 
 <!-- 表格行工具栏 -->
 <script type="text/html" id="table-bar">
-    <button class="pear-btn pear-btn-xs tool-btn" lay-event="staticIncome" >静态收益</button>
-    <button class="pear-btn pear-btn-xs tool-btn" lay-event="dynamicIncome" >动态收益</button>
+    <button class="pear-btn pear-btn-xs tool-btn" lay-event="staticIncome">静态收益</button>
+    <button class="pear-btn pear-btn-xs tool-btn" lay-event="dynamicIncome">动态收益</button>
 </script>
 
 <script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
@@ -74,12 +73,27 @@
 
     // 相关常量
     const PRIMARY_KEY = "id";
-    const SELECT_API = "/app/admin/pledge/select";
+    const SELECT_API = "/app/admin/pledge/select" + location.search;
     const STATICINCOME_URL = "/app/admin/pledge/staticIncome";
     const DYNAMICINCOME_URL = "/app/admin/pledge/dynamicIncome";
 
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
 
-    layui.use(["jquery", "xmSelect", "popup"], function() {
+    // 控制 div 显示/隐藏
+    window.onload = function () {
+        const showDiv = getQueryParam('showDiv'); // 获取参数
+        const divElement = document.querySelector('.layui-card');
+
+        if (showDiv === 'hidden') {
+            divElement.style.display = 'none';  // 隐藏
+        } else {
+            divElement.style.display = 'block'; // 显示
+        }
+    };
+    layui.use(["jquery", "xmSelect", "popup"], function () {
         layui.$.ajax({
             url: "/app/admin/dict/get/transaction_status",
             dataType: "json",
@@ -91,7 +105,7 @@
                     name: "status",
                     initValue: initValue,
                     data: res.data,
-                    model: {"icon":"hidden","label":{"type":"text"}},
+                    model: {"icon": "hidden", "label": {"type": "text"}},
                     clickClose: true,
                     radio: true,
                 });
@@ -103,7 +117,7 @@
     });
 
     // 字段 注册时间 created_at
-    layui.use(["laydate"], function() {
+    layui.use(["laydate"], function () {
         layui.laydate.render({
             elem: "#created_at",
             range: ["#created_at-date-start", "#created_at-date-end"],
@@ -112,7 +126,7 @@
     })
 
     // 表格渲染
-    layui.use(["table", "form", "common", "popup", "util"], function() {
+    layui.use(["table", "form", "common", "popup", "util"], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.$;
@@ -125,44 +139,44 @@
                 title: "主键",
                 field: "id",
                 sort: true,
-            },{
+            }, {
                 title: '账户',
-                templet: function(d) {
+                templet: function (d) {
                     return d.user.identity;
                 }
-            },{
+            }, {
                 title: "币种",
                 field: "coin",
-            },{
+            }, {
                 title: "数量",
                 field: "amount",
-            },{
+            }, {
                 title: "收益",
                 field: "bonus",
-            },{
+            }, {
                 title: "天数",
                 field: "day",
-            },{
+            }, {
                 title: "剩余天数",
-                templet: function(d) {
-                    return d.day-d.run_day;
+                templet: function (d) {
+                    return d.day - d.run_day;
                 }
-            },{
+            }, {
                 title: "状态",
                 field: "status",
                 templet: function (d) {
                     let field = "status";
                     if (typeof d[field] == "undefined") return "";
                     let items = [];
-                    layui.each((d[field] + "").split(","), function (k , v) {
+                    layui.each((d[field] + "").split(","), function (k, v) {
                         items.push(apiResults[field][v] || v);
                     });
                     return util.escape(items.join(","));
                 }
-            },{
+            }, {
                 title: "创建时间",
                 field: "created_at",
-            },{
+            }, {
                 title: "操作",
                 toolbar: "#table-bar",
                 align: "center",
@@ -172,8 +186,7 @@
         ];
 
         // 渲染表格
-        function render()
-        {
+        function render() {
             table.render({
                 elem: "#data-table",
                 url: SELECT_API,
@@ -209,6 +222,7 @@
                     if (res.code) {
                         return layui.popup.failure(res.msg);
                     }
+
                     function travel(items) {
                         for (let k in items) {
                             let item = items[k];
@@ -218,6 +232,7 @@
                             }
                         }
                     }
+
                     travel(res.data);
                 },
                 complete: function () {
@@ -232,19 +247,19 @@
         }
 
         // 编辑或删除行事件
-        table.on("tool(data-table)", function(obj) {
+        table.on("tool(data-table)", function (obj) {
             if (obj.event === "remove") {
                 remove(obj);
             } else if (obj.event === "staticIncome") {
                 staticIncome(obj);
-            }else if (obj.event === "dynamicIncome") {
+            } else if (obj.event === "dynamicIncome") {
                 dynamicIncome(obj);
             }
         });
 
         // 表格顶部工具栏事件
-        table.on("toolbar(data-table)", function(obj) {
-             if (obj.event === "refresh") {
+        table.on("toolbar(data-table)", function (obj) {
+            if (obj.event === "refresh") {
                 refreshTable();
             } else if (obj.event === "batchRemove") {
                 batchRemove(obj);
@@ -252,7 +267,7 @@
         });
 
         // 表格顶部搜索事件
-        form.on("submit(table-query)", function(data) {
+        form.on("submit(table-query)", function (data) {
             table.reload("data-table", {
                 page: {
                     curr: 1
@@ -263,14 +278,14 @@
         });
 
         // 表格顶部搜索重置事件
-        form.on("submit(table-reset)", function(data) {
+        form.on("submit(table-reset)", function (data) {
             table.reload("data-table", {
                 where: []
             })
         });
 
         // 表格排序事件
-        table.on("sort(data-table)", function(obj){
+        table.on("sort(data-table)", function (obj) {
             table.reload("data-table", {
                 initSort: obj,
                 scrollPos: "fixed",
@@ -282,33 +297,32 @@
         });
 
 
-
         // 表格编辑数据
-        let staticIncome = function(obj) {
+        let staticIncome = function (obj) {
             let value = obj.data[PRIMARY_KEY];
             layer.open({
                 type: 2,
                 title: "收益明细",
                 shade: 0.1,
-                area: [common.isModile()?"100%":"100%", common.isModile()?"100%":"100%"],
+                area: [common.isModile() ? "100%" : "100%", common.isModile() ? "100%" : "100%"],
                 content: STATICINCOME_URL + "?" + 'transaction_id' + "=" + value
             });
         }
 
-        let dynamicIncome = function(obj) {
+        let dynamicIncome = function (obj) {
             let value = obj.data[PRIMARY_KEY];
             layer.open({
                 type: 2,
                 title: "收益明细",
                 shade: 0.1,
-                area: [common.isModile()?"100%":"100%", common.isModile()?"100%":"100%"],
+                area: [common.isModile() ? "100%" : "100%", common.isModile() ? "100%" : "100%"],
                 content: DYNAMICINCOME_URL + "?" + 'transaction_id' + "=" + value
             });
         }
 
 
         // 刷新表格数据
-        window.refreshTable = function() {
+        window.refreshTable = function () {
             table.reloadData("data-table", {
                 scrollPos: "fixed",
                 done: function (res, curr) {

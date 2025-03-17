@@ -60,5 +60,4 @@ class AssetsLogController extends Crud
         return raw_view('assets_log/index');
     }
 
-
 }
