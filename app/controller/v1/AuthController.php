@@ -37,12 +37,10 @@ class AuthController
 //        $signature = $request->post("signature") ?? "";
 //        $nonce = $request->post("nonce") ?? "";
 //        if (!$publicKey || !$signature || !$nonce) {
-//            echo json_encode(["success" => false, "message" => "参数缺失"]);
-//            exit;
+//            return json_fail(Lang::get('tips_24'));
 //        }
 
 //        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
-//            echo json_encode(["success" => true, "message" => "验证成功"]);
 //            return json_fail(Lang::get('tips_23'));
 //        }
 

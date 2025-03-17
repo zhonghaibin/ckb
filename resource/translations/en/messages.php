@@ -27,5 +27,6 @@ return [
     'tips_20' => 'The exchange has expired. Please retrieve the price again.',
     'tips_21' => 'The price data is invalid.',
     'tips_22' => 'Account has been disabled',
-    'tips_23' => 'Invalid signature'
+    'tips_23' => 'Invalid signature',
+    'tips_24' => 'Missing parameters',
 ];
