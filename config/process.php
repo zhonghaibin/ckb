@@ -62,11 +62,11 @@ return [
     'timers_task' => [
         'handler' => process\TimersTask::class
     ],
-//    'htx_websocket_client' => [
-//        'handler'  => process\HtxWebSocketClient::class,
-//        'restartable' => true, // 允许自动重启
-//        'count'    => 1, // 只运行 1 个进程
-//    ],
+    'htx_websocket_client' => [
+        'handler'  => process\HtxWebSocketClient::class,
+        'restartable' => true, // 允许自动重启
+        'count'    => 1, // 只运行 1 个进程
+    ],
     'htx_websocket_service' => [
         'handler' => process\HtxWebSocketService::class,
         'listen' => 'websocket://0.0.0.0:8788',
