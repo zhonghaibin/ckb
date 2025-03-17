@@ -38,28 +38,26 @@ class RechargeJob implements Consumer
             if (!$transaction || isset($transaction['meta']['err'])) {
                 throw new \Exception('交易失败');
             }
+            $parse_solana_transaction = parse_solana_transaction($response['result']['meta']);
+
+            if ($parse_solana_transaction['payer'] != $userWallet) {
+                throw new \Exception('付款地址不正确'.$parse_solana_transaction['payer']);
+            }
 
             $config = get_system_config();
             $platformWallet = $config['base_info']['wallet_address'] ?? '';
 
-            $amountReceived = 0;
-            foreach ($transaction['transaction']['message']['instructions'] as $instruction) {
-//                if (isset($instruction['parsed']['info']['destination']) &&
-//                    $instruction['parsed']['info']['destination'] === $platformWallet) {
-                    $amountReceived += (int)$instruction['parsed']['info']['lamports'];
-//                }
+
+            if ($parse_solana_transaction['receiver'] != $platformWallet) {
+                throw new \Exception('收款地址不正确'.$parse_solana_transaction['receiver'] );
             }
 
-            if ($amountReceived <= 0) {
-                throw new \Exception('付款地址不正确');
+
+            $amount = $parse_solana_transaction['amount'];
+            if ($amount <= 0) {
+                throw new \Exception('金额不正确'.$parse_solana_transaction['amount']);
             }
 
-            $payerAddress = $transaction['transaction']['message']['accountKeys'][0]['pubkey'];
-            if ($payerAddress !== $userWallet) {
-                throw new \Exception('付款地址错误');
-            }
-
-            $amount = ($amountReceived / 1e9);
             $transactionService = new AssetsService();
             $transactionService->rechargeLog($recharge->id, $recharge->user_id, CoinTypes::USDT, $amount);
 

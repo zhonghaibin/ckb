@@ -148,6 +148,7 @@ if (!function_exists('get_system_config')) {
         return json_decode($config, true);
     }
 }
+
 if (!function_exists('get_transaction_by_signature')) {
     function get_transaction_by_signature($signature)
     {
@@ -180,4 +181,37 @@ if (!function_exists('get_transaction_by_signature')) {
         // 返回解析后的交易信息
         return json_decode($response, true);
     }
+}
+
+if (!function_exists('parse_solana_transaction')) {
+    function parse_solana_transaction($transaction)
+    {
+        $result = [];
+        $preBalances = [];
+
+        // 记录 preTokenBalances (交易前余额)
+        foreach ($transaction['preTokenBalances'] as $pre) {
+            $preBalances[$pre['owner']] = $pre['uiTokenAmount']['uiAmount'];
+        }
+
+        // 计算 payer 和 receiver，以及转账金额
+        foreach ($transaction['postTokenBalances'] as $post) {
+            $owner = $post['owner'];
+            $previousBalance = $preBalances[$owner] ?? 0;  // 默认 0
+            $currentBalance = $post['uiTokenAmount']['uiAmount'];
+
+            if ($previousBalance > $currentBalance) {
+                // 付款人（余额减少）
+                $result['payer'] = $owner;
+                $result['amount'] = $previousBalance - $currentBalance;
+            } elseif ($previousBalance < $currentBalance) {
+                // 收款人（余额增加）
+                $result['receiver'] = $owner;
+            }
+        }
+
+        return $result;
+    }
+
+
 }
