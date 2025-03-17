@@ -5,6 +5,7 @@ namespace app\queue\redis;
 use app\enums\CoinTypes;
 use app\enums\QueueTask;
 use app\enums\RechargeStatus;
+use app\model\Recharge;
 use app\services\AssetsService;
 use support\Db;
 use support\Log;
@@ -29,19 +30,21 @@ class RechargeJob implements Consumer
             $userWallet = $recharge->user_wallet;
             $signature = $recharge->signature;
             $response = get_transaction_by_signature($signature);
-
             if (!isset($response['result'])) {
+                Log::error('交易未找到');
                 throw new \Exception('交易未找到');
-            }
 
+            }
             $transaction = $response['result'];
             if (!$transaction || isset($transaction['meta']['err'])) {
+                Log::error('交易失败');
                 throw new \Exception('交易失败');
             }
             $parse_solana_transaction = parse_solana_transaction($response['result']['meta']);
 
             if ($parse_solana_transaction['payer'] != $userWallet) {
-                throw new \Exception('付款地址不正确'.$parse_solana_transaction['payer']);
+                Log::error('付款地址不正确');
+                throw new \Exception('付款地址不正确' . $parse_solana_transaction['payer']);
             }
 
             $config = get_system_config();
@@ -49,17 +52,24 @@ class RechargeJob implements Consumer
 
 
             if ($parse_solana_transaction['receiver'] != $platformWallet) {
-                throw new \Exception('收款地址不正确'.$parse_solana_transaction['receiver'] );
+                Log::error('收款地址不正确');
+                throw new \Exception('收款地址不正确' . $parse_solana_transaction['receiver']);
             }
 
 
             $amount = $parse_solana_transaction['amount'];
             if ($amount <= 0) {
-                throw new \Exception('金额不正确'.$parse_solana_transaction['amount']);
+                Log::error('金额不正确');
+                throw new \Exception('金额不正确' . $parse_solana_transaction['amount']);
             }
 
+            $recharge = Recharge::query()->find($recharge_id);
+            $recharge->status = RechargeStatus::SUCCESS;
+            $recharge->save();
+
+
             $transactionService = new AssetsService();
-            $transactionService->rechargeLog($recharge->id, $recharge->user_id, CoinTypes::USDT, $amount);
+            $transactionService->rechargeLog($recharge->id, $recharge->user_id, CoinTypes::USDT->value, $amount);
 
 
         } catch (\Throwable $e) {

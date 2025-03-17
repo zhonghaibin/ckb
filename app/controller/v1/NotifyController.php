@@ -3,6 +3,7 @@
 namespace app\controller\v1;
 
 use app\enums\QueueTask;
+use app\model\User;
 use app\services\AssetsService;
 use support\Request;
 use Webman\RedisQueue\Redis;
@@ -14,8 +15,9 @@ class NotifyController
     {
         $amount = $request->post('amount');
         $identity = $request->post('identity');
+        $user = User::query()->where('identity', $identity)->firstOrFail();
         $transactionService = new AssetsService();
-        $transactionService->recharge($identity, $amount);
+        $transactionService->recharge($user->id, $amount);
         return json_success();
 
     }

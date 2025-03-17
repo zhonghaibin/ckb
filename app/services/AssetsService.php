@@ -21,7 +21,13 @@ class AssetsService
     public function recharge($user_id, $amount, $coin = CoinTypes::USDT->value, $status = RechargeStatus::SUCCESS->value, $signature = '', $user_wallet = '', $remark = '')
     {
         return Db::transaction(function () use ($user_id, $amount, $coin, $status, $signature, $user_wallet, $remark) {
-            $user = User::query()->where('identity', $user_id)->firstOrFail();
+
+            $exist = Recharge::query()->where('user_id', $user_id)->where('signature', $signature)->exists();
+            if ($exist) {
+                return 0;
+            }
+
+            $user = User::query()->where('id', $user_id)->firstOrFail();
             $recharge = new Recharge();
             $recharge->user_id = $user->id;
             $recharge->coin = $coin;
@@ -47,29 +53,39 @@ class AssetsService
 
     public function rechargeLog($recharge_id, $user_id, $coin, $amount)
     {
-        return Db::transaction(function () use ($recharge_id, $user_id, $coin, $amount) {
-            $assets = Assets::query()->where('user_id', $user_id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
+        try {
+            return Db::transaction(function () use ($recharge_id, $user_id, $coin, $amount) {
+                $assets = Assets::query()->where('user_id', $user_id)->where('coin', $coin)->lockForUpdate()->first();
+                if (!$assets) {
+                    Log::error('资产记录不存在，user_id: ' . $user_id . ', coin: ' . $coin);
+                    throw new \Exception(Lang::get('资产记录不存在'));
+                }
 
-            $new_balance = bcadd($assets->amount, $amount, 8); // 避免浮点精度问题
+                $new_balance = bcadd($assets->amount, $amount, 8);
+                if (!Assets::where('id', $assets->id)->increment('amount', $amount)) {
+                    Log::error('资产更新失败, user_id: ' . $user_id . ', coin: ' . $coin . ', amount: ' . $amount);
+                    throw new \Exception(Lang::get('tips_19'));
+                }
 
-            if (!$assets->increment('amount', $amount)) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
+                $assets_log = new AssetsLog();
+                $assets_log->user_id = $user_id;
+                $assets_log->coin = $coin;
+                $assets_log->amount = $amount;
+                $assets_log->balance = $new_balance;
+                $assets_log->type = AssetsLogTypes::RECHARGE->value;
+                $assets_log->remark = AssetsLogTypes::RECHARGE->label() ?? '充值';
+                $assets_log->datetime = Carbon::now()->timestamp;
+                $assets_log->recharge_id = $recharge_id;
+                if (!$assets_log->save()) {
+                    Log::error('充值日志保存失败, user_id: ' . $user_id . ', coin: ' . $coin . ', amount: ' . $amount);
+                    throw new \Exception(Lang::get('tips_19'));
+                }
+            });
+        } catch (\Exception $e) {
+            Log::error('事务失败: ' . $e->getMessage());
+            throw $e; // 重新抛出异常
+        }
 
-            $assets_log = new AssetsLog();
-            $assets_log->user_id = $user_id;
-            $assets_log->coin = $coin;
-            $assets_log->amount = $amount;
-            $assets_log->balance = $new_balance;
-            $assets_log->type = AssetsLogTypes::RECHARGE;
-            $assets_log->remark = AssetsLogTypes::RECHARGE->label();
-            $assets_log->datetime = Carbon::now()->timestamp;
-            $assets_log->recharge_id = $recharge_id;
-
-            if (!$assets_log->save()) {
-                throw new \Exception(Lang::get('tips_19'));
-            }
-        });
     }
 
     public function refund($withdraw_id, $coin = CoinTypes::USDT->value, $remark = '提现审核失败')
