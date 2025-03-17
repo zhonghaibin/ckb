@@ -3,7 +3,7 @@
 return [
     'success' => '操作成功',
     'token_not_provided' => 'Token 未提供',
-    'token_invalid' => 'Token 无效或已过期英文',
+    'token_invalid' => 'Token 无效或已过期',
     'invite_code' => '邀请码错误',
     'tips_1' => '请输入提现金额',
     'tips_2' => '最低:min_number起',

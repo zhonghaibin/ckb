@@ -9,10 +9,10 @@ use Exception;
 class JwtUtil
 {
     // 密钥（建议从配置文件中读取）
-    private static $secretKey = 'your-secret-key';
+    private static $secretKey = 'qwe123/**-';
 
     // 生成 JWT Token
-    public static function generateToken($userId, $expire = 3600)
+    public static function generateToken($userId, $expire = 31536000)
     {
         $payload = [
             'iss' => 'webman', // 签发者

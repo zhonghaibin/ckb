@@ -24,8 +24,8 @@ Route::group('/v1', function () {
     Route::any('/index/notice', [app\controller\v1\IndexController::class, 'notice']);
     Route::any('/index/noticeList', [app\controller\v1\IndexController::class, 'noticeList']);
 
-    Route::any('/auth/login', [app\controller\v1\AuthController::class, 'login']);
-    Route::any('/notify/recharge', [app\controller\v1\NotifyController::class, 'recharge']);
+    Route::add(['POST', 'OPTIONS'], '/auth/login', [app\controller\v1\AuthController::class, 'login']);
+    Route::add(['POST', 'OPTIONS'], '/notify/recharge', [app\controller\v1\NotifyController::class, 'recharge']);
 });
 
 
@@ -35,16 +35,16 @@ Route::group('/v1', function () {
     Route::any('/user/referralList', [app\controller\v1\UserController::class, 'referralList']);
     Route::any('/user/teamList', [app\controller\v1\UserController::class, 'teamList']);
 
-    Route::any('/assets/recharge', [app\controller\v1\AssetsController::class, 'recharge']);
+    Route::add(['POST', 'OPTIONS'], '/assets/recharge', [app\controller\v1\AssetsController::class, 'recharge']);
     Route::any('/assets/rechargeList', [app\controller\v1\AssetsController::class, 'rechargeList']);
-    Route::any('/assets/withdraw', [app\controller\v1\AssetsController::class, 'withdraw']);
+    Route::add(['POST', 'OPTIONS'], '/assets/withdraw', [app\controller\v1\AssetsController::class, 'withdraw']);
     Route::any('/assets/withdrawList', [app\controller\v1\AssetsController::class, 'withdrawList']);
-    Route::any('/assets/exchange', [app\controller\v1\AssetsController::class, 'exchange']);
+    Route::add(['POST', 'OPTIONS'], '/assets/exchange', [app\controller\v1\AssetsController::class, 'exchange']);
     Route::any('/assets/getRate', [app\controller\v1\AssetsController::class, 'getRate']);
     Route::any('/assets/assetsList', [app\controller\v1\AssetsController::class, 'assetsList']);
 
-    Route::any('/transaction/pledge', [app\controller\v1\TransactionController::class, 'pledge']);
-    Route::any('/transaction/mev', [app\controller\v1\TransactionController::class, 'mev']);
+    Route::add(['POST', 'OPTIONS'], '/transaction/pledge', [app\controller\v1\TransactionController::class, 'pledge']);
+    Route::add(['POST', 'OPTIONS'], '/transaction/mev', [app\controller\v1\TransactionController::class, 'mev']);
     Route::any('/transaction/transactionList', [app\controller\v1\TransactionController::class, 'transactionList']);
     Route::any('/transaction/transactionLogList', [app\controller\v1\TransactionController::class, 'transactionLogList']);
 

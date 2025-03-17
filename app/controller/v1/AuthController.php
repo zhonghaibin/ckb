@@ -33,7 +33,7 @@ class AuthController
 
         // 查找用户
         $user = User::query()->where(['identity' => $identity])->first();
-        if ($user->status != UserStatus::NORMAL->value) {
+        if ($user && $user->status != UserStatus::NORMAL->value) {
             return json_fail(Lang::get('tips_22'));
         }
 
