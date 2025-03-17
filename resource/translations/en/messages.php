@@ -26,5 +26,5 @@ return [
     'tips_19' => 'Data save operation failed',
     'tips_20' => 'The exchange has expired. Please retrieve the price again.',
     'tips_21' => 'The price data is invalid.',
-
+    'tips_22' => 'Account has been disabled',
 ];

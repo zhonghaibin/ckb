@@ -32,7 +32,10 @@ class AuthController
         }
 
         // 查找用户
-        $user = User::query()->where(['identity' => $identity, 'status' => UserStatus::NORMAL])->first();
+        $user = User::query()->where(['identity' => $identity])->first();
+        if ($user->status != UserStatus::NORMAL->value) {
+            return json_fail(Lang::get('tips_22'));
+        }
 
         DB::beginTransaction();
 
@@ -43,7 +46,7 @@ class AuthController
                 $user->identity = $identity;
                 $user->remark = '';
                 $user->avatar = '/images/avatars/avatar.png';
-                $user->lang = LangTypes::ZH_CN;
+                $user->lang = LangTypes::ZH_CN->value;
 
                 // 解析邀请码
                 if (!empty($code)) {
