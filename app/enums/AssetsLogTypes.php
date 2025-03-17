@@ -29,7 +29,7 @@ enum AssetsLogTypes: int
             self::INCOME => '结算',
             self::DAILYINCOME => '每日收益',
             self::DIRECTBONUS => '直推收益',
-            self::LEVELDIFFBONUS => '极差奖',
+            self::LEVELDIFFBONUS => '级差奖',
             self::SAMELEVELBONUS => '平级奖',
         };
     }
