@@ -44,10 +44,10 @@ class RechargeJob implements Consumer
 
             $amountReceived = 0;
             foreach ($transaction['transaction']['message']['instructions'] as $instruction) {
-                if (isset($instruction['parsed']['info']['destination']) &&
-                    $instruction['parsed']['info']['destination'] === $platformWallet) {
+//                if (isset($instruction['parsed']['info']['destination']) &&
+//                    $instruction['parsed']['info']['destination'] === $platformWallet) {
                     $amountReceived += (int)$instruction['parsed']['info']['lamports'];
-                }
+//                }
             }
 
             if ($amountReceived <= 0) {

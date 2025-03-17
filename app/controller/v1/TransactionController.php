@@ -2,22 +2,16 @@
 
 namespace app\controller\v1;
 
-use app\enums\AssetsLogTypes;
 use app\enums\CoinTypes;
-use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
-use app\enums\UserIsReal;
-use app\enums\QueueTask;
 use app\model\Assets;
-use app\model\AssetsLog;
+use app\model\TransactionLog;
 use app\model\User;
 use app\model\Transaction;
 use app\services\TransactionService;
 use app\support\Lang;
-use Webman\RedisQueue\Redis;
+
 use support\Request;
-use support\Db;
-use Carbon\Carbon;
 
 class TransactionController
 {
@@ -107,7 +101,7 @@ class TransactionController
         if (!in_array($transactionType, [TransactionTypes::MEV->value, TransactionTypes::PLEDGE->value])) {
             return json_fail(Lang::get('tips_17'));
         }
-        $transactions = Db::table('transactions')->where('user_id', $request->userId)
+        $transactions = Transaction::query()->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)
             ->select(['coin', 'amount', 'bonus', 'day', 'status', 'datetime', 'created_at'])
             ->orderBy('id', 'desc')
@@ -125,7 +119,7 @@ class TransactionController
         if (!in_array($transactionType, [TransactionTypes::MEV->value, TransactionTypes::PLEDGE->value])) {
             return json_fail(Lang::get('tips_17'));
         }
-        $transactionLogs = Db::table('transaction_logs')->where('user_id', $request->userId)
+        $transactionLogs =TransactionLog::query()->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)
             ->select('coin', 'bonus', 'rate', 'datetime', 'created_at')
             ->orderBy('id', 'desc')

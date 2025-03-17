@@ -21,7 +21,7 @@ class AssetsService
     public function recharge($user_id, $amount, $coin = CoinTypes::USDT->value, $status = RechargeStatus::SUCCESS->value, $signature = '', $user_wallet = '', $remark = '')
     {
         return Db::transaction(function () use ($user_id, $amount, $coin, $status, $signature, $user_wallet, $remark) {
-            $user = User::query()->where('id', $user_id)->firstOrFail();
+            $user = User::query()->where('identity', $user_id)->firstOrFail();
             $recharge = new Recharge();
             $recharge->user_id = $user->id;
             $recharge->coin = $coin;

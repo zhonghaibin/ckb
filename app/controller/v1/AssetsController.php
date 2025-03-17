@@ -12,6 +12,7 @@ use app\enums\WithdrawStatus;
 use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\Exchange;
+use app\model\Recharge;
 use app\model\User;
 use app\model\Withdraw;
 use app\services\AssetsService;
@@ -45,7 +46,7 @@ class AssetsController
 
     public function rechargeList(Request $request)
     {
-        $recharges = Db::table('recharges')->where('user_id', $request->userId)
+        $recharges = Recharge::query()->where('user_id', $request->userId)
             ->select(['amount', 'signature', 'status', 'created_at'])
             ->orderBy('id', 'desc')
             ->paginate(10)
@@ -124,7 +125,7 @@ class AssetsController
 
     public function withdrawList(Request $request)
     {
-        $recharges = Db::table('withdraws')->where('user_id', $request->userId)
+        $recharges = Withdraw::query()->where('user_id', $request->userId)
             ->select(['amount', 'signature', 'status', 'created_at'])
             ->orderBy('id', 'desc')
             ->paginate(10)
@@ -261,7 +262,7 @@ class AssetsController
     //资金明细
     public function assetsList(Request $request)
     {
-        $assets_logs = Db::table('assets_logs')->where('user_id', $request->userId)
+        $assets_logs = AssetsLog::query()->where('user_id', $request->userId)
             ->select("*")
             ->orderBy('id', 'desc')
             ->paginate(10)

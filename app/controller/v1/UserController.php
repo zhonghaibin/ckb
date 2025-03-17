@@ -3,6 +3,9 @@
 namespace app\controller\v1;
 
 use app\enums\AssetsLogTypes;
+use app\model\Assets;
+use app\model\AssetsLog;
+use app\model\Recharge;
 use app\model\User;
 use app\support\Lang;
 use support\Request;
@@ -27,18 +30,18 @@ class UserController
         }
 
 
-        $assets = Db::table('assets')
+        $assets = Assets::query()
             ->where('user_id', $userId)
             ->select('user_id', 'coin', 'amount', 'bonus')
             ->first();
 
 
-        $direct_count = Db::table('users')
+        $direct_count = User::query()
             ->where('pid', $user->id)
             ->count();
 
 
-        $direct_bonus = Db::table('assets_logs')
+        $direct_bonus = AssetsLog::query()
             ->where('type', AssetsLogTypes::DIRECTBONUS)
             ->where('user_id', $userId)
             ->sum('amount');
@@ -61,7 +64,7 @@ class UserController
     public function referralList(Request $request)
     {
 
-        $list = Db::table('users')
+        $list = User::query()
             ->select('identity', 'level', 'created_at')
             ->where('pid', $request->userId)
             ->orderBy('id', 'desc')
@@ -78,7 +81,7 @@ class UserController
         $realTeamCount = get_team_count($request->userId, true);
 
         $team_ids = get_team_user_ids($request->userId);
-        $team_amount = Db::table('recharges')
+        $team_amount = Recharge::query()
             ->whereIn('user_id', $team_ids)
             ->sum('amount');
 
