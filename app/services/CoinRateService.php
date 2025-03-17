@@ -69,6 +69,7 @@ class CoinRateService
     {
         // 校验签名，防止前端篡改价格
         $expectedSignature = $this->generateSignature($from, $to, $rate, $lockUntil);
+
         if ($signature !== $expectedSignature) {
             return false;
         }
