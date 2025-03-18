@@ -30,11 +30,10 @@ class UserController
         }
 
 
-        $assets = Assets::query()
+        $assetsList = Assets::query()
             ->where('user_id', $userId)
-            ->select('user_id', 'coin', 'amount', 'bonus')
-            ->first();
-
+            ->select('coin', 'amount', 'bonus')
+            ->get();
 
         $direct_count = User::query()
             ->where('pid', $user->id)
@@ -53,9 +52,11 @@ class UserController
             'level' => $user->level,
             'direct_count' => $direct_count, // 直推人数
             'direct_bonus' => $direct_bonus, // 直推收益
-            'assets' => $assets, // 用户资产
+            'assets' => $assetsList[0], // 用户资产
+            'assets_list' => $assetsList,
             'share_link' => $user->share_link,
-            'share_code' => AesUtil::encrypt($userId)
+            'share_code' => AesUtil::encrypt($userId),
+
         ];
         return json_success($data);
     }
