@@ -18,9 +18,9 @@ use support\Log;
 
 class AssetsService
 {
-    public function recharge($user_id, $amount, $coin = CoinTypes::USDT->value, $status = RechargeStatus::SUCCESS->value, $signature = '', $user_wallet = '', $remark = '')
+    public function recharge($user_id, $amount, $fee = 0, $fee_rate = 0, $coin = CoinTypes::USDT->value, $status = RechargeStatus::SUCCESS->value, $signature = '', $user_wallet = '', $remark = '')
     {
-        return Db::transaction(function () use ($user_id, $amount, $coin, $status, $signature, $user_wallet, $remark) {
+        return Db::transaction(function () use ($user_id, $amount, $fee, $fee_rate, $coin, $status, $signature, $user_wallet, $remark) {
 
             $exist = Recharge::query()->where('user_id', $user_id)->where('signature', $signature)->exists();
             if ($exist) {
@@ -37,6 +37,8 @@ class AssetsService
             $recharge->signature = $signature;
             $recharge->user_wallet = $user_wallet;
             $recharge->datetime = Carbon::now()->timestamp;
+            $recharge->fee = $fee;
+            $recharge->fee_rate = $fee_rate;
 
             if (!$recharge->save()) {
                 throw new \Exception(Lang::get('tips_19'));

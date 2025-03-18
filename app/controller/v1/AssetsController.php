@@ -34,12 +34,24 @@ class AssetsController
         $user_wallet = $request->post('user_wallet', '');
         $signature = $request->post('signature', '');
         $amount = $request->post('amount', '');
+        $fee = $request->post('fee', '');
 
         if (!$user_wallet || !$signature || !$amount) {
             return json_fail(Lang::get('tips_24'));
         }
+        $config = get_system_config();
+        $min_number = $config['base_info']['recharge_min_number'];
+        if ($amount < $min_number) {
+            return json_fail(Lang::get('tips_2', ['min_number' => $min_number]));
+        }
 
-        $recharge_id = $assetsService->recharge($request->userId, $amount, CoinTypes::USDT->value, RechargeStatus::PENDING->value, $signature, $user_wallet);
+        $recharge_fee_rate = ($config['base_info']['recharge_fee_rate'] ?? 0) / 100;
+        $recharge_fee = bcmul($recharge_fee_rate, $amount, 8);
+        if ($recharge_fee != $fee) {
+            return json_fail(Lang::get('tips_3'));
+        }
+
+        $recharge_id = $assetsService->recharge($request->userId, $amount, $fee, $recharge_fee_rate, CoinTypes::USDT->value, RechargeStatus::PENDING->value, $signature, $user_wallet);
         if ($recharge_id) {
             Redis::send(QueueTask::RECHARGE->value, [
                 'recharge_id' => $recharge_id,

@@ -67,7 +67,7 @@ class RechargeJob implements Consumer
             $recharge->status = RechargeStatus::SUCCESS;
             $recharge->save();
 
-
+            $amount = $recharge->amount;
             $transactionService = new AssetsService();
             $transactionService->rechargeLog($recharge->id, $recharge->user_id, CoinTypes::USDT->value, $amount);
 

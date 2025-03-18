@@ -8,6 +8,8 @@
     "pledge_min_number": "500",
     "mev_min_number": "500",
     "exchange_min_number": "1",
+    "recharge_min_number": "100",
+    "recharge_fee_rate": "0",
     "withdraw_min_number": "100",
     "withdraw_fee_rate": "0"
   },
