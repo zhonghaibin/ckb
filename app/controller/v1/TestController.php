@@ -10,6 +10,8 @@ use support\Request;
 use support\Db;
 use support\Log;
 use Webman\RedisQueue\Redis;
+use ParagonIE_Sodium_Compat as Sodium;
+use StephenHill\Base58;
 
 class TestController
 {
@@ -17,7 +19,6 @@ class TestController
 
     public function index(Request $request)
     {
-
 
 //        $signature='2yc7eBfqRjS6Kfa6qJXRyjo6hybY7QB2BY4Xn7x9JfJYbkWEBGrF8CF4eAngpdmFdiUresZRzerLWVs6TvHvyoKj';
 //        $response = get_transaction_by_signature($signature);
@@ -34,6 +35,7 @@ class TestController
 //        Log::debug('Something went wrong!');
         return response('ok');
     }
+
 
 
 }

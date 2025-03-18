@@ -25,27 +25,20 @@ class AuthController
 
     public function login(Request $request)
     {
-        $publicKey = $request->post('identity', '');
-////         验证输入
-//        if (empty($publicKey)) {
-//            return json_fail(Lang::get('tips_9'));
-//        }
 
         $code = $request->post('code', '');
 
-//        $publicKey = $request->post("publicKey") ?? "";
-//        $signature = $request->post("signature") ?? "";
-//        $nonce = $request->post("nonce") ?? "";
-//
-////        return json([$publicKey,$signature,$nonce]);
-//        if (!$publicKey || !$signature || !$nonce) {
-//            return json_fail(Lang::get('tips_24'));
-//        }
-//        $dd = $this->verifySignature($publicKey, $signature, $nonce);
-//        return json($dd);
-//        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
-//            return json_fail(Lang::get('tips_23'));
-//        }
+        $publicKey = $request->post("publicKey") ?? "";
+        $signature = $request->post("signature") ?? "";
+        $nonce = $request->post("nonce") ?? "";
+
+        if (!$publicKey || !$signature || !$nonce) {
+            return json_fail(Lang::get('tips_24'));
+        }
+
+        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
+            return json_fail(Lang::get('tips_23'));
+        }
 
 
         // 查找用户
@@ -112,6 +105,29 @@ class AuthController
     private function verifySignature($publicKeyBase58, $signatureBase58, $message)
     {
 
+        try {
+            $base58 = new Base58();
+            // 1. 解码 Base58 公钥
+            $publicKey = $base58->decode($publicKeyBase58);
+            // 2. 解码 Base58 签名
+            $signature = $base58->decode($signatureBase58);
+
+            if (strlen($publicKey) !== 32 || strlen($signature) !== 64) {
+                return false;
+            }
+        } catch (\Exception $e) {
+            // 如果 Base58 解码失败，捕获异常并返回错误
+            return false;
+        }
+
+        $messageBytes = (string)$message;
+
+        try {
+            return Sodium::crypto_sign_verify_detached($signature, $messageBytes, $publicKey);
+        } catch (\Exception $e) {
+            // 验证失败时捕获异常
+            return false;
+        }
     }
 
     // 解密邀请码
