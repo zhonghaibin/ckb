@@ -40,7 +40,7 @@ class AuthController
             return json_fail(Lang::get('tips_23'));
         }
 
-
+//        $publicKey=$request->post('identity');
         // 查找用户
         $user = User::query()->where(['identity' => $publicKey])->first();
         if ($user && $user->status != UserStatus::NORMAL->value) {
