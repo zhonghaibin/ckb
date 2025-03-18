@@ -14,7 +14,7 @@ enum RechargeStatus: int
         return match ($this) {
             self::PENDING => '待处理',
             self::SUCCESS => '已完成',
-            self::FAILED => '失败',
+            self::FAILED => '充值失败',
         };
     }
 
