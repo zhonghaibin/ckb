@@ -79,8 +79,11 @@ class RechargeJob implements Consumer
                 Redis::send($this->queue, [
                     'recharge_id' => $recharge_id,
                     'retry_count' => $retry_count + 1
-                ], 10); // 延迟 10 秒重试
+                ], 4); // 延迟 4 秒重试
             } else {
+                $recharge = Recharge::query()->find($recharge_id);
+                $recharge->status = RechargeStatus::FAILED;
+                $recharge->save();
                 // 记录日志 & 上报错误
                 Log::error("充值任务失败，recharge_id: {$recharge_id}, 错误: " . $e->getMessage());
                 $this->reportFailure($recharge_id, $e->getMessage());

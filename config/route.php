@@ -26,6 +26,7 @@ Route::group('/v1', function () {
 
     Route::add(['POST', 'OPTIONS'], '/auth/login', [app\controller\v1\AuthController::class, 'login']);
     Route::add(['POST', 'OPTIONS'], '/notify/recharge', [app\controller\v1\NotifyController::class, 'recharge']);
+    Route::add(['POST', 'OPTIONS'], '/notify/pushRecharge', [app\controller\v1\NotifyController::class, 'pushRecharge']);
 });
 
 

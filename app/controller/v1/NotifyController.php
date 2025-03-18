@@ -22,11 +22,11 @@ class NotifyController
 
     }
 
-    public function push(Request $request)
+    public function pushRecharge(Request $request)
     {
         $recharge_id = $request->post('recharge_id');
         Redis::send(QueueTask::RECHARGE->value, [
             'recharge_id' => $recharge_id,
-        ], 30);
+        ], 1);
     }
 }
