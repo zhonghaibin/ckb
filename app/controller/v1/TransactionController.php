@@ -24,6 +24,10 @@ class TransactionController
         $amount = $request->post('amount', 500);
         $day = $request->post('day', 15);
 
+        if (!$coin || !$amount || !$day) {
+            return json_fail(Lang::get('tips_24'));
+        }
+
         if (!in_array($coin, [CoinTypes::ONE->value, CoinTypes::CKB->value])) {
             return json_fail(Lang::get('tips_15'));
         }
@@ -63,6 +67,10 @@ class TransactionController
         $coin = CoinTypes::USDT->value;
         $amount = $request->post('amount', 500);
         $day = $request->post('day', 1);
+
+        if (!$coin || !$amount || !$day) {
+            return json_fail(Lang::get('tips_24'));
+        }
 
         $config = get_system_config();
         $min_number = $config['base_info']['mev_min_number'];

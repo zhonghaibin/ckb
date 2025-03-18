@@ -34,6 +34,11 @@ class AssetsController
         $user_wallet = $request->post('user_wallet', '');
         $signature = $request->post('signature', '');
         $amount = $request->post('amount', '');
+
+        if (!$user_wallet || !$signature || !$amount) {
+            return json_fail(Lang::get('tips_24'));
+        }
+
         $recharge_id = $assetsService->recharge($request->userId, $amount, CoinTypes::USDT->value, RechargeStatus::PENDING->value, $signature, $user_wallet);
         if ($recharge_id) {
             Redis::send(QueueTask::RECHARGE->value, [
@@ -145,6 +150,10 @@ class AssetsController
         $lockUntil = $request->post('lock_until');
         $signature = $request->post('signature');
 
+        if (!$from_coin || !$to_coin || !$amount || !$rate || !$fee || !$lockUntil || !$signature) {
+            return json_fail(Lang::get('tips_24'));
+        }
+
         // 校验是否过期
         if (time() > $lockUntil) {
             return json_fail(Lang::get('tips_20'));
@@ -255,6 +264,9 @@ class AssetsController
     {
         $from_coin = $request->get('from_coin');
         $to_coin = $request->get('to_coin');
+        if (!$from_coin || !$to_coin) {
+            return json_fail(Lang::get('tips_24'));
+        }
         $data = $coinRateService->getRealTimeRate($from_coin, $to_coin);
         return json_success($data);
     }

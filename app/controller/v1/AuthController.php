@@ -25,28 +25,28 @@ class AuthController
 
     public function login(Request $request)
     {
-        $identity = $request->post('identity', '');
+//        $publicKey = $request->post('identity', '');
+////         验证输入
+//        if (empty($publicKey)) {
+//            return json_fail(Lang::get('tips_9'));
+//        }
+
         $code = $request->post('code', '');
 
-        // 验证输入
-        if (empty($identity)) {
-            return json_fail(Lang::get('tips_9'));
+        $publicKey = $request->post("publicKey") ?? "";
+        $signature = $request->post("signature") ?? "";
+        $nonce = $request->post("nonce") ?? "";
+        if (!$publicKey || !$signature || !$nonce) {
+            return json_fail(Lang::get('tips_24'));
         }
 
-//        $publicKey = $request->post("publicKey") ?? "";
-//        $signature = $request->post("signature") ?? "";
-//        $nonce = $request->post("nonce") ?? "";
-//        if (!$publicKey || !$signature || !$nonce) {
-//            return json_fail(Lang::get('tips_24'));
-//        }
-
-//        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
-//            return json_fail(Lang::get('tips_23'));
-//        }
+        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
+            return json_fail(Lang::get('tips_23'));
+        }
 
 
         // 查找用户
-        $user = User::query()->where(['identity' => $identity])->first();
+        $user = User::query()->where(['identity' => $publicKey])->first();
         if ($user && $user->status != UserStatus::NORMAL->value) {
             return json_fail(Lang::get('tips_22'));
         }
@@ -57,7 +57,7 @@ class AuthController
             // 如果用户不存在，进行注册
             if (empty($user)) {
                 $user = new User;
-                $user->identity = $identity;
+                $user->identity = $publicKey;
                 $user->remark = '';
                 $user->avatar = '/images/avatars/avatar.png';
                 $user->lang = LangTypes::ZH_CN->value;
@@ -137,7 +137,7 @@ class AuthController
         try {
             return AesUtil::decrypt($code);
         } catch (\Throwable $e) {
-            throw new \Exception(Lang::get('invite_code'));
+            throw new \Exception(Lang::get('tips_0'));
         }
     }
 

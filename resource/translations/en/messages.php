@@ -4,7 +4,7 @@ return [
     'success' => 'Operation successful',
     'token_not_provided' => 'Token not provided',
     'token_invalid' => 'Token is invalid or has expired',
-    'invite_code' => 'Failed to decode invitation code',
+    'tips_0' => 'Failed to decode invitation code',
     'tips_1' => 'Please enter the withdrawal amount',
     'tips_2' => 'Minimum :min_number required',
     'tips_3' => 'Inconsistent fees between front-end and back-end',
