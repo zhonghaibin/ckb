@@ -11,8 +11,8 @@ enum TransactionStatus: int
     public function label(): string
     {
         return match($this) {
-            self::NORMAL => '正常',
-            self::DONE => '完成',
+            self::NORMAL => '进行中',
+            self::DONE => '已结束',
         };
     }
 

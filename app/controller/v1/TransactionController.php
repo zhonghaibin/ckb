@@ -104,7 +104,7 @@ class TransactionController
     //下单列表
     public function transactionList(Request $request)
     {
-        $transactionType = $request->get('transactionType', TransactionTypes::MEV);
+        $transactionType = $request->get('transactionType', TransactionTypes::MEV->value);
 
         if (!in_array($transactionType, [TransactionTypes::MEV->value, TransactionTypes::PLEDGE->value])) {
             return json_fail(Lang::get('tips_17'));
@@ -122,7 +122,7 @@ class TransactionController
     //收益列表
     public function transactionLogList(Request $request)
     {
-        $transactionType = $request->get('transactionType', TransactionTypes::MEV);
+        $transactionType = $request->get('transactionType', TransactionTypes::MEV->value);
 
         if (!in_array($transactionType, [TransactionTypes::MEV->value, TransactionTypes::PLEDGE->value])) {
             return json_fail(Lang::get('tips_17'));

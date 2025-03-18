@@ -16,8 +16,8 @@ use support\Db;
 use app\utils\JwtUtil;
 use app\utils\AesUtil;
 use Webman\RedisQueue\Redis;
-use Tuupola\Base58;
 use ParagonIE_Sodium_Compat as Sodium;
+use StephenHill\Base58;
 
 class AuthController
 {
@@ -25,7 +25,7 @@ class AuthController
 
     public function login(Request $request)
     {
-//        $publicKey = $request->post('identity', '');
+        $publicKey = $request->post('identity', '');
 ////         验证输入
 //        if (empty($publicKey)) {
 //            return json_fail(Lang::get('tips_9'));
@@ -33,16 +33,19 @@ class AuthController
 
         $code = $request->post('code', '');
 
-        $publicKey = $request->post("publicKey") ?? "";
-        $signature = $request->post("signature") ?? "";
-        $nonce = $request->post("nonce") ?? "";
-        if (!$publicKey || !$signature || !$nonce) {
-            return json_fail(Lang::get('tips_24'));
-        }
-
-        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
-            return json_fail(Lang::get('tips_23'));
-        }
+//        $publicKey = $request->post("publicKey") ?? "";
+//        $signature = $request->post("signature") ?? "";
+//        $nonce = $request->post("nonce") ?? "";
+//
+////        return json([$publicKey,$signature,$nonce]);
+//        if (!$publicKey || !$signature || !$nonce) {
+//            return json_fail(Lang::get('tips_24'));
+//        }
+//        $dd = $this->verifySignature($publicKey, $signature, $nonce);
+//        return json($dd);
+//        if (!$this->verifySignature($publicKey, $signature, $nonce)) {
+//            return json_fail(Lang::get('tips_23'));
+//        }
 
 
         // 查找用户
@@ -105,30 +108,10 @@ class AuthController
         }
     }
 
-    // 验证 TokenPocket 签名
+    // 验证签名
     private function verifySignature($publicKeyBase58, $signatureBase58, $message)
     {
-        $base58 = new Base58();
 
-        // 解码公钥和签名
-        try {
-            $publicKey = $base58->decode($publicKeyBase58);
-            $signature = $base58->decode($signatureBase58);
-        } catch (\Exception $e) {
-            // 如果 Base58 解码失败，捕获异常并返回错误
-            return false;
-        }
-
-        // 计算消息哈希
-        $messageBytes = mb_convert_encoding($message, 'UTF-8', 'auto');
-
-        // 使用 Sodium 进行验证
-        try {
-            return Sodium::crypto_sign_verify_detached($signature, $messageBytes, $publicKey);
-        } catch (\Exception $e) {
-            // 验证失败时捕获异常
-            return false;
-        }
     }
 
     // 解密邀请码
