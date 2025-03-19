@@ -3,9 +3,13 @@
 namespace app\controller\v1;
 
 use app\enums\AssetsLogTypes;
+use app\enums\CoinTypes;
+use app\enums\TransactionStatus;
+use app\enums\TransactionTypes;
 use app\model\Assets;
 use app\model\AssetsLog;
 use app\model\Recharge;
+use app\model\Transaction;
 use app\model\User;
 use app\support\Lang;
 use support\Request;
@@ -45,7 +49,17 @@ class UserController
             ->where('user_id', $userId)
             ->sum('amount');
 
+        $pledge_ckb_amount = Transaction::query()->where('user_id', $userId)
+            ->where('transaction_type', TransactionTypes::PLEDGE)
+            ->where('coin', CoinTypes::CKB)
+            ->where('status', TransactionStatus::NORMAL)
+            ->sum('amount');
 
+        $pledge_one_amount = Transaction::query()->where('user_id', $userId)
+            ->where('transaction_type', TransactionTypes::PLEDGE)
+            ->where('coin', CoinTypes::ONE)
+            ->where('status', TransactionStatus::NORMAL)
+            ->sum('amount');
         $data = [
             'avatar' => $user->avatar,
             'identity' => $user->identity,
@@ -56,6 +70,16 @@ class UserController
             'assets_list' => $assetsList,
             'share_link' => $user->share_link,
             'share_code' => AesUtil::encrypt($userId),
+            'pledge' => [
+                'ckb' => [
+                    'amount' => $assetsList[1]['amount'],
+                    'pledge_amount' => $pledge_ckb_amount,
+                ],
+                'one' => [
+                    'amount' => $assetsList[2]['amount'],
+                    'pledge_amount' => $pledge_one_amount,
+                ]
+            ]
 
         ];
         return json_success($data);
