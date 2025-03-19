@@ -55,7 +55,7 @@ class AssetsController
         if ($recharge_id) {
             Redis::send(QueueTask::RECHARGE->value, [
                 'recharge_id' => $recharge_id,
-            ], 1);
+            ], 10);
         }
 
         return json_success();
