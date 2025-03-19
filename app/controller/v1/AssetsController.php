@@ -162,7 +162,7 @@ class AssetsController
         $lockUntil = $request->post('lock_until');
         $signature = $request->post('signature');
 
-        if (!$from_coin || !$to_coin || !$amount || !$rate || !$fee || !$lockUntil || !$signature) {
+        if (!$from_coin || !$to_coin || !$amount || !$lockUntil || !$signature) {
             return json_fail(Lang::get('tips_24'));
         }
 
