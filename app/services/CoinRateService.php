@@ -10,7 +10,7 @@ use Webman\RedisQueue\Redis;
 class CoinRateService
 {
     const KEY = '344343434';
-    const LOCK_SECOND = 20;
+    const LOCK_SECOND = 60;
 
     public function getRealTimeRate($from, $to)
     {
