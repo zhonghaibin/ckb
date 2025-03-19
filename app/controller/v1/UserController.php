@@ -72,11 +72,11 @@ class UserController
             'share_code' => AesUtil::encrypt($userId),
             'pledge' => [
                 'ckb' => [
-                    'amount' => $assetsList[1]['amount'],
+                    'amount' => $assetsList[2]['amount'],
                     'pledge_amount' => $pledge_ckb_amount,
                 ],
                 'one' => [
-                    'amount' => $assetsList[2]['amount'],
+                    'amount' => $assetsList[1]['amount'],
                     'pledge_amount' => $pledge_one_amount,
                 ]
             ]
