@@ -208,9 +208,9 @@ class AssetsController
         try {
 
 
-            $to_amount = $amount;
+            $from_amount = $amount;
             if ($rate != 0) {
-                $to_amount = bcmul($amount, $rate, 8);
+                $from_amount = bcmul($amount, $rate, 8);
             }
 
             $exchange = new Exchange;
@@ -218,8 +218,8 @@ class AssetsController
             $exchange->from_coin = $from_coin;
             $exchange->to_coin = $to_coin;
             $exchange->rate = $rate;
-            $exchange->from_amount = $amount;
-            $exchange->to_amount = $to_amount;
+            $exchange->from_amount = $from_amount;
+            $exchange->to_amount = $amount ;
             $exchange->fee = $fee;
             $exchange->status = ExchangeStatus::SUCCESS;
             $exchange->datetime = Carbon::now()->timestamp;
@@ -227,7 +227,7 @@ class AssetsController
                 throw new \Exception(Lang::get('tips_19'));
             }
 
-            if (!$from_assets->decrement('amount', $amount)) {
+            if (!$from_assets->decrement('amount', $from_amount)) {
                 throw new \Exception(Lang::get('tips_19'));
             }
 
@@ -235,7 +235,7 @@ class AssetsController
             $from_assets_log = new AssetsLog;
             $from_assets_log->user_id = $user->id;
             $from_assets_log->coin = $from_coin;
-            $from_assets_log->amount = -$amount;
+            $from_assets_log->amount = -$from_amount;
             $from_assets_log->balance = $from_new_balance;
             $from_assets_log->rate = $rate;
             $from_assets_log->type = AssetsLogTypes::EXCHANGE;
@@ -247,13 +247,13 @@ class AssetsController
             }
 
             $to_assets = Assets::query()->where('user_id', $user->id)->where('coin', $to_coin)->lockForUpdate()->firstOrFail();
-            $to_new_balance = bcadd($to_assets->amount, $to_amount, 8);
+            $to_new_balance = bcadd($to_assets->amount, $amount, 8);
 
-            $to_assets->increment('amount', $to_amount);
+            $to_assets->increment('amount', $amount);
             $to_assets_log = new AssetsLog;
             $to_assets_log->user_id = $user->id;
             $to_assets_log->coin = $to_coin;
-            $to_assets_log->amount = $to_amount;
+            $to_assets_log->amount = $amount;
             $to_assets_log->balance = $to_new_balance;
             $to_assets_log->rate = $rate;
             $to_assets_log->type = AssetsLogTypes::EXCHANGE;

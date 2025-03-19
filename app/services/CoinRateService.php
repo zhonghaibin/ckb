@@ -38,7 +38,7 @@ class CoinRateService
         $bid = $data['tick']['bid'] ?? 0; // 用户卖出价格（默认 0）
 
         // 计算汇率
-        $rate = ($from === CoinTypes::USDT->value) ? bcdiv(1, $bid, 8) : $bid;
+        $rate = ($from === CoinTypes::USDT->value) ? $bid : bcdiv(1, $bid, 8);
 
         $lockUntil = time() + self::LOCK_SECOND;
 
