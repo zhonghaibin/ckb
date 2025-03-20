@@ -26,6 +26,7 @@ class ReleaseService
         try {
             $midnightTimestamp = time();
 
+
             // 分批处理事务，每批次取 500 条
             Db::table('transaction_logs')
                 ->orderBy('id')

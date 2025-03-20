@@ -59,8 +59,11 @@ return [
             ]
         ]
     ],
-    'timers_task' => [
-        'handler' => process\TimersTask::class
+    'bonus_timers_task' => [
+        'handler' => process\BonusTimersTask::class
+    ],
+    'release_bonus_timers_task' => [
+        'handler' => process\ReleaseBonusTimersTask::class
     ],
 //    'htx_websocket_client' => [
 //        'handler'  => process\HtxWebSocketClient::class,
