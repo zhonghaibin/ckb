@@ -63,6 +63,7 @@ class TransactionService
             }
             DB::commit();
             Redis::send(QueueTask::USER_UPGRADE->value, ['user_id' => $user->id]);
+            Redis::send(QueueTask::BONUS->value, ['transaction_id' => $transaction->id]);
         } catch (\Throwable $e) {
             DB::rollBack();
             throw new \Exception($e->getMessage());

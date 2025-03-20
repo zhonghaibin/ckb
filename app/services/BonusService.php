@@ -3,12 +3,15 @@
 namespace app\services;
 
 use app\enums\AssetsLogTypes;
+use app\enums\QueueTask;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
 use app\enums\UserIsReal;
+use app\model\Transaction;
 use Carbon\Carbon;
 use support\Db;
 use support\Log;
+use Webman\RedisQueue\Redis;
 
 class BonusService
 {
@@ -16,20 +19,8 @@ class BonusService
     protected float $direct_rate = 0;
     protected array $level_diff_rates = [];
     protected float $same_level_rate = 0;
-    private static $instance = null;
 
-    private function __construct()
-    {
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance ??= new self();
-    }
-
-    private function __clone()
-    {
-    }
+    protected int $end_time = 0;
 
     public function run(): bool
     {
@@ -65,6 +56,28 @@ class BonusService
         }
     }
 
+    public function runOne(Transaction $transaction)
+    {
+        try {
+            $midnightTimestamp = Carbon::today()->timestamp;
+            $params = json_decode($transaction->rates, true);
+            $this->initializeRates($params, $transaction);
+
+            Db::beginTransaction();
+            try {
+                $this->processTransaction($transaction, $midnightTimestamp);
+                Db::commit();
+            } catch (\Throwable $e) {
+                Db::rollBack();
+                Log::error("Exec Error processing transaction ID: {$transaction->id}", ['exception' => $e->getMessage()]);
+            }
+
+            return true;
+        } catch (\Throwable $e) {
+            Log::error('Exec Error during daily earnings processing', ['exception' => $e->getMessage()]);
+            return false;
+        }
+    }
 
     //设置参数
     private function initializeRates(array $params, $transaction): void
@@ -88,6 +101,7 @@ class BonusService
         $this->direct_rate = $params['directRate'] ?? 0;
         $this->level_diff_rates = array_column($params['levelDiffRate'], 'rate', 'level');
         $this->same_level_rate = $params['sameLevelRate'] ?? 0;
+        $this->end_time = strtotime(date('Y-m-d 23:59:59'));
     }
 
 
@@ -105,18 +119,30 @@ class BonusService
             'runtime' => $midnightTimestamp,
         ]);
 
+        $transaction_hash = get_transaction_hash();
         $transactionLogId = Db::table('transaction_logs')->insertGetId([
             'user_id' => $transaction->user_id,
             'transaction_id' => $transaction->id,
             'coin' => $transaction->coin,
             'rate' => $this->rate,
-            'transaction_type' => TransactionTypes::PLEDGE,
+            'transaction_type' => $transaction->transaction_type,
             'datetime' => Carbon::now()->timestamp,
             'bonus' => $bonus,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
+            'transaction_hash' => $transaction_hash
         ]);
 
+        if ($transaction->transaction_type == TransactionTypes::MEV->value) {
+            Redis::send(QueueTask::TRANSACTION_LOG_DETAILS->value, [
+                'user_id' => $transaction->user_id,
+                'amount' => $bonus,
+                'start_time' => time(),
+                'end_time' => $this->end_time,
+                'transaction_log_id' => $transactionLogId,
+                'from_contract_hash' => $transaction_hash,
+            ], 1);
+        }
         $this->updateAssets($transaction->user_id, $transaction->coin, $bonus, $this->rate, $transaction->id, $transactionLogId, AssetsLogTypes::DAILYINCOME->value, AssetsLogTypes::DAILYINCOME->label());
 
         //返还本金

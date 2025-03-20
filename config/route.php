@@ -48,6 +48,7 @@ Route::group('/v1', function () {
     Route::add(['POST', 'OPTIONS'], '/transaction/mev', [app\controller\v1\TransactionController::class, 'mev']);
     Route::add(['GET', 'OPTIONS'],'/transaction/transactionList', [app\controller\v1\TransactionController::class, 'transactionList']);
     Route::add(['GET', 'OPTIONS'],'/transaction/transactionLogList', [app\controller\v1\TransactionController::class, 'transactionLogList']);
+    Route::add(['GET', 'OPTIONS'],'/transaction/transactionLogDetails', [app\controller\v1\TransactionController::class, 'transactionLogDetails']);
 
 })->middleware([
     app\middleware\JwtAuthMiddleware::class,

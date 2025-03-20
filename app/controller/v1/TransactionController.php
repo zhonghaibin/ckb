@@ -6,6 +6,7 @@ use app\enums\CoinTypes;
 use app\enums\TransactionTypes;
 use app\model\Assets;
 use app\model\TransactionLog;
+use app\model\TransactionLogDetails;
 use app\model\User;
 use app\model\Transaction;
 use app\services\TransactionService;
@@ -110,12 +111,19 @@ class TransactionController
             return json_fail(Lang::get('tips_17'));
         }
         $transactions = Transaction::query()->where('user_id', $request->userId)
+            ->with(['user' => function ($query) {
+                $query->select('id', 'identity', 'avatar', 'level');
+            }])
             ->where('transaction_type', $transactionType)
-            ->select(['coin', 'amount', 'bonus', 'day', 'status', 'datetime', 'created_at'])
+            ->select(['id', 'user_id', 'coin', 'amount', 'bonus', 'day', 'status', 'datetime', 'created_at'])
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
-
+        $transactions->getCollection()->each(function ($transaction) {
+            if ($transaction->user) {
+                $transaction->user->makeHidden(['share_link']);
+            }
+        });
         return json_success($transactions);
     }
 
@@ -127,13 +135,34 @@ class TransactionController
         if (!in_array($transactionType, [TransactionTypes::MEV->value, TransactionTypes::PLEDGE->value])) {
             return json_fail(Lang::get('tips_17'));
         }
-        $transactionLogs =TransactionLog::query()->where('user_id', $request->userId)
+        $transaction_id = $request->get('transaction_id', 0);
+        $transactionLogs = TransactionLog::query()
+            ->when($transaction_id, function ($query) use ($transaction_id) {
+                return $query->where('transaction_id', $transaction_id);
+            })
+            ->where('user_id', $request->userId)
             ->where('transaction_type', $transactionType)
-            ->select('coin', 'bonus', 'rate', 'datetime', 'created_at')
+            ->select('id', 'coin', 'bonus', 'rate', 'datetime', 'created_at')
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());
 
         return json_success($transactionLogs);
+    }
+
+    public function transactionLogDetails(Request $request)
+    {
+        $transaction_log_id = $request->get('transaction_log_id', 0);
+        $ransactionLogDetails = TransactionLogDetails::query()
+            ->when($transaction_log_id, function ($query) use ($transaction_log_id) {
+                return $query->where('transaction_log_id', $transaction_log_id);
+            })
+            ->where('user_id', $request->userId)
+            ->select('*')
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->appends(request()->get());
+
+        return json_success($ransactionLogDetails);
     }
 }

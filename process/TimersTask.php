@@ -14,7 +14,8 @@ class TimersTask
 
         // 每天的00点00执行，注意这里省略了秒位
         new Crontab('0 0 * * *', function () {
-            BonusService::getInstance()->run();
+            $bonusService = new BonusService();
+            $bonusService->run();
         });
 
     }
