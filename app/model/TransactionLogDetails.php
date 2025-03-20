@@ -28,6 +28,9 @@ class TransactionLogDetails extends Base
      */
     public $timestamps = true;
 
+    /**
+     * @return Attribute
+     */
     protected function rate(): Attribute
     {
         return Attribute::make(
