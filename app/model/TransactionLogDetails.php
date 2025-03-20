@@ -28,5 +28,10 @@ class TransactionLogDetails extends Base
      */
     public $timestamps = true;
 
-
+    protected function rate(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
+    }
 }

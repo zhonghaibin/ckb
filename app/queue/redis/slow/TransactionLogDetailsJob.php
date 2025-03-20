@@ -39,26 +39,20 @@ class TransactionLogDetailsJob implements Consumer
         $randomKey = array_rand($solanaTokens);
         $randomToken = $solanaTokens[$randomKey];
 
-        // 计算每个时间段的时间槽数 (减少每次计算)
+        // 计算时间槽
         $remainingTimeSlots = max(1, ($endTime - $startTime) / 90);
-
-        // 计算最大金额
         $maxAmount = max(0.00000001, ($remainingAmount / $remainingTimeSlots) * 1.5);
 
         while ($startTime < $endTime && $remainingAmount > 0) {
-            // 随机间隔时间
             $interval = mt_rand(60, 180);
             $startTime += $interval;
-
             if ($startTime > $endTime) {
                 $startTime = $endTime;
             }
 
-            // **修正 rand() 精度问题**
             $amount = round(min($remainingAmount, max(0.00000001, mt_rand(1, (int)($maxAmount * 100000000)) / 100000000)), 8);
             $date = date('Y-m-d H:i:s', $startTime);
 
-            // 添加记录
             $records[] = [
                 'user_id' => $user_id,
                 'amount' => $amount,
@@ -72,25 +66,30 @@ class TransactionLogDetailsJob implements Consumer
                 'datetime' => $startTime,
                 'created_at' => $date,
                 'updated_at' => $date,
+                'rate' => 0, // 先占位
             ];
 
             $remainingAmount -= $amount;
 
-            // 如果剩余金额小于最小精度值，处理尾数
             if ($remainingAmount < 0.00000001) {
                 if ($remainingAmount > 0) {
-                    // 将剩余金额加到最后一条记录
                     $records[count($records) - 1]['amount'] += $remainingAmount;
                 }
                 break;
             }
         }
 
-        // 批量插入
+        // **计算每个金额的占比**
+        foreach ($records as &$record) {
+            $record['rate'] = round($record['amount'] / $totalPrice, 8);
+        }
+
+        // **批量插入**
         if (!empty($records)) {
             DB::table('transaction_log_details')->insert($records);
         }
     }
+
 
 
     public function onConsumeFailure(\Throwable $e, $package)
