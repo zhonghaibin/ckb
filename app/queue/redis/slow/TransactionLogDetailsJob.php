@@ -23,14 +23,15 @@ class TransactionLogDetailsJob implements Consumer
         $endTime = $data['end_time'] ?? 0;
         $transaction_log_id = $data['transaction_log_id'] ?? 0;
         $from_contract_hash = $data['from_contract_hash'] ?? 0;
+        $transaction_id = $data['transaction_id'] ?? 0;
         $user_id = $data['user_id'] ?? 0;
 
         //生成记录
-        $this->generatePriceRecords($user_id, $amount, $startTime, $endTime, $transaction_log_id, $from_contract_hash);
+        $this->generatePriceRecords($user_id, $amount, $startTime, $endTime, $transaction_id, $transaction_log_id, $from_contract_hash);
 
     }
 
-    private function generatePriceRecords($user_id, $totalPrice, $startTime, $endTime, $transaction_log_id = 0, $from_contract_hash = 0): void
+    private function generatePriceRecords($user_id, $totalPrice, $startTime, $endTime, $transaction_id = 0, $transaction_log_id = 0, $from_contract_hash = 0): void
     {
         $records = [];
         $remainingAmount = $totalPrice;
@@ -62,6 +63,7 @@ class TransactionLogDetailsJob implements Consumer
                 'user_id' => $user_id,
                 'amount' => $amount,
                 'chain' => ChainTypes::SOLANA->value,
+                'transaction_id' => $transaction_id,
                 'transaction_hash' => get_transaction_hash(),
                 'transaction_log_id' => $transaction_log_id,
                 'from_contract_hash' => $from_contract_hash,

@@ -152,14 +152,18 @@ class TransactionController
 
     public function transactionLogDetails(Request $request)
     {
+        $transaction_id = $request->get('transaction_id', 0);
         $transaction_log_id = $request->get('transaction_log_id', 0);
         $ransactionLogDetails = TransactionLogDetails::query()
+            ->where('user_id', $request->userId)
+            ->when($transaction_id, function ($query) use ($transaction_id) {
+                return $query->where('transaction_id', $transaction_id);
+            })
             ->when($transaction_log_id, function ($query) use ($transaction_log_id) {
                 return $query->where('transaction_log_id', $transaction_log_id);
             })
-            ->where('user_id', $request->userId)
             ->select('*')
-            ->where('datetime','<',time())
+            ->where('datetime', '<', time())
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());

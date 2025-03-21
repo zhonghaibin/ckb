@@ -129,6 +129,7 @@ class BonusService
                 'amount' => $bonus,
                 'start_time' => time(),
                 'end_time' => $this->end_time,
+                'transaction_id' => $transaction->id,
                 'transaction_log_id' => $transactionLogId,
                 'from_contract_hash' => $transaction_hash,
             ], 1);
