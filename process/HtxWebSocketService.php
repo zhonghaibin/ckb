@@ -41,7 +41,11 @@ class HtxWebSocketService
 
             if (isset($data['sub'])) {
                 $channel = $data['sub'];
-                if ($channel === HtxMarket::CKBUSDT_TICKER->value || $channel === HtxMarket::ONEUSDT_TICKER->value) {
+                if ($channel === HtxMarket::CKBUSDT_TICKER->value
+                    || $channel === HtxMarket::ONEUSDT_TICKER->value
+                    || $channel === HtxMarket::ETCUSDT_TICKER->value
+                    || $channel === HtxMarket::BTCUSDT_TICKER->value
+                    || $channel === HtxMarket::BNBUSDT_TICKER->value) {
                     $connection->subscribedChannels[$channel] = true;
                     $connection->send(json_encode(['status' => 'subscribed', 'channel' => $channel]));
                 } else {
