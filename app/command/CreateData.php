@@ -59,7 +59,7 @@ class CreateData extends Command
                 $assets->user_id = $user->id;
                 $assets->coin = $value;
                 $assets->amount = 1000;
-                $assets->chain = ChainTypes::SOLANA;
+                $assets->chain = ChainTypes::SOLANA->value;
                 $assets->save();
             }
         }

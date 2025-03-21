@@ -40,7 +40,7 @@ class TransactionService
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->rates = json_encode($params);
             $transaction->runtime = time();
-            $transaction->chain = ChainTypes::SOLANA;
+            $transaction->chain = ChainTypes::SOLANA->value;
             if (!$transaction->save()) {
                 throw new \Exception(Lang::get('tips_19'));
             }

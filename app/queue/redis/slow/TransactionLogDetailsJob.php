@@ -61,7 +61,7 @@ class TransactionLogDetailsJob implements Consumer
             $records[] = [
                 'user_id' => $user_id,
                 'amount' => $amount,
-                'chain' => ChainTypes::SOLANA,
+                'chain' => ChainTypes::SOLANA->value,
                 'transaction_hash' => get_transaction_hash(),
                 'transaction_log_id' => $transaction_log_id,
                 'from_contract_hash' => $from_contract_hash,

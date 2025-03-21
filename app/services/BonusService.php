@@ -118,7 +118,7 @@ class BonusService
             'updated_at' => Carbon::now(),
             'transaction_hash' => $transaction_hash,
             'runtime' => time() + 86400,
-            'chain' => ChainTypes::SOLANA
+            'chain' => ChainTypes::SOLANA->value
         ]);
 
         if ($transaction->transaction_type == TransactionTypes::MEV->value) {

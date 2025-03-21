@@ -149,7 +149,7 @@ class AuthController
             $assets = new Assets;
             $assets->user_id = $user->id;
             $assets->coin = $value;
-            $assets->chain = ChainTypes::SOLANA;
+            $assets->chain = ChainTypes::SOLANA->value;
             if (!$assets->save()) {
                 throw new \Exception(Lang::get('tips_19'));
             }

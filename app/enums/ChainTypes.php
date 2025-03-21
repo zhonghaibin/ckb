@@ -4,7 +4,7 @@ namespace app\enums;
 
 enum ChainTypes: string
 {
-    case SOLANA = 'SOLANA';
+    case SOLANA = 'solana';
 
     // 你可以添加自定义方法
     public function label(): string
