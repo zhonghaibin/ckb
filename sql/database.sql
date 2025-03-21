@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 21/03/2025 14:23:56
+ Date: 21/03/2025 14:48:04
 */
 
 SET NAMES utf8mb4;
@@ -292,7 +292,7 @@ CREATE TABLE `roles`  (
 -- Records of roles
 -- ----------------------------
 INSERT INTO `roles` VALUES (1, '超级管理员', '*', '2022-08-13 16:15:01', '2022-12-23 12:05:07', NULL);
-INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88,175,176,177,178,89,90,91,92,93,94,95,96,97,98,99,100,101,116,117,118,119,122,123,124,125,126,121,129,132,133,146,147,151,152,153,154,155,131,137,138,148,149,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174', '2025-03-06 16:23:57', '2025-03-11 18:01:39', 1);
+INSERT INTO `roles` VALUES (2, '管理员', '85,86,87,88,175,176,177,178,89,90,91,92,93,94,95,96,97,98,99,100,101,116,117,118,119,122,123,124,125,126,121,129,132,133,146,147,151,152,153,154,155,131,137,138,148,149,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,179,180', '2025-03-06 16:23:57', '2025-03-21 14:47:33', 1);
 
 -- ----------------------------
 -- Table structure for rules
@@ -486,6 +486,8 @@ INSERT INTO `rules` VALUES (175, '浏览直推', NULL, 'plugin\\admin\\app\\cont
 INSERT INTO `rules` VALUES (176, '查询直推', NULL, 'plugin\\admin\\app\\controller\\UserController@directs', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (177, '浏览团队', NULL, 'plugin\\admin\\app\\controller\\UserController@team', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
 INSERT INTO `rules` VALUES (178, '查询团队', NULL, 'plugin\\admin\\app\\controller\\UserController@teams', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (179, '浏览静态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@staticIncomeDetail', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
+INSERT INTO `rules` VALUES (180, '查询静态收益', NULL, 'plugin\\admin\\app\\controller\\MevController@staticIncomeDetails', 130, '2025-03-10 14:51:13', '2025-03-11 17:25:57', NULL, 2, 0);
 
 -- ----------------------------
 -- Table structure for transaction_log_details
