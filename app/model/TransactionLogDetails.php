@@ -34,7 +34,7 @@ class TransactionLogDetails extends Base
     protected function rate(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => floatval($value)
+            get: fn($value) => floatval($value*100)
         );
     }
 }
