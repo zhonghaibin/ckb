@@ -76,7 +76,7 @@ class ReleaseBonusService
         $this->updateAssets($transaction_log->user_id, $transaction_log->coin, $transaction_log->bonus, $this->rate, $transaction_log->transaction_id, $transaction_log->id, AssetsLogTypes::DAILYINCOME->value, AssetsLogTypes::DAILYINCOME->label());
 
         //返还本金
-        if ($transaction->run_day + 1 == $transaction->day) {
+        if ($transaction->run_day == $transaction->day) {
             Db::table('transactions')->where('id', $transaction->id)->update(['status' => TransactionStatus::DONE->value]);
             $this->updateAssets($transaction->user_id, $transaction->coin, $transaction->amount, 0, $transaction->id, $transaction_log->id, AssetsLogTypes::INCOME->value, AssetsLogTypes::INCOME->label());
         }
