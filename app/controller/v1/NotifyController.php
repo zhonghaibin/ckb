@@ -2,7 +2,9 @@
 
 namespace app\controller\v1;
 
+use app\enums\CoinTypes;
 use app\enums\QueueTask;
+use app\enums\RechargeStatus;
 use app\model\User;
 use app\services\AssetsService;
 use support\Request;
@@ -17,7 +19,7 @@ class NotifyController
         $identity = $request->post('identity');
         $user = User::query()->where('identity', $identity)->firstOrFail();
         $transactionService = new AssetsService();
-        $transactionService->recharge($user->id, $amount);
+        $transactionService->recharge($user->id, $amount,0,0,CoinTypes::USDT->value,RechargeStatus::SUCCESS->value,time());
         return json_success();
 
     }

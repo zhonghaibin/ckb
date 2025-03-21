@@ -104,7 +104,7 @@ class BonusService
 
         $bonus = round($transaction->amount * $this->rate / $month_day, 6);
         Db::table('transactions')->where('id', $transaction->id)->update([
-            'runtime' => time() + 86400,
+            'runtime' => Db::raw("`runtime` + 86400"),
         ]);
         $transaction_hash = get_transaction_hash();
         $transactionLogId = Db::table('transaction_logs')->insertGetId([

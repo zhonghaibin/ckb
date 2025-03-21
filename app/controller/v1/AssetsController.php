@@ -197,9 +197,16 @@ class AssetsController
         if ($amount <= 0) {
             return json_fail(Lang::get('tips_8'));
         }
+
         $user = User::query()->where(['id' => $request->userId])->firstOrFail();
         $from_assets = Assets::query()->where('user_id', $user->id)->where('coin', $from_coin)->lockForUpdate()->firstOrFail();
-        $from_new_balance = bcsub($from_assets->amount, $amount, 8);
+
+        $from_amount = $amount;
+        if ($rate != 0) {
+            $from_amount = bcmul($amount, $rate, 8);
+        }
+
+        $from_new_balance = bcsub($from_assets->amount, $from_amount, 8);
         if ($from_new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
@@ -208,10 +215,6 @@ class AssetsController
         try {
 
 
-            $from_amount = $amount;
-            if ($rate != 0) {
-                $from_amount = bcmul($amount, $rate, 8);
-            }
 
             $exchange = new Exchange;
             $exchange->user_id = $user->id;

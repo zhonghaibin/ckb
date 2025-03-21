@@ -38,6 +38,7 @@ class TransactionService
             $transaction->transaction_type = $transaction_type;
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->rates = json_encode($params);
+            $transaction->runtime = time();
             if (!$transaction->save()) {
                 throw new \Exception(Lang::get('tips_19'));
             }

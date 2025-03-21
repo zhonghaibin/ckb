@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 18/03/2025 16:45:42
+ Date: 21/03/2025 10:40:40
 */
 
 SET NAMES utf8mb4;
@@ -58,7 +58,7 @@ CREATE TABLE `admins`  (
 -- ----------------------------
 -- Records of admins
 -- ----------------------------
-INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-13 11:26:56', '2025-03-13 11:26:56', NULL);
+INSERT INTO `admins` VALUES (1, 'superadmin', '超级管理员', '$2y$10$TVMTYImaeleeoSEbEcDN/eHHgv4lMNCJdMD0uOF.EbVYUeA5b1A.y', '/app/admin/avatar.png', NULL, NULL, '2025-03-05 09:49:24', '2025-03-20 17:15:03', '2025-03-20 17:15:03', NULL);
 INSERT INTO `admins` VALUES (2, 'admin', 'admin', '$2y$10$lyohfF1VwjhKMHXf0zzUPuNC1UUwaoN1UBN2GyNcWjG4jj7107rea', '/app/admin/avatar.png', '', '', '2025-03-06 16:24:29', '2025-03-11 15:23:26', '2025-03-11 15:23:26', NULL);
 
 -- ----------------------------
@@ -69,8 +69,8 @@ CREATE TABLE `assets`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `amount` decimal(20, 6) UNSIGNED NULL DEFAULT 0.000000 COMMENT '余额',
-  `bonus` decimal(20, 6) UNSIGNED NULL DEFAULT 0.000000 COMMENT '收益金额',
+  `amount` decimal(20, 8) UNSIGNED NULL DEFAULT 0.00000000 COMMENT '余额',
+  `bonus` decimal(20, 8) UNSIGNED NULL DEFAULT 0.00000000 COMMENT '收益金额',
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
@@ -170,11 +170,13 @@ CREATE TABLE `login_logs`  (
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '登录日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_logs
 -- ----------------------------
+INSERT INTO `login_logs` VALUES (1, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1742290003, '2025-03-18 17:26:43', '2025-03-18 17:26:43');
+INSERT INTO `login_logs` VALUES (2, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1742349000, '2025-03-19 09:50:00', '2025-03-19 09:50:00');
 
 -- ----------------------------
 -- Table structure for notices
@@ -231,7 +233,7 @@ INSERT INTO `options` VALUES (21, 'dict_exchange_status', '[{\"value\":\"0\",\"n
 INSERT INTO `options` VALUES (22, 'dict_recharge_status', '[{\"value\":\"0\",\"name\":\"进行中\"},{\"value\":\"1\",\"name\":\"已完成\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2022-12-04 15:04:40', '2022-12-04 15:04:40');
 INSERT INTO `options` VALUES (114, 'dict_withdraw_status', '[{\"value\":\"0\",\"name\":\"待审核\"},{\"value\":\"1\",\"name\":\"已完成\"},{\"value\":\"2\",\"name\":\"失败\"}]', '2025-03-11 14:58:48', '2025-03-11 14:59:06');
 INSERT INTO `options` VALUES (115, 'dict_user_level', '[{\"value\":\"0\",\"name\":\"Vip0\"},{\"value\":\"1\",\"name\":\"Vip1\"},{\"value\":\"2\",\"name\":\"Vip2\"},{\"value\":\"3\",\"name\":\"Vip3\"},{\"value\":\"4\",\"name\":\"Vip4\"},{\"value\":\"5\",\"name\":\"Vip5\"},{\"value\":\"6\",\"name\":\"Vip6\"},{\"value\":\"7\",\"name\":\"Vip7\"},{\"value\":\"8\",\"name\":\"Vip8\"},{\"value\":\"9\",\"name\":\"Vip9\"}]', '2025-03-11 15:06:39', '2025-03-11 15:06:39');
-INSERT INTO `options` VALUES (131, 'config', '{\"base_info\":{\"maintenance_mode\":false,\"maintenance_message\":\"\\u7cfb\\u7edf\\u6b63\\u5728\\u7ef4\\u62a4\\uff0c\\u8bf7\\u7a0d\\u540e\\u518d\\u8bd5\\u3002\",\"web_url\":\"http:\\/\\/www.baidu.com\",\"share_url\":\"http:\\/\\/test.dev\\/code=\",\"wallet_address\":\"3e71CqSwTdfXxxh5HnYjqju31a2WRQZXt68TkkUTLHpG\",\"pledge_min_number\":\"500\",\"mev_min_number\":\"500\",\"exchange_min_number\":\"1\",\"recharge_min_number\":\"100\",\"recharge_fee_rate\":\"0\",\"withdraw_min_number\":\"100\",\"withdraw_fee_rate\":\"2\"},\"pledge\":{\"ckb\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"},\"one\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}},\"mev\":{\"usdt\":{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}}}', '2025-03-12 17:39:25', '2025-03-18 12:01:30');
+INSERT INTO `options` VALUES (131, 'config', '{\"base_info\":{\"maintenance_mode\":false,\"maintenance_message\":\"\\u7cfb\\u7edf\\u6b63\\u5728\\u7ef4\\u62a4\\uff0c\\u8bf7\\u7a0d\\u540e\\u518d\\u8bd5\\u3002\",\"web_url\":\"http:\\/\\/www.baidu.com\",\"share_url\":\"http:\\/\\/test.dev\\/code=\",\"wallet_address\":\"3e71CqSwTdfXxxh5HnYjqju31a2WRQZXt68TkkUTLHpG\",\"pledge_min_number\":\"500\",\"mev_min_number\":\"500\",\"exchange_min_number\":\"1\",\"recharge_min_number\":\"0\",\"recharge_fee_rate\":\"0\",\"withdraw_min_number\":\"100\",\"withdraw_fee_rate\":\"2\"},\"pledge\":{\"ckb\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"},\"one\":{\"staticRate\":[{\"day\":\"15\",\"rate\":\"8\"},{\"day\":\"30\",\"rate\":\"12\"},{\"day\":\"60\",\"rate\":\"15\"}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"2\"},{\"level\":\"Vip2\",\"rate\":\"4\"},{\"level\":\"Vip3\",\"rate\":\"6\"},{\"level\":\"Vip4\",\"rate\":\"8\"},{\"level\":\"Vip5\",\"rate\":\"10\"},{\"level\":\"Vip6\",\"rate\":\"15\"},{\"level\":\"Vip7\",\"rate\":\"20\"},{\"level\":\"Vip8\",\"rate\":\"25\"},{\"level\":\"Vip9\",\"rate\":\"30\"}],\"sameLevelRate\":\"5\"}},\"mev\":{\"usdt\":{\"staticRate\":[{\"day\":\"1\",\"rate\":{\"min\":\"6\",\"max\":\"8\"}},{\"day\":\"15\",\"rate\":{\"min\":\"8\",\"max\":\"10\"}},{\"day\":\"30\",\"rate\":{\"min\":\"10\",\"max\":\"13\"}}],\"directRate\":\"20\",\"levelDiffRate\":[{\"level\":\"Vip0\",\"rate\":\"0\"},{\"level\":\"Vip1\",\"rate\":\"5\"},{\"level\":\"Vip2\",\"rate\":\"10\"},{\"level\":\"Vip3\",\"rate\":\"15\"},{\"level\":\"Vip4\",\"rate\":\"20\"},{\"level\":\"Vip5\",\"rate\":\"25\"},{\"level\":\"Vip6\",\"rate\":\"30\"},{\"level\":\"Vip7\",\"rate\":\"35\"},{\"level\":\"Vip8\",\"rate\":\"40\"},{\"level\":\"Vip9\",\"rate\":\"50\"}],\"sameLevelRate\":\"5\"}}}', '2025-03-12 17:39:25', '2025-03-18 17:39:33');
 INSERT INTO `options` VALUES (132, 'dict_coin', '[{\"value\":\"USDT\",\"name\":\"USDT\"},{\"value\":\"ONE\",\"name\":\"ONE\"},{\"value\":\"CBK\",\"name\":\"CBK\"}]', '2025-03-13 11:36:56', '2025-03-13 11:36:56');
 INSERT INTO `options` VALUES (133, 'dict_lang', '[{\"value\":\"en\",\"name\":\"英文\"},{\"value\":\"zh_CN\",\"name\":\"中文\"}]', '2025-03-13 13:46:46', '2025-03-13 13:46:46');
 
@@ -475,6 +477,32 @@ INSERT INTO `rules` VALUES (177, '浏览团队', NULL, 'plugin\\admin\\app\\cont
 INSERT INTO `rules` VALUES (178, '查询团队', NULL, 'plugin\\admin\\app\\controller\\UserController@teams', 8, '2025-03-10 20:10:26', '2025-03-11 17:25:57', NULL, 2, 0);
 
 -- ----------------------------
+-- Table structure for transaction_log_details
+-- ----------------------------
+DROP TABLE IF EXISTS `transaction_log_details`;
+CREATE TABLE `transaction_log_details`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NULL DEFAULT NULL,
+  `amount` decimal(20, 8) NULL DEFAULT 0.00000000,
+  `transaction_log_id` int(11) NULL DEFAULT NULL,
+  `transaction_hash` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '交易合约地址',
+  `from_contract_hash` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `symbol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '代币符号',
+  `contract` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '代币合约地址',
+  `status` tinyint(1) NULL DEFAULT 1,
+  `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
+  `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `user_id`(`user_id` ASC) USING BTREE,
+  INDEX `transaction_log_id`(`transaction_log_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '交易收益明细' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of transaction_log_details
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for transaction_logs
 -- ----------------------------
 DROP TABLE IF EXISTS `transaction_logs`;
@@ -482,10 +510,13 @@ CREATE TABLE `transaction_logs`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL,
   `transaction_id` int(11) NULL DEFAULT NULL,
+  `transaction_hash` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `coin` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `bonus` decimal(20, 8) NULL DEFAULT 0.00000000,
   `rate` decimal(15, 8) NULL DEFAULT NULL,
   `transaction_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `is_release` tinyint(4) NULL DEFAULT 0 COMMENT '是否已经释放本金',
+  `runtime` int(11) NULL DEFAULT NULL,
   `datetime` int(10) UNSIGNED NULL DEFAULT NULL,
   `created_at` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',

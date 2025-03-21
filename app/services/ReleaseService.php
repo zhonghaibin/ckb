@@ -82,7 +82,7 @@ class ReleaseService
 
         //返还本金
         if ($transaction->run_day + 1 == $transaction->day) {
-            Db::table('transactions')->where('id', $transaction->id)->update(['status' => TransactionStatus::DONE]);
+            Db::table('transactions')->where('id', $transaction->id)->update(['status' => TransactionStatus::DONE->value]);
             $this->updateAssets($transaction->user_id, $transaction->coin, $transaction->amount, 0, $transaction->id, $transaction_log->id, AssetsLogTypes::INCOME->value, AssetsLogTypes::INCOME->label());
         }
 
