@@ -97,7 +97,7 @@ class BonusService
 
 
     //每日收益
-    private function processTransaction($transaction)
+    private function processTransaction($transaction): void
     {
         $month_day = get_time_in_month($transaction->datetime);
 
@@ -134,6 +134,6 @@ class BonusService
             ], 1);
         }
 
-        return true;
+
     }
 }
