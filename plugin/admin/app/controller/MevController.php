@@ -8,6 +8,7 @@ use app\model\AssetsLog;
 use app\model\Banner;
 use app\model\Transaction;
 use app\model\TransactionLog;
+use app\model\TransactionLogDetails;
 use support\Request;
 use support\Response;
 
@@ -73,7 +74,29 @@ class MevController extends Crud
         $query = $this->doSelect($where, $field, $order);
         return $this->doFormat($query, $format, $limit);
     }
+    /**
+     * 浏览静态收益明细
+     */
+    public function staticIncomeDetail(): Response
+    {
+        return raw_view('mev/staticIncomeDetail');
+    }
 
+    /**
+     * 查询静态收益明细
+     */
+    public function staticIncomeDetails(Request $request)
+    {
+
+        $this->model = new TransactionLogDetails;
+        [$where, $format, $limit, $field, $order] = $this->selectInput($request);
+        $where['datetime']=[
+            '<',
+            time(),
+        ];
+        $query = $this->doSelect($where, $field, $order);
+        return $this->doFormat($query, $format, $limit);
+    }
     /**
      * 浏览动态收益
      */

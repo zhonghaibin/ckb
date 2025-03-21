@@ -87,6 +87,25 @@ class HtxWebSocketClient
             'id' => 'ckbusdt_ticker_' . time(),
         ];
         $conn->send(json_encode($subscribeCkbMessage));
+
+        $subscribeBtcMessage = [
+            'sub' => HtxMarket::BTCUSDT_TICKER->value,
+            'id' => 'btcusdt_ticker_' . time(),
+        ];
+        $conn->send(json_encode($subscribeBtcMessage));
+
+        $subscribeEtcMessage = [
+            'sub' => HtxMarket::ETCUSDT_TICKER->value,
+            'id' => 'ectusdt_ticker_' . time(),
+        ];
+        $conn->send(json_encode($subscribeEtcMessage));
+
+        $subscribeBnbMessage = [
+            'sub' => HtxMarket::BNBUSDT_TICKER->value,
+            'id' => 'bnbusdt_ticker_' . time(),
+        ];
+        $conn->send(json_encode($subscribeBnbMessage));
+
     }
 
     // 处理收到的消息

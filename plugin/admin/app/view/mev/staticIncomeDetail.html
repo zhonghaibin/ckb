@@ -19,9 +19,7 @@
 
 
 <!-- 表格行工具栏 -->
-<script type="text/html" id="table-bar">
-    <button class="pear-btn pear-btn-xs tool-btn" lay-event="staticIncome" >收益</button>
-</script>
+
 
 <script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
 <script src="/app/admin/component/pear/pear.js"></script>
@@ -31,9 +29,30 @@
 
     // 相关常量
     const PRIMARY_KEY = "id";
-    const SELECT_API = "/app/admin/mev/staticIncomes"+ location.search;
-    const STATICINCOME_URL = "/app/admin/mev/staticIncomeDetail";
+    const SELECT_API = "/app/admin/mev/staticIncomeDetails"+ location.search;
 
+    layui.use(["jquery", "xmSelect", "popup"], function() {
+        layui.$.ajax({
+            url: "/app/admin/dict/get/transaction_log_details_status",
+            dataType: "json",
+            success: function (res) {
+                let value = layui.$("#status").attr("value");
+                let initValue = value ? value.split(",") : [];
+                layui.xmSelect.render({
+                    el: "#status",
+                    name: "status",
+                    initValue: initValue,
+                    data: res.data,
+                    model: {"icon":"hidden","label":{"type":"text"}},
+                    clickClose: true,
+                    radio: true,
+                });
+                if (res.code) {
+                    layui.popup.failure(res.msg);
+                }
+            }
+        });
+    });
 
     // 表格渲染
     layui.use(["table", "form", "common", "popup", "util"], function() {
@@ -41,6 +60,7 @@
         let form = layui.form;
         let $ = layui.$;
         let common = layui.common;
+        let util = layui.util;
         // 表头参数
         let cols = [
             {
@@ -48,26 +68,35 @@
                 field: "id",
                 sort: true,
             },{
-                title: "币种",
-                field: "coin",
+                title: "交易哈希",
+                field: "transaction_hash",
+            },{
+                title: "状态",
+                field: "status",
+                templet: function (d) {
+                    let field = "status";
+                    if (typeof d[field] == "undefined") return "";
+                    let items = [];
+                    layui.each((d[field] + "").split(","), function (k , v) {
+                        items.push(apiResults[field][v] || v);
+                    });
+                    return util.escape(items.join(","));
+                }
+            },{
+                title: "来自合约",
+                field: "from_contract_hash",
+            },{
+                title: "代币符号",
+                field: "symbol",
+            },{
+                title: "代币合约",
+                field: "contract",
             },{
                 title: "收益",
-                field: "bonus",
-            },{
-                title: "比率",
-                field: "rate",
-                templet: function(d) {
-                    return d.rate*100+'%';
-                }
+                field: "amount",
             },{
                 title: "创建时间",
                 field: "created_at",
-            },{
-                title: "操作",
-                toolbar: "#table-bar",
-                align: "center",
-                fixed: "right",
-                width: 200,
             }
         ];
 
@@ -96,7 +125,7 @@
 
         // 获取表格中下拉或树形组件数据
         let apis = [];
-
+        apis.push(["status", "/app/admin/dict/get/transaction_log_details_status"]);
         let apiResults = {};
         apiResults["status"] = [];
         let count = apis.length;
@@ -131,12 +160,6 @@
             render();
         }
 
-        // 编辑或删除行事件
-        table.on("tool(data-table)", function(obj) {
-            if (obj.event === "staticIncome") {
-                staticIncome(obj);
-            }
-        });
 
         // 表格顶部工具栏事件
         table.on("toolbar(data-table)", function(obj) {
@@ -195,16 +218,7 @@
             });
         }
 
-        let staticIncome = function(obj) {
-            let value = obj.data[PRIMARY_KEY];
-            layer.open({
-                type: 2,
-                title: "收益明细",
-                shade: 0.1,
-                area: [common.isModile()?"100%":"80%", common.isModile()?"100%":"80%"],
-                content: STATICINCOME_URL + "?" + 'transaction_id' + "=" + value
-            });
-        }
+
 
     })
 

@@ -2,11 +2,10 @@
 
 namespace app\services;
 
-use app\enums\AssetsLogTypes;
+use app\enums\ChainTypes;
 use app\enums\QueueTask;
 use app\enums\TransactionStatus;
 use app\enums\TransactionTypes;
-use app\enums\UserIsReal;
 use app\model\Transaction;
 use Carbon\Carbon;
 use support\Db;
@@ -118,7 +117,8 @@ class BonusService
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'transaction_hash' => $transaction_hash,
-            'runtime' => time() + 86400
+            'runtime' => time() + 86400,
+            'chain' => ChainTypes::SOLANA
         ]);
 
         if ($transaction->transaction_type == TransactionTypes::MEV->value) {

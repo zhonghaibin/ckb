@@ -159,6 +159,7 @@ class TransactionController
             })
             ->where('user_id', $request->userId)
             ->select('*')
+            ->where('datetime','<',time())
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->appends(request()->get());

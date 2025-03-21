@@ -78,7 +78,14 @@ class HtxWebSocketService
 
     protected function subscribeRedis(Worker $worker)
     {
-        $this->redis->subscribe([HtxMarket::CKBUSDT_TICKER->value, HtxMarket::ONEUSDT_TICKER->value], function ($channel, $message) use ($worker) {
+        $this->redis->subscribe(
+            [
+                HtxMarket::CKBUSDT_TICKER->value,
+                HtxMarket::ONEUSDT_TICKER->value,
+                HtxMarket::ETCUSDT_TICKER->value,
+                HtxMarket::BTCUSDT_TICKER->value,
+                HtxMarket::BNBUSDT_TICKER->value,
+            ], function ($channel, $message) use ($worker) {
             foreach ($worker->connections as $connection) {
                 if (isset($connection->subscribedChannels[$channel])) {
                     $connection->send(json_encode(['channel' => $channel, 'data' => $message]));

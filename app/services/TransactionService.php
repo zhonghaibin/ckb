@@ -4,6 +4,7 @@ namespace app\services;
 
 
 use app\enums\AssetsLogTypes;
+use app\enums\ChainTypes;
 use app\enums\QueueTask;
 use app\enums\TransactionStatus;
 use app\enums\UserIsReal;
@@ -39,6 +40,7 @@ class TransactionService
             $transaction->status = TransactionStatus::NORMAL;
             $transaction->rates = json_encode($params);
             $transaction->runtime = time();
+            $transaction->chain = ChainTypes::SOLANA;
             if (!$transaction->save()) {
                 throw new \Exception(Lang::get('tips_19'));
             }

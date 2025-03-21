@@ -2,6 +2,7 @@
 
 namespace app\controller\v1;
 
+use app\enums\ChainTypes;
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
 use app\enums\QueueTask;
@@ -148,6 +149,7 @@ class AuthController
             $assets = new Assets;
             $assets->user_id = $user->id;
             $assets->coin = $value;
+            $assets->chain = ChainTypes::SOLANA;
             if (!$assets->save()) {
                 throw new \Exception(Lang::get('tips_19'));
             }

@@ -2,6 +2,7 @@
 
 namespace app\queue\redis\slow;
 
+use app\enums\ChainTypes;
 use app\enums\QueueTask;
 use app\services\UserUpgradeService;
 use Carbon\Carbon;
@@ -60,6 +61,7 @@ class TransactionLogDetailsJob implements Consumer
             $records[] = [
                 'user_id' => $user_id,
                 'amount' => $amount,
+                'chain' => ChainTypes::SOLANA,
                 'transaction_hash' => get_transaction_hash(),
                 'transaction_log_id' => $transaction_log_id,
                 'from_contract_hash' => $from_contract_hash,

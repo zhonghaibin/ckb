@@ -2,6 +2,7 @@
 
 namespace app\command;
 
+use app\enums\ChainTypes;
 use app\enums\CoinTypes;
 use app\enums\LangTypes;
 use app\model\Assets;
@@ -58,6 +59,7 @@ class CreateData extends Command
                 $assets->user_id = $user->id;
                 $assets->coin = $value;
                 $assets->amount = 1000;
+                $assets->chain = ChainTypes::SOLANA;
                 $assets->save();
             }
         }

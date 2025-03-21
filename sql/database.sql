@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 21/03/2025 10:40:40
+ Date: 21/03/2025 11:30:00
 */
 
 SET NAMES utf8mb4;
@@ -68,6 +68,7 @@ DROP TABLE IF EXISTS `assets`;
 CREATE TABLE `assets`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `chain` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '链',
   `coin` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `amount` decimal(20, 8) UNSIGNED NULL DEFAULT 0.00000000 COMMENT '余额',
   `bonus` decimal(20, 8) UNSIGNED NULL DEFAULT 0.00000000 COMMENT '收益金额',
@@ -175,8 +176,6 @@ CREATE TABLE `login_logs`  (
 -- ----------------------------
 -- Records of login_logs
 -- ----------------------------
-INSERT INTO `login_logs` VALUES (1, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1742290003, '2025-03-18 17:26:43', '2025-03-18 17:26:43');
-INSERT INTO `login_logs` VALUES (2, 1, 'Apifox/1.0.0 (https://apifox.com)', '192.168.3.10', 1742349000, '2025-03-19 09:50:00', '2025-03-19 09:50:00');
 
 -- ----------------------------
 -- Table structure for notices
@@ -487,6 +486,7 @@ CREATE TABLE `transaction_log_details`  (
   `transaction_log_id` int(11) NULL DEFAULT NULL,
   `transaction_hash` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '交易合约地址',
   `from_contract_hash` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `chain` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `symbol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '代币符号',
   `contract` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '代币合约地址',
   `status` tinyint(1) NULL DEFAULT 1,
@@ -511,6 +511,7 @@ CREATE TABLE `transaction_logs`  (
   `user_id` int(11) NULL DEFAULT NULL,
   `transaction_id` int(11) NULL DEFAULT NULL,
   `transaction_hash` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `chain` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `coin` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `bonus` decimal(20, 8) NULL DEFAULT 0.00000000,
   `rate` decimal(15, 8) NULL DEFAULT NULL,
@@ -536,6 +537,7 @@ DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL,
+  `chain` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '链',
   `coin` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `amount` decimal(20, 8) NULL DEFAULT 0.00000000,
   `bonus` decimal(20, 8) NULL DEFAULT 0.00000000,
