@@ -8,6 +8,7 @@ use app\enums\RechargeStatus;
 use app\model\Transaction;
 use app\services\BonusService;
 use app\services\ReleaseBonusService;
+use app\utils\AesUtil;
 use support\Request;
 use support\Db;
 use support\Log;
@@ -22,8 +23,12 @@ class TestController
     public function index(Request $request)
     {
 
-        (new BonusService())->run();
-        (new ReleaseBonusService())->run();
+//        $dd='73Tf/g8HUJJ2o/B/6uaEtpXKpARQFQlnKdCTZf040To=';
+//        $dd='j4eF/waizRHBZuzPgrZa8HDdXRDs6E7mfpuSpf/QW9g=';
+//        $dd= AesUtil::decrypt($dd);
+//        return json_success($dd);
+//        (new BonusService())->run();
+//        (new ReleaseBonusService())->run();
 
 
 //       $dd=new  ReleaseService();
