@@ -69,7 +69,6 @@ class UserController
             'assets' => $assetsList[0], // 用户资产
             'assets_list' => $assetsList,
             'share_link' => $user->share_link,
-            'share_code' => AesUtil::encrypt($userId),
             'pledge' => [
                 'ckb' => [
                     'amount' => $assetsList[2]['amount'],
