@@ -7,7 +7,7 @@ use app\enums\QueueTask;
 use app\enums\RechargeStatus;
 use app\model\Transaction;
 use app\services\BonusService;
-use app\services\ReleaseService;
+use app\services\ReleaseBonusService;
 use support\Request;
 use support\Db;
 use support\Log;
@@ -21,6 +21,10 @@ class TestController
 
     public function index(Request $request)
     {
+
+        (new BonusService())->run();
+        (new ReleaseBonusService())->run();
+
 
 //       $dd=new  ReleaseService();
 //       $dd->run();

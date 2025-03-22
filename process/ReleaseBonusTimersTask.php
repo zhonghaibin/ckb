@@ -3,7 +3,7 @@
 namespace process;
 
 use app\services\BonusService;
-use app\services\ReleaseService;
+use app\services\ReleaseBonusService;
 use Workerman\Crontab\Crontab;
 
 class ReleaseBonusTimersTask
@@ -15,7 +15,7 @@ class ReleaseBonusTimersTask
 
         // 每5分钟执行一次
         new Crontab('0 */5 * * * *', function(){
-            $service = new ReleaseService();
+            $service = new ReleaseBonusService();
             $service->run();
         });
 

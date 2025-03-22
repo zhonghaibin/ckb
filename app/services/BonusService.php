@@ -97,14 +97,16 @@ class BonusService
 
 
     //每日收益
-    private function processTransaction($transaction): void
+    private function processTransaction($transaction)
     {
         $month_day = get_time_in_month($transaction->datetime);
 
         $bonus = round($transaction->amount * $this->rate / $month_day, 6);
         Db::table('transactions')->where('id', $transaction->id)->update([
             'runtime' => Db::raw("`runtime` + 86400"),
+            'run_day' => Db::raw('run_day + 1'),
         ]);
+
         $transaction_hash = get_transaction_hash();
         $transactionLogId = Db::table('transaction_logs')->insertGetId([
             'user_id' => $transaction->user_id,
@@ -131,5 +133,7 @@ class BonusService
                 'from_contract_hash' => $transaction_hash,
             ], 1);
         }
+
+        return true;
     }
 }

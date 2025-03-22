@@ -13,7 +13,7 @@ use support\Db;
 use support\Log;
 use Webman\RedisQueue\Redis;
 
-class ReleaseService
+class ReleaseBonusService
 {
     protected float $rate = 0;
     protected float $direct_rate = 0;
@@ -76,7 +76,6 @@ class ReleaseService
         ]);
         Db::table('transactions')->where('id', $transaction_log->transaction_id)->update([
             'bonus' => Db::raw("bonus + $transaction_log->bonus"),
-            'run_day' => Db::raw('run_day + 1'),
         ]);
         $this->updateAssets($transaction_log->user_id, $transaction_log->coin, $transaction_log->bonus, $this->rate, $transaction_log->transaction_id, $transaction_log->id, AssetsLogTypes::DAILYINCOME->value, AssetsLogTypes::DAILYINCOME->label());
 
