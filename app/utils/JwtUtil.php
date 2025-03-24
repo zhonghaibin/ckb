@@ -9,7 +9,7 @@ use Exception;
 class JwtUtil
 {
     // 密钥（建议从配置文件中读取）
-    private static $secretKey = 'qwe123/**-';
+    private static $secretKey = 'qwe123/**-2132132';
 
     // 生成 JWT Token
     public static function generateToken($userId, $expire = 31536000)
