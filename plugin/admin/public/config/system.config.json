@@ -62,7 +62,8 @@
       "staticRate": [
         {"day": "1","rate": {"min": "6","max": "8"}},
         {"day": "15","rate": {"min": "8","max": "10"}},
-        {"day": "30","rate": {"min": "10","max": "13"}}
+        {"day": "30","rate": {"min": "10","max": "13"}},
+        {"day": "60","rate": {"min": "13","max": "15"}}
       ],
       "directRate": "20",
       "levelDiffRate": [
