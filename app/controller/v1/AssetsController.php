@@ -93,23 +93,28 @@ class AssetsController
             return json_fail(Lang::get('tips_3'));
         }
 
-        $coin = CoinTypes::USDT;
+        $coin = CoinTypes::USDT->value;
         $user = User::query()->find($request->userId);
         $assets = Assets::query()->where('user_id', $user->id)->where('coin', $coin)->lockForUpdate()->firstOrFail();
         $new_balance = bcsub($assets->amount, $amount, 8);
         if ($new_balance < 0) {
             return json_fail(Lang::get('tips_4'));
         }
-        $new_amount = bcadd($amount, $withdraw_fee, 8);
+
 
         Db::beginTransaction();
         try {
-            if (!$assets->decrement('amount', $new_amount)) {
+            if (!$assets->decrement('amount', $amount)) {
                 throw new \Exception(Lang::get('tips_19'));
             }
+
+            $total_amount = $amount;
+            $amount = $total_amount - $fee;
+
             $withdraw = new Withdraw();
             $withdraw->user_id = $user->id;
             $withdraw->coin = $coin;
+            $withdraw->total_amount = $total_amount;
             $withdraw->amount = $amount;
             $withdraw->status = WithdrawStatus::PENDING->value;
             $withdraw->fee = $fee;
@@ -123,7 +128,7 @@ class AssetsController
             $assets_log = new AssetsLog;
             $assets_log->user_id = $user->id;
             $assets_log->coin = $coin;
-            $assets_log->amount = -$new_amount;
+            $assets_log->amount = -$total_amount;
             $assets_log->balance = $new_balance;
             $assets_log->type = AssetsLogTypes::WITHDRAW->value;
             $assets_log->remark = AssetsLogTypes::WITHDRAW->label();

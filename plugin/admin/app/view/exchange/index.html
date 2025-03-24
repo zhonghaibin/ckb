@@ -138,29 +138,27 @@
                 templet: function (d) {
                     return d.user.identity;
                 }
-            }, {
+            },
+            {
+                title: "兑现数量",
+                field: "from_amount",
+            },
+            {
                 title: "基准货币",
                 field: "from_coin",
             }, {
-                title: "目标货币",
-                field: "to_coin",
-            }, {
-                title: "基准数量",
-                field: "from_amount",
-            }, {
-                title: "目标数量",
-                field: "to_amount",
-            }, {
-                title: "比率",
+                title: "兑换比率",
                 field: "rate",
                 templet: function (d) {
                     return d.rate * 100 + '%';
                 }
+            }, {
+                title: "目标货币",
+                field: "to_coin",
+            }, {
+                title: "目标到账数量",
+                field: "to_amount",
             },
-            // {
-            //     title: "手续费",
-            //     field: "fee",
-            // },
             {
                 title: "状态",
                 field: "status",

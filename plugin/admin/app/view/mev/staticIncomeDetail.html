@@ -74,13 +74,13 @@
                 title: "状态",
                 field: "status",
                 templet: function (d) {
-                    let field = "status";
-                    if (typeof d[field] == "undefined") return "";
-                    let items = [];
-                    layui.each((d[field] + "").split(","), function (k , v) {
-                        items.push(apiResults[field][v] || v);
-                    });
-                    return util.escape(items.join(","));
+                    if (d.status == 1) {
+                        return '进行中';
+                    } else if (d.status == 2) {
+                        return '已完成';
+                    } else {
+                        return '其他';
+                    }
                 }
             },{
                 title: "来自合约",

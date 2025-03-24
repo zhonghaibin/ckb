@@ -26,6 +26,16 @@
                     <input type="text" name="identity" value="" class="layui-input">
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">时间</label>
+                <div class="layui-input-block">
+                    <div class="layui-input-block" id="created_at">
+                        <input type="text" autocomplete="off" name="created_at[]" id="created_at-date-start" class="layui-input inline-block" placeholder="开始时间">
+                        -
+                        <input type="text" autocomplete="off" name="created_at[]" id="created_at-date-end" class="layui-input inline-block" placeholder="结束时间">
+                    </div>
+                </div>
+            </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
@@ -57,6 +67,10 @@
         <table id="data-table" lay-filter="data-table"></table>
     </div>
 </div>
+
+<script type="text/html" id="table-bar">
+    <button class="pear-btn pear-btn-xs tool-btn" lay-event="updateRecharge">更新充值</button>
+</script>
 
 
 <script src="/app/admin/component/layui/layui.js?v=2.8.12"></script>
@@ -114,6 +128,7 @@
             elem: "#created_at",
             range: ["#created_at-date-start", "#created_at-date-end"],
             type: "datetime",
+            rangeLinked: true
         });
     })
 
@@ -140,7 +155,19 @@
                 title: "货币",
                 field: "coin",
             }, {
-                title: "数量",
+                title: "充值数量",
+                field: "total_amount",
+            },{
+                title: "手续费",
+                field: "fee",
+            },{
+                title: "手续费比例",
+                field: "fee_rate",
+                templet: function (d) {
+                    return d.fee_rate*100+'%';
+                }
+            }, {
+                title: "到账数量",
                 field: "amount",
             }, {
                 title: "付款地址",
@@ -148,6 +175,9 @@
             }, {
                 title: "交易签名",
                 field: "signature",
+            }, {
+                title: "错误信息",
+                field: "error_info",
             }, {
                 title: "状态",
                 field: "status",
@@ -163,7 +193,13 @@
             }, {
                 title: "创建时间",
                 field: "created_at",
-            },
+            }, {
+                title: "操作",
+                toolbar: "#table-bar",
+                align: "center",
+                fixed: "right",
+                width: 200,
+            }
         ];
 
         // 渲染表格
@@ -231,6 +267,8 @@
         table.on("tool(data-table)", function (obj) {
             if (obj.event === "remove") {
                 remove(obj);
+            } else if (obj.event === "updateRecharge") {
+                updateRecharge(obj);
             } else if (obj.event === "show") {
                 show(obj);
             }
@@ -275,7 +313,23 @@
             });
         });
 
-
+        let updateRecharge = function (obj) {
+            let value = obj.data[PRIMARY_KEY];
+            layui.$.ajax({
+                url: "/v1/notify/pushRecharge",
+                type: "POST",
+                dateType: "json",
+                data: {'recharge_id': value},
+                success: function (res) {
+                    if (res.code == 400) {
+                        return layui.popup.failure(res.message);
+                    }
+                    return layui.popup.success("操作成功", function () {
+                        parent.refreshTable();
+                    });
+                }
+            });
+        }
         // 刷新表格数据
         window.refreshTable = function () {
             table.reloadData("data-table", {

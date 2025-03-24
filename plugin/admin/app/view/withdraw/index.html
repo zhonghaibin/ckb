@@ -28,6 +28,17 @@
             </div>
 
             <div class="layui-form-item">
+                <label class="layui-form-label">时间</label>
+                <div class="layui-input-block">
+                    <div class="layui-input-block" id="created_at">
+                        <input type="text" autocomplete="off" name="created_at[]" id="created_at-date-start" class="layui-input inline-block" placeholder="开始时间">
+                        -
+                        <input type="text" autocomplete="off" name="created_at[]" id="created_at-date-end" class="layui-input inline-block" placeholder="结束时间">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
                     <div name="status" id="status" value=""></div>
@@ -119,6 +130,7 @@
             elem: "#created_at",
             range: ["#created_at-date-start", "#created_at-date-end"],
             type: "datetime",
+            rangeLinked: true
         });
     })
 
@@ -145,11 +157,20 @@
                 title: "货币",
                 field: "coin",
             }, {
-                title: "数量",
-                field: "amount",
-            }, {
+                title: "提现数量",
+                field: "total_amount",
+            },{
                 title: "手续费",
                 field: "fee",
+            },{
+                title: "手续费比例",
+                field: "fee_rate",
+                templet: function (d) {
+                    return d.fee_rate*100+'%';
+                }
+            }, {
+                title: "打款数量",
+                field: "amount",
             }, {
                 title: "打款地址",
                 field: "user_wallet",

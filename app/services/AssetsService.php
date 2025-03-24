@@ -26,11 +26,13 @@ class AssetsService
             if ($exist) {
                 return 0;
             }
-
+            $total_amount = $amount;
+            $amount = $total_amount - $fee;
             $user = User::query()->where('id', $user_id)->firstOrFail();
             $recharge = new Recharge();
             $recharge->user_id = $user->id;
             $recharge->coin = $coin;
+            $recharge->total_amount = $total_amount;
             $recharge->amount = $amount;
             $recharge->remark = $remark;
             $recharge->status = $status;

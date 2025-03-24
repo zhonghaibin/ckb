@@ -60,6 +60,19 @@
                     return d.rate*100+'%';
                 }
             },{
+                title: "是否已结算",
+                field: "is_release",
+                templet: function(d) {
+                    return d.is_release==1?'已结算':'待结算';
+                }
+            },{
+                title: "结算时间",
+                field: "runtime",
+                templet: function(d) {
+                    let date = new Date(d.runtime * 1000); // 将秒转换为毫秒
+                    return date.toLocaleString();
+                }
+            },{
                 title: "创建时间",
                 field: "created_at",
             },{

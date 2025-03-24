@@ -2,6 +2,8 @@
 
 namespace plugin\admin\app\controller;
 
+use app\model\Recharge;
+use app\model\Withdraw;
 use plugin\admin\app\common\Util;
 use plugin\admin\app\model\Option;
 use app\model\User;
@@ -46,7 +48,7 @@ class IndexController
             $config = json_decode($config, true);
             $title = $config['logo']['title'] ?? 'webman admin';
             $logo = $config['logo']['image'] ?? '/app/admin/admin/images/logo.png';
-            return raw_view('account/login',['logo'=>$logo,'title'=>$title]);
+            return raw_view('account/login', ['logo' => $logo, 'title' => $title]);
         }
         return raw_view('index/index');
     }
@@ -67,6 +69,12 @@ class IndexController
         $day30_user_count = User::where('created_at', '>', date('Y-m-d H:i:s', time() - 30 * 24 * 60 * 60))->count();
         // 总用户数
         $user_count = User::count();
+
+        //今日充值数
+        $today_recharge_count = Recharge::where('created_at', '>', date('Y-m-d') . ' 00:00:00')->sum('amount');
+        //今日提现数
+        $today_withdraw_count = Withdraw::where('created_at', '>', date('Y-m-d') . ' 00:00:00')->sum('amount');
+
         // mysql版本
         $version = Util::db()->select('select VERSION() as version');
         $mysql_version = $version[0]->version ?? 'unknown';
@@ -85,12 +93,14 @@ class IndexController
             'day30_user_count' => $day30_user_count,
             'user_count' => $user_count,
             'php_version' => PHP_VERSION,
-            'workerman_version' =>  Worker::VERSION,
+            'workerman_version' => Worker::VERSION,
             'webman_version' => Util::getPackageVersion('workerman/webman-framework'),
             'admin_version' => config('plugin.admin.app.version'),
             'mysql_version' => $mysql_version,
             'os' => PHP_OS,
             'day7_detail' => array_reverse($day7_detail),
+            'today_recharge_count' => $today_recharge_count,
+            'today_withdraw_count' => $today_withdraw_count
         ]);
     }
 

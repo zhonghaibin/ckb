@@ -94,7 +94,13 @@ class MevController extends Crud
             '<',
             time(),
         ];
+
         $query = $this->doSelect($where, $field, $order);
+        $query->selectRaw("*,CASE 
+                    WHEN datetime <= UNIX_TIMESTAMP() AND endtime >= UNIX_TIMESTAMP() THEN '1'
+                    WHEN endtime < UNIX_TIMESTAMP() THEN '2'
+                    ELSE '0'
+                 END as status,FROM_UNIXTIME(datetime, '%Y-%m-%d %H:%i:%s') as created_at");
         return $this->doFormat($query, $format, $limit);
     }
     /**

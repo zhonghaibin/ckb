@@ -30,5 +30,7 @@ class NotifyController
         Redis::send(QueueTask::RECHARGE->value, [
             'recharge_id' => $recharge_id,
         ], 1);
+
+        return json_success();
     }
 }

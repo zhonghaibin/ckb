@@ -73,7 +73,7 @@ class RechargeJob implements Consumer
 
 
         } catch (\Throwable $e) {
-            if ($retry_count < 2) {
+            if ($retry_count < 3) {
                 Log::error("retry_count：{$retry_count}" . $e->getMessage());
                 // 重新放入队列，增加重试次数
                 Redis::send($this->queue, [
@@ -83,6 +83,7 @@ class RechargeJob implements Consumer
             } else {
                 $recharge = Recharge::query()->find($recharge_id);
                 $recharge->status = RechargeStatus::FAILED;
+                $recharge->error_info = $e->getMessage();
                 $recharge->save();
                 // 记录日志 & 上报错误
                 Log::error("充值任务失败，recharge_id: {$recharge_id}, 错误: " . $e->getMessage());

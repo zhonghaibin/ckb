@@ -12,6 +12,7 @@ use app\model\Transaction;
 use app\services\TransactionService;
 use app\support\Lang;
 
+use support\Db;
 use support\Request;
 
 class TransactionController
@@ -154,8 +155,13 @@ class TransactionController
     {
         $transaction_id = $request->get('transaction_id', 0);
         $transaction_log_id = $request->get('transaction_log_id', 0);
+        $transaction_hash = $request->get('transaction_hash', 0);
+        $tab = $request->get('tab', 0);
         $ransactionLogDetails = TransactionLogDetails::query()
             ->where('user_id', $request->userId)
+            ->when($transaction_hash, function ($query) use ($transaction_hash) {
+                return $query->where('transaction_hash', $transaction_hash);
+            })
             ->when($transaction_id, function ($query) use ($transaction_id) {
                 return $query->where('transaction_id', $transaction_id);
             })
@@ -163,6 +169,17 @@ class TransactionController
                 return $query->where('transaction_log_id', $transaction_log_id);
             })
             ->select('*')
+            ->selectRaw("CASE 
+                    WHEN datetime <= UNIX_TIMESTAMP() AND endtime >= UNIX_TIMESTAMP() THEN '1'
+                    WHEN endtime < UNIX_TIMESTAMP() THEN '2'
+                    ELSE '0'
+                 END as status")
+            ->when($tab == '1', function ($query) {
+                return $query->whereRaw("datetime <= UNIX_TIMESTAMP() AND endtime >= UNIX_TIMESTAMP()");
+            })
+            ->when($tab == '2', function ($query) {
+                return $query->whereRaw("endtime < UNIX_TIMESTAMP()");
+            })
             ->where('datetime', '<', time())
             ->orderBy('id', 'desc')
             ->paginate(10)
