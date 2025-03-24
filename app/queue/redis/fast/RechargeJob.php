@@ -42,10 +42,10 @@ class RechargeJob implements Consumer
             }
             $parse_solana_transaction = parse_solana_transaction($response['result']['meta']);
 
-            if ($parse_solana_transaction['payer'] != $userWallet) {
-                Log::error('付款地址不正确');
-                throw new \Exception('付款地址不正确' . $parse_solana_transaction['payer']);
-            }
+//            if ($parse_solana_transaction['payer'] != $userWallet) {
+//                Log::error('付款地址不正确');
+//                throw new \Exception('付款地址不正确' . $parse_solana_transaction['payer'].' userWallet:'.$userWallet);
+//            }
 
             $config = get_system_config();
             $platformWallet = $config['base_info']['wallet_address'] ?? '';

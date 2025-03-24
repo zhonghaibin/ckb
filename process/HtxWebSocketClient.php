@@ -111,9 +111,10 @@ class HtxWebSocketClient
     // 处理收到的消息
     protected function handleMessage($msg, WebSocket $conn)
     {
-        $decompressedMsg = gzdecode($msg);
+        $decompressedMsg = @gzdecode($msg);
         if ($decompressedMsg === false) {
             Log::error("Failed to decompress message");
+            $conn->close();  // 触发重连逻辑
             return;
         }
 
@@ -131,15 +132,21 @@ class HtxWebSocketClient
             // 其他消息
             Log::info("Received: " . json_encode($data));
         }
+
+        // 释放内存
+        unset($data);
+        gc_collect_cycles();
     }
 
     // 断开连接后的重连逻辑
     protected function reconnect()
     {
         Log::info("Attempting to reconnect...");
-        // 等待 5 秒后重连
-        $this->loop->addTimer(5, function () {
-            $this->connect();
+        // 避免过快重连，随机等待 5-10 秒
+        $this->loop->addTimer(mt_rand(5, 10), function () {
+            if ($this->connector) {
+                $this->connect();
+            }
         });
     }
 }
