@@ -39,6 +39,14 @@ class Recharge extends Base
             get: fn($value) => floatval($value)
         );
     }
+
+    protected function totalAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => floatval($value)
+        );
+    }
+
     protected function fee(): Attribute
     {
         return Attribute::make(

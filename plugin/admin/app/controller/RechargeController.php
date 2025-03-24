@@ -29,6 +29,23 @@ class RechargeController extends Crud
         $this->model = new Recharge();
     }
 
+    protected function doFormats($query, $format, $limit, $totalData): Response
+    {
+        $paginator = $query->paginate($limit);
+        $total = $paginator->total();
+        $items = $paginator->items();
+        if (method_exists($this, "afterQuery")) {
+            $items = call_user_func([$this, "afterQuery"], $items);
+        }
+        $format_function = 'formatNormals';
+        return call_user_func([$this, $format_function], $items, $total, $totalData);
+    }
+
+    protected function formatNormals($items, $total, $total_data): Response
+    {
+        return json(['code' => 0, 'msg' => 'ok', 'count' => $total, 'data' => $items, 'total' => $total_data]);
+    }
+
     /**
      * 查询
      */
@@ -43,8 +60,19 @@ class RechargeController extends Crud
             });
         });
 
+        $cloneQuery1 = clone $query;
+        $total_amount = $cloneQuery1->sum('total_amount');
+        $cloneQuery2 = clone $query;
+        $amount = $cloneQuery2->sum('amount');
         $query = $query->with('user');
-        return $this->doFormat($query, $format, $limit);
+
+
+        $totalData = [
+            "amount" => floatval($amount),
+            "total_amount" => floatval($total_amount)
+        ];
+        return $this->doFormats($query, $format, $limit, $totalData);
+
     }
 
     /**

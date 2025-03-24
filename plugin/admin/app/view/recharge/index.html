@@ -218,8 +218,20 @@
                     layEvent: "refresh",
                     icon: "layui-icon-refresh",
                 }, "filter", "print", "exports"],
-                done: function () {
+                done: function (res, curr, count) {
                     layer.photos({photos: 'div[lay-id="data-table"]', anim: 5});
+                    let totalAmount = res.total.total_amount || 0;
+                    let amount = res.total.amount || 0;
+                    let totalHtml = `
+                <tr style="font-weight:bold; background:#f2f2f2;">
+                    <td colspan="1" style="text-align:right;">合计：</td>
+                    <td colspan="2" style="text-align:left;">充值数量:${totalAmount.toFixed(2)}</td>
+                     <td colspan="2" style="text-align:left;">到账数量:${amount.toFixed(2)}</td>
+                    <td colspan="7"></td>
+                </tr>
+            `;
+
+                    $('.layui-table-body tbody').append(totalHtml);
                 }
             });
         }
