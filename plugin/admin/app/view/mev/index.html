@@ -74,7 +74,7 @@
 
     // 相关常量
     const PRIMARY_KEY = "id";
-    const SELECT_API = "/app/admin/mev/select";
+    const SELECT_API = "/app/admin/mev/select"+ location.search;
     const STATICINCOME_URL = "/app/admin/mev/staticIncome";
     const DYNAMICINCOME_URL = "/app/admin/mev/dynamicIncome";
     function getQueryParam(name) {
