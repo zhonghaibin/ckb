@@ -40,9 +40,9 @@ class User extends Base
 
     public function getShareLinkAttribute()
     {
-        $code = AesUtil::encrypt($this->id);
+
         $config = get_system_config();
         $share_url = $config['base_info']['share_url'];
-        return $share_url . urlencode($code);
+        return $share_url . $this->account;
     }
 }

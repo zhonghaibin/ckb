@@ -61,6 +61,7 @@ class UserController
             ->where('status', TransactionStatus::NORMAL)
             ->sum('amount');
         $data = [
+            'account' => $user->account,
             'avatar' => $user->avatar,
             'identity' => $user->identity,
             'level' => $user->level,

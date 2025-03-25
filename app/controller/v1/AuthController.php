@@ -53,7 +53,15 @@ class AuthController
         try {
             // 如果用户不存在，进行注册
             if (empty($user)) {
+
+                if (!User::query()->exists()) {
+                    $account = 10000;
+                } else {
+                    $account = User::query()->orderBy('id', 'desc')->value('account') + 1;
+                }
+
                 $user = new User;
+                $user->account = $account;
                 $user->identity = $publicKey;
                 $user->remark = '';
                 $user->avatar = '/images/avatars/avatar.png';
@@ -61,10 +69,9 @@ class AuthController
 
                 // 解析邀请码
                 if (!empty($code)) {
-                    $code=urldecode($code);
-                    $pid = $this->decryptInviteCode($code);
-                    if (is_numeric($pid)) {
-                        $user->pid = $pid;
+                    $parentUser = User::query()->where(['account' => $code])->first();
+                    if ($parentUser) {
+                        $user->pid = $parentUser->id;
                     }
                 }
 
@@ -132,15 +139,6 @@ class AuthController
         }
     }
 
-    // 解密邀请码
-    private function decryptInviteCode($code)
-    {
-        try {
-            return AesUtil::decrypt($code);
-        } catch (\Throwable $e) {
-            throw new \Exception(Lang::get('tips_0'));
-        }
-    }
 
     // 初始化用户资产
     private function initializeUserAssets($user)

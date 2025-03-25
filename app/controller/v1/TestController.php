@@ -23,6 +23,12 @@ class TestController
     public function index(Request $request)
     {
 
+        $code = AesUtil::encrypt(1);
+       $code= urlencode($code);
+
+        $code=urldecode($code);
+        $code=AesUtil::decrypt($code);
+        return json($code);
 //        $dd='73Tf/g8HUJJ2o/B/6uaEtpXKpARQFQlnKdCTZf040To=';
 //        $dd='j4eF/waizRHBZuzPgrZa8HDdXRDs6E7mfpuSpf/QW9g=';
 //        $dd= AesUtil::decrypt($dd);
