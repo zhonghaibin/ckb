@@ -54,8 +54,8 @@ class RechargeController extends Crud
         [$where, $format, $limit, $field, $order] = $this->selectInput($request);
         $query = $this->doSelect($where, $field, $order);
         $identity = $request->get('identity');
-        $query = $query->whereHas('user', function ($query) use ($identity) {
-            return $query->when($identity, function ($query) use ($identity) {
+        $query = $query->when($identity, function ($query) use ($identity) {
+            return $query->whereHas('user', function ($query) use ($identity) {
                 return $query->where('identity', $identity);
             });
         });
