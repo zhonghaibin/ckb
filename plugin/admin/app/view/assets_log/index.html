@@ -263,12 +263,12 @@
             let title = '';
             if (obj.data['transaction_id'] > 0) {
                 if (obj.data['coin'] === "USDT") {
+                    URL = "/app/admin/mev/index";
                     title = '套利';
                 } else {
                     title = '质押';
+                    URL = "/app/admin/pledge/index";
                 }
-
-                URL = "/app/admin/pledge/index";
                 value = obj.data['transaction_id'];
             } else if (obj.data['exchange_id'] > 0) {
                 title = '兑换';
