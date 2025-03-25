@@ -77,7 +77,21 @@
     const SELECT_API = "/app/admin/mev/select";
     const STATICINCOME_URL = "/app/admin/mev/staticIncome";
     const DYNAMICINCOME_URL = "/app/admin/mev/dynamicIncome";
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+    // 控制 div 显示/隐藏
+    window.onload = function () {
+        const showDiv = getQueryParam('showDiv'); // 获取参数
+        const divElement = document.querySelector('.layui-card');
 
+        if (showDiv === 'hidden') {
+            divElement.style.display = 'none';  // 隐藏
+        } else {
+            divElement.style.display = 'block'; // 显示
+        }
+    };
 
     layui.use(["jquery", "xmSelect", "popup"], function() {
         layui.$.ajax({
