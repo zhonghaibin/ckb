@@ -61,6 +61,7 @@ class AuthController
 
                 // 解析邀请码
                 if (!empty($code)) {
+                    $code=urldecode($code);
                     $pid = $this->decryptInviteCode($code);
                     if (is_numeric($pid)) {
                         $user->pid = $pid;
