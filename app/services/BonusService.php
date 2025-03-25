@@ -92,7 +92,7 @@ class BonusService
             $this->rate = bcdiv($this->rate, 100, 8);
 
         }
-        $this->end_time = strtotime(date('Y-m-d 23:59:59'));
+        $this->end_time = time() + 86400;
     }
 
 
