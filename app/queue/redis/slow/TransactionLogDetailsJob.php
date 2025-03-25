@@ -115,17 +115,13 @@ class TransactionLogDetailsJob implements Consumer
         for ($i = 0; $i < $count - 1; $i++) {
             $endTime = $records[$i + 1]['datetime'];
             $endTime = $endTime + mt_rand(90, 200);
-            $lastTimestamp = strtotime('today 23:59:59');
-            if ($endTime > $lastTimestamp) {
-                $endTime = $lastTimestamp;
-            }
             $records[$i]['endtime'] = $endTime;
         }
 
         // **最后一条记录的 endtime 设为当天 23:59:59**
         if ($count > 0) {
             $lastRecordTime = $records[$count - 1]['datetime'];
-            $records[$count - 1]['endtime'] = $lastRecordTime + mt_rand(90, 200);
+            $records[$count - 1]['endtime'] = $lastRecordTime + mt_rand(90,150);
         }
 
         // **批量插入**
