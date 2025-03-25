@@ -155,19 +155,9 @@ if (!function_exists('get_solana_tokens')) {
     {
         return [
             ['symbol' => 'SOL', 'contract' => 'So11111111111111111111111111111111111111112'],
-            ['symbol' => 'USDC', 'contract' => 'Es9vMFrzaCERXaqdRbdhWyS6VQY6p8zWzFWDp93L5JuH'],
-            ['symbol' => 'USDT', 'contract' => 'BQeDpmX7KcHn1hX8GZZd5TK3Dbtq3hxtkYuGFV8C4zG2'],
-            ['symbol' => 'SRM', 'contract' => '3fHb1e2GTxCKF2Dbzk28r8h6hF5pyT1WfMkdeRmeZkMt'],
-            ['symbol' => 'RAY', 'contract' => '4k3Dyjzvzp8eAcDbYohshgJRebeMpoieMi6cXJfAqR5'],
-            ['symbol' => 'FTT', 'contract' => 'FTT9vMT6K8Y8G4D2SzdPUM7Pzxr5LZCUVRZ62h6aGoF'],
-            ['symbol' => 'COPE', 'contract' => '8HGjNStDrWz8mw5N6X6ztzpM6zKeMa2mJ5GU6jL4vMTC'],
-            ['symbol' => 'ATLAS', 'contract' => 'ATLASXKqD9VdANFVXxU3v6a1hDxfVjxjUqsuHtD7a2y'],
-            ['symbol' => 'POLIS', 'contract' => 'poLisKp8NbyA3bNBzVz11aZsNpC2hL7FXCUBUdCYwH9'],
-            ['symbol' => 'MSOL', 'contract' => 'mSoLzLbd1enPv6vUczopuF2Nxt6WzXwGmHiMsZJvEdm'],
-            ['symbol' => 'stSOL', 'contract' => 'StSoLwxBDBea1nqTVx2fz1KkL1P3A8mnd1pzFnMs2mV'],
-            ['symbol' => 'SAMO', 'contract' => '7xKXdi6KJX2pVvYURbktDyuBGQ4Sw81Y2MQPLXugj16z'],
-            ['symbol' => 'ORCA', 'contract' => 'orcaB55sE8T9YbXhy9HLT2Tn8sMWJpp9S8XLt3Fe1EPh'],
-            ['symbol' => 'SNY', 'contract' => 'sNYDQzrLLirAvnfoQdJz9EGDNrnkmi5C5Ty3LckqkKz'],
+            ['symbol' => 'EV1', 'contract' => '3SghkPdBSrpF9bzdAy5LwR4nGgFbqNcC6ZSq8vtZdj91'],
+            ['symbol' => 'YAKU', 'contract' => 'NGK3iHqqQkyRZUj4uhJDQqEyKKcZ7mdawWpqwMffM3s'],
+            ['symbol' => 'agEUR', 'contract' => 'CbNYA9n3927uXUukee2Hf4tm3xxkffJPPZvGazc2EAH1'],
         ];
     }
 }
