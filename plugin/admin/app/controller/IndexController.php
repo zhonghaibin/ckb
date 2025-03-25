@@ -71,9 +71,9 @@ class IndexController
         $user_count = User::count();
 
         //今日充值数
-        $today_recharge_count = Recharge::where('created_at', '>', date('Y-m-d') . ' 00:00:00')->sum('amount');
+        $today_recharge_count = Recharge::where('created_at', '>', date('Y-m-d') . ' 00:00:00')->sum('total_amount');
         //今日提现数
-        $today_withdraw_count = Withdraw::where('created_at', '>', date('Y-m-d') . ' 00:00:00')->sum('amount');
+        $today_withdraw_count = Withdraw::where('created_at', '>', date('Y-m-d') . ' 00:00:00')->sum('total_amount');
 
         // mysql版本
         $version = Util::db()->select('select VERSION() as version');
