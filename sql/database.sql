@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : phpstudy
+ Source Server         : phpStudy
  Source Server Type    : MySQL
  Source Server Version : 80012
- Source Host           : localhost:3306
+ Source Host           : localhost:3389
  Source Schema         : ckb
 
  Target Server Type    : MySQL
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 24/03/2025 15:37:23
+ Date: 03/04/2025 20:33:29
 */
 
 SET NAMES utf8mb4;
@@ -601,6 +601,7 @@ CREATE TABLE `uploads`  (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `account` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `pid` int(11) NOT NULL DEFAULT 0,
   `is_real` tinyint(1) NULL DEFAULT 0 COMMENT '1真实用户',
