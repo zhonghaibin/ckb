@@ -1,12 +1,18 @@
 FROM php:8.2-cli
 
-# 覆盖为阿里云镜像源（假设基础镜像是 Debian bookworm）
+# 替换阿里云镜像源（确认基础镜像是Debian bookworm）
 RUN echo "deb http://mirrors.aliyun.com/debian/ bookworm main contrib non-free" > /etc/apt/sources.list && \
     echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main contrib non-free" >> /etc/apt/sources.list && \
     echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main contrib non-free" >> /etc/apt/sources.list
 
-# 更新并安装所需软件
+# 更新并安装依赖
 RUN apt-get update && apt-get install -y \
+    # 添加编译工具
+    build-essential \
+    autoconf \
+    make \
+    g++ \
+    # 基础工具
     nginx \
     supervisor \
     vim \
@@ -15,9 +21,13 @@ RUN apt-get update && apt-get install -y \
     wget \
     unzip \
     zip \
+    # GD库依赖
     libpng-dev \
-    libjpeg-dev \
+    libwebp-dev \
+    libjpeg62-turbo-dev \
+    libxpm-dev \
     libfreetype6-dev \
+    # 其他PHP扩展依赖
     libonig-dev \
     libxml2-dev \
     libzip-dev \
@@ -25,18 +35,15 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libicu-dev \
     libpq-dev \
-    libmcrypt-dev \
     libedit-dev \
     libxslt-dev \
-    libwebp-dev \
-    libjpeg62-turbo-dev \
-    libxpm-dev \
     default-mysql-client \
-    && docker-php-ext-install pdo pdo_mysql mysqli mbstring zip gd exif pcntl bcmath intl opcache
+    # 清理缓存
+    && rm -rf /var/lib/apt/lists/*
 
 # 安装必要扩展
 RUN pecl install redis && docker-php-ext-enable redis
-RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir --with-png-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir
+
 
 # 安装 Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --version=2.8.8 --install-dir=/usr/local/bin --filename=composer
