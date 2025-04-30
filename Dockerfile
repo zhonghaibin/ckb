@@ -41,6 +41,23 @@ RUN apt-get update && apt-get install -y \
     # 清理缓存
     && rm -rf /var/lib/apt/lists/*
 
+# 配置GD库（PHP 8.2必须指定路径）
+RUN docker-php-ext-configure gd \
+    --with-freetype=/usr/include/freetype2 \
+    --with-jpeg=/usr/include \
+    --with-webp=/usr/include
+
+# 安装PHP扩展（移除xmlrpc）
+RUN docker-php-ext-install \
+    pdo pdo_mysql mysqli \
+    mbstring zip gd exif \
+    pcntl bcmath intl \
+    opcache soap xml \
+    curl sockets xsl
+
+# 其他优化（可选）
+RUN docker-php-source delete
+
 # 安装必要扩展
 RUN pecl install redis && docker-php-ext-enable redis
 
@@ -73,6 +90,15 @@ COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY init.sh /usr/local/bin/init.sh
 RUN  chmod +x /usr/local/bin/init.sh
 
+# 配置 Opcache
+RUN { \
+      echo 'opcache.memory_consumption=128'; \
+      echo 'opcache.interned_strings_buffer=8'; \
+      echo 'opcache.max_accelerated_files=4000'; \
+      echo 'opcache.revalidate_freq=2'; \
+      echo 'opcache.fast_shutdown=1'; \
+      echo 'opcache.enable_cli=1'; \
+    } > /usr/local/etc/php/conf.d/opcache.ini
 
 EXPOSE 80
 
