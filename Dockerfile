@@ -36,6 +36,7 @@ RUN apt-get update && apt-get install -y \
 
 # 安装必要扩展
 RUN pecl install redis && docker-php-ext-enable redis
+RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir --with-png-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir
 
 # 安装 Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --version=2.8.8 --install-dir=/usr/local/bin --filename=composer
