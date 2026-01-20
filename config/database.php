@@ -4,11 +4,11 @@ return  [
     'connections' => [
         'mysql' => [
             'driver'      => 'mysql',
-            'host'        => '192.168.2.24',
+            'host'        => '192.168.191.24',
             'port'        => '3306',
             'database'    => 'ckb',
             'username'    => 'root',
-            'password'    => 'HC0803hc/*-',
+            'password'    => '',
             'charset'     => 'utf8mb4',
             'collation'   => 'utf8mb4_general_ci',
             'prefix'      => '',

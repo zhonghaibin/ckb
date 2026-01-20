@@ -27,11 +27,11 @@ return [
             'save_path' => runtime_path() . '/sessions',
         ],
         'redis' => [
-            'host' => '127.0.0.1',
+            'host' => '192.168.191.24',
             'port' => 6379,
-            'auth' => '',
+            'auth' => '123456',
             'timeout' => 2,
-            'database' => '',
+            'database' => '1',
             'prefix' => 'redis_session_',
         ],
         'redis_cluster' => [

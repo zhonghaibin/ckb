@@ -14,10 +14,10 @@
 
 return [
     'default' => [
-        'password' => '',
-        'host' => '127.0.0.1',
+        'password' => '123456',
+        'host' => '192.168.191.24',
         'port' => 6379,
-        'database' => 0,
+        'database' => 1,
         // Connection pool, supports only Swoole or Swow drivers.
         'pool' => [
             'max_connections' => 5,
