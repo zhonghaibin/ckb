@@ -27,7 +27,7 @@ return [
             'save_path' => runtime_path() . '/sessions',
         ],
         'redis' => [
-            'host' => '192.168.191.24',
+            'host' => '127.0.0.1',
             'port' => 6379,
             'auth' => '123456',
             'timeout' => 2,
