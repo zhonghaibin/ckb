@@ -9,7 +9,6 @@ use Webman\RedisQueue\Redis;
 
 class CoinRateService
 {
-    const KEY = '344343434';
     const LOCK_SECOND = 60;
 
     public function getRealTimeRate($from, $to)
@@ -51,7 +50,7 @@ class CoinRateService
     // 生成签名的私有方法
     private function generateSignature($from, $to, $rate, $lockUntil): string
     {
-        return hash_hmac('sha256', "{$from}|{$to}|{$rate}|{$lockUntil}", self::KEY);
+        return hash_hmac('sha256', "{$from}|{$to}|{$rate}|{$lockUntil}", $this->getSigningKey());
     }
 
     // 统一的返回格式
@@ -77,4 +76,12 @@ class CoinRateService
     }
 
 
+    private function getSigningKey(): string
+    {
+        $key = getenv('COIN_RATE_SIGNING_KEY') ?: '';
+        if ($key === '') {
+            throw new \RuntimeException('COIN_RATE_SIGNING_KEY is not configured.');
+        }
+        return $key;
+    }
 }
