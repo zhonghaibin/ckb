@@ -12,12 +12,22 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+$env = static function (string $key, $default = null) {
+    static $envData = null;
+    if ($envData === null) {
+        $envPath = dirname(__DIR__) . '/.env';
+        $envData = is_file($envPath) ? parse_ini_file($envPath, false, INI_SCANNER_RAW) : [];
+    }
+    $value = $envData[$key] ?? $_ENV[$key] ?? getenv($key);
+    return $value === false || $value === null ? $default : $value;
+};
+
 return [
     'default' => [
-        'password' => '123456',
-        'host' => '192.168.191.24',
-        'port' => 6379,
-        'database' => 1,
+        'password' => $env('REDIS_PASSWORD', ''),
+        'host' => $env('REDIS_HOST', '127.0.0.1'),
+        'port' => (int) $env('REDIS_PORT', 6379),
+        'database' => (int) $env('REDIS_DB', 0),
         // Connection pool, supports only Swoole or Swow drivers.
         'pool' => [
             'max_connections' => 5,
